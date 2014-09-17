@@ -1,13 +1,10 @@
-
-/**
- * Module dependencies.
- */
-
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path');
+// Module dependencies
+var express = require('express'),
+	http = require('http'),
+	path = require('path'),
+	routes = require('./routes'),
+	user = require('./routes/user')
+	login = require('./routes/login');
 
 var app = express();
 
@@ -24,21 +21,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
 }
 app.use(function(req, res, next) {
-	  res.status(404);
-	  if (req.accepts('html')) {
-		  res.render('404', { title: 'Página Não Encontrada - App ENEM 2014 | Inep' });
-		  return;
-	  }
+	res.status(404);
+	if (req.accepts('html')) {
+		res.render('404', { title: 'Página Não Encontrada - App ENEM 2014 | Inep' });
+		return;
+	}
 });
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/widget-development', function(req, res, next) {
-	res.render('template/widget-twetts-updates-horizontal', { title: 'Desenvolvimento de Widget - App ENEM 2014 | Inep' });
-});
+app.get('/login', login.authenticate);
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+	console.log('Express server listening on port ' + app.get('port'));
 });

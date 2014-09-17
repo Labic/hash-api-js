@@ -5,44 +5,44 @@ block content
 		.row.login-container.column-seperation
 			.col-md-5.col-md-offset-1
 				h2 Sign in to webarch
-					p
-						| Use Facebook, Twitter or your email to sign in.
-						br
-						a(href='#') Sign up Now!
-						| for a webarch account, It's free and always will be..
-						br
-						button.btn.btn-block.btn-info.col-md-8(type='button')
-							span.pull-left
-								i.icon-facebook
-							span.bold Login with Facebook
-						button.btn.btn-block.btn-success.col-md-8(type='button')
-							span.pull-left
-								i.icon-twitter
-							span.bold Login with Twitter
-		.col-md-5
-			br
-			form#login-form.login-form(action='index.html', method='post')
-				.row
-					.form-group.col-md-10
-						label.form-label Username
-						.controls
-							.input-with-icon.right
-								i.
-								input#txtusername.form-control(type='text', name='txtusername')
-				.row
-					.form-group.col-md-10
-						label.form-label Password
-						span.help
-						.controls
-							.input-with-icon.right
-								i
-								input#txtpassword.form-control(type='password', name='txtpassword')
-				.row
-					.control-group.col-md-10
-						.checkbox.checkbox.check-success
-							a(href='#') Trouble login in?
-							input#checkbox1(type='checkbox', value='1')
-							label(for='checkbox1') Keep me reminded 
-				.row
-					.col-md-10
-						button.btn.btn-primary.btn-cons.pull-right(type='submit') Login
+				p
+					| Use Facebook, Twitter or your email to sign in.
+					br
+					a(href='#') Sign up Now!
+					| for a webarch account, It's free and always will be..
+				br
+				button.btn.btn-block.btn-info.col-md-8(type='button')
+					span.pull-left
+						i.icon-facebook
+					span.bold Login with Facebook
+				button.btn.btn-block.btn-success.col-md-8(type='button')
+					span.pull-left
+						i.icon-twitter
+					span.bold Login with Twitter
+			.col-md-5
+				br
+				form#login-form.login-form(action='index.html', method='post')
+					.row
+						.form-group.col-md-10
+							label.form-label Username
+							.controls
+								.input-with-icon.right
+									i
+									input#txtusername.form-control(type='text', name='txtusername')
+					.row
+						.form-group.col-md-10
+							label.form-label Password
+							span.help
+							.controls
+								.input-with-icon.right
+									i
+									input#txtpassword.form-control(type='password', name='txtpassword')
+					.row
+						.control-group.col-md-10
+							.checkbox.checkbox.check-success
+								a(href='#') Trouble login in?
+								input#checkbox1(type='checkbox', value='1')
+								label(for='checkbox1') Keep me reminded 
+					.row
+						.col-md-10
+							button.btn.btn-primary.btn-cons.pull-right(type='submit') Login
