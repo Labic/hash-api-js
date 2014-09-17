@@ -2,26 +2,26 @@
 .header.navbar.navbar-inverse
 	.navbar-inner
 		.header-seperation
-			ul#main-menu-toggle-wrapper.nav.pull-left.notifcation-center(style='display:none')
+			ul#main-menu-toggle-wrapper.nav.pull-left.notifcation-center(style="display:none")
 				li.dropdown
-					a#main-menu-toggle(href='#main-menu')
+					a#main-menu-toggle(href="#main-menu")
 						.iconset.top-menu-toggle-white
 			// BEGIN LOGO
-			a(href='index.html')
-				img.logo(src='/assets/img/logo.png', alt='logo', data-src='/assets/img/logo.png', data-src-retina='/assets/img/logo2x.png', width='106', height='21')
+			a(href="index.html")
+				img.logo(src="/assets/img/logo.png", alt="logo", data-src="/assets/img/logo.png", data-src-retina="/assets/img/logo2x.png", width="106", height="21")
 			// END LOGO
 			// BEGIN RESPONSIVE MENU TOGGLER
 			ul.nav.pull-right.notifcation-center
 				li#header_task_bar.dropdown
-					a.dropdown-toggle.active(href='index.html')
+					a.dropdown-toggle.active(href="index.html")
 						.iconset.top-home
 				li#iconset.top-home.dropdown.dropdown-toggle
-					a.dropdown-toggle(href='email.html')
+					a.dropdown-toggle(href="email.html")
 						.iconset.top-messages
 						span#msgs-badge.badge
 							| 2
-				li#portrait-chat-toggler.dropdown(style='display:none')
-					a.chat-menu-toggle(href='#sidr')
+				li#portrait-chat-toggler.dropdown(style="display:none")
+					a.chat-menu-toggle(href="#sidr")
 						.iconset.top-chat-white
 			// END RESPONSIVE MENU TOGGLER
 		.header-quick-nav
@@ -29,26 +29,26 @@
 			.pull-left
 				ul.nav.quick-section
 					li.quicklinks
-						a#layout-condensed-toggle(href='#')
+						a#layout-condensed-toggle(href="#")
 							.iconset.top-menu-toggle-dark
 				ul.nav.quick-section
 					li.quicklinks
-						a(href='#')
+						a(href="#")
 							.iconset.top-reload
 					li.quicklinks
 						span.h-seperate
 					li.quicklinks
-						a(href='#')
+						a(href="#")
 							.iconset.top-tiles
 					li.m-r-10.input-prepend.inside.search-form.no-boarder
 						span.add-on
 							span.iconset.top-search
-						input.no-boarder(type='text', placeholder='Search Dashboard', style='width:250px;')
+						input.no-boarder(type="text", placeholder="Search Dashboard", style="width:250px;")
 			// END TOP NAVIGATION MENU
 			// BEGIN CHAT TOGGLER
 			.pull-right
 				.chat-toggler
-					a#my-task-list.dropdown-toggle(href='#', data-placement='bottom', data-content='', data-toggle='dropdown', data-original-title='Notifications')
+					a#my-task-list.dropdown-toggle(href="#", data-placement="bottom", data-content="", data-toggle="dropdown", data-original-title="Notifications")
 						.user-details
 							.username
 								span.badge.badge-important
@@ -57,11 +57,11 @@
 								span.bold
 									| Smith
 						.iconset.top-down-arrow
-					#notification-list(style='display:none')
-						div(style='width:300px')
+					#notification-list(style="display:none")
+						div(style="width:300px")
 							.notification-messages.info
 								.user-profile
-									img(src='/assets/img/profiles/d.jpg', alt='User', data-src='/assets/img/profiles/d.jpg', data-src-retina='assets/img/profiles/d2x.jpg', width='35', height='35')
+									img(src="/assets/img/profiles/d.jpg", alt="User", data-src="/assets/img/profiles/d.jpg", data-src-retina="assets/img/profiles/d2x.jpg", width="35", height="35")
 								.message-wrapper
 									.heading
 										| David Nester - Commented on your wall
@@ -83,7 +83,7 @@
 								.clearfix
 							.notification-messages.success
 								.user-profile
-									img(src='/assets/img/profiles/h.jpg', alt='User', data-src='/assets/img/profiles/g.jpg', data-src-retina='assets/img/profiles/h2x.jpg', width='35', height='35')
+									img(src="/assets/img/profiles/h.jpg", alt="User", data-src="/assets/img/profiles/g.jpg", data-src-retina="assets/img/profiles/h2x.jpg", width="35", height="35")
 								.message-wrapper
 									.heading
 										| You haveve got 150 messages
@@ -93,39 +93,39 @@
 										| An hour ago
 								.clearfix
 					.profile-pic
-						img(src='assets/img/profiles/avatar_small.jpg', alt='Profile Pic', data-src='/assets/img/profiles/avatar_small.jpg', data-src-retina='data-src-retina',width='35', height='35')
+						img(src="assets/img/profiles/avatar_small.jpg", alt="Profile Pic", data-src="/assets/img/profiles/avatar_small.jpg", data-src-retina="data-src-retina",width="35", height="35")
 				ul.nav.quick-section
 					li.quicklinks
-						a#user-options.dropdown-toggle.pull-right(href='#', data-toggle='dropdown')
+						a#user-options.dropdown-toggle.pull-right(href="#", data-toggle="dropdown")
 							.iconset.top-settings-dark
-						ul.dropdown-menu.pull-right(role='menu', aria-labelledby='user-options')
+						ul.dropdown-menu.pull-right(role="menu", aria-labelledby="user-options")
 							li
-								a(href='user-profile.html')
+								a(href="user-profile.html")
 									| My Account
 							li
-								a(href='calender.html')
+								a(href="calender.html")
 									| My Calendar
 							li
-								a(href='email.html')
+								a(href="email.html")
 									| My Inbox
 									span.badge.badge-important.animated.bounceIn
 										| 2
 							li.divider
 							li
-								a(href='login.html')
+								a(href="login.html")
 									i.fa.fa-power-off
 									| Log Out
 					li.quicklinks
 						span.h-seperate
 					li.quicklinks
-						a#chat-menu-toggle.chat-menu-toggle(href='#')
+						a#chat-menu-toggle.chat-menu-toggle(href="#")
 							.iconset.top-chat-dark
 								span#chat-message-count.badge.badge-important.hide
 									| 1
 						.simple-chat-popup.chat-menu-toggle.hide
 							.simple-chat-popup-arrow
 							.simple-chat-popup-inner
-								div(style='width:100px')
+								div(style="width:100px")
 									.semi-bold
 										| David Nester
 									.message
