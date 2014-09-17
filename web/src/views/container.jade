@@ -1,3 +1,5 @@
+include header.jade
+
 // BEGIN CONTAINER
 .page-container.row-fluid
 	include sidebar.jade
@@ -12,12 +14,53 @@
 			.modal-body
 				| Widget settings form goes here
 		.clearfix
-		.content
-			.page-title
-				h3
-					| Master Page
-			.col-md-6.hidden-xlg
-				include template/widget-twetts-updates-horizontal.jade
+		.content.sm-gutter
+			//-.page-title
+				//-h3
+					//-| Master Page
+			//- Widgets Mixins
+			include widgets.jade
+			.row.2col
+				+widgetProgressBar(	'TODAY\'S SERVER LOAD', 
+									'blue', 
+									26.19, 
+									'%',
+									'after', 
+									4, 
+									'than last month')
+				+widgetProgressBar(	'TODAY\'S VISITS', 
+									'green', 
+									2545665, 
+									null, 
+									'before',
+									90,
+									2, 
+									'than last month')
+				+widgetProgressBar(	'TODAY\'S SALES', 
+									'red', 
+									14500, 
+									'$', 
+									'before',
+									70,
+									2, 
+									'than last month')
+				+widgetProgressBar(	'TODAY\'S FEEDBACKS', 
+									'purple', 
+									1600, 
+									null, 
+									'before',
+									30,
+									2, 
+									'than last month')
+			.row
+				+widgetProgressBarWithInfo('OVERALL SALES', 'green')
+				+widgetProgressBarWithInfo('OVERALL VISITS', 'blue')
+				+widgetProgressBarWithInfo('SERVER LOAD', 'purple')
+			.row.tiles-container.m-b-10.tiles.grey
+				+widgetGraphics()
+			.row
+				.col-md-6.hidden-xlg
+					+wodgetTwettsUpdates()
 	// END PAGE CONTAINER
 	
 	include chat.jade
