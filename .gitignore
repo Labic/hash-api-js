@@ -2,6 +2,10 @@
 /web/src/.project
 /web/src/.settings
 /web/src/node_modules
-/web/resources
+/resources/webarch/barebone
+/resources/webarch/psd
+/resources/webarch/frontend
+/resources/webarch/webarch/HAML
+/resources/webarch/webarch/SLIM
 /*.sublime-project
 /*.sublime-workspace
