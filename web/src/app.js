@@ -26,9 +26,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
-
+app.use(function(req, res, next) {
+	  res.status(404);
+	  if (req.accepts('html')) {
+		  res.render('404', { title: 'Página Não Encontrada - App ENEM 2014 | Inep' });
+		  return;
+	  }
+});
 app.get('/', routes.index);
 app.get('/users', user.list);
+app.get('/widget-development', function(req, res, next) {
+	res.render('template/widget-twetts-updates-horizontal', { title: 'Desenvolvimento de Widget - App ENEM 2014 | Inep' });
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

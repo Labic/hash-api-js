@@ -1,0 +1,7 @@
+/web/src/.jshintrc
+/web/src/.project
+/web/src/.settings
+/web/src/node_modules
+/web/resources
+/*.sublime-project
+/*.sublime-workspace
