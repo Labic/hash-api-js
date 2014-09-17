@@ -1,3 +1,21 @@
 // BEGIN CONTAINER
 .page-container.row-fluid
 	include sidebar.jade
+	
+	// BEGIN PAGE CONTAINER
+	.page-content
+		#portlet-config.modal.hide
+			.modal-header
+				button.close(type="button", data-dismiss="modal")
+				h3
+					| Widget Settings
+			.modal-body
+				| Widget settings form goes here
+		.clearfix
+		.content
+			.page-title
+				h3
+					| Master Page
+	// END PAGE CONTAINER
+	
+	include chat.jade
