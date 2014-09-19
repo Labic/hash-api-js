@@ -10,8 +10,8 @@ module.exports = {
 	},
 
 	'twitterAuth' : {
-		'consumerKey' 		: 'your-consumer-key-here',
-		'consumerSecret' 	: 'your-client-secret-here',
+		'consumerKey' 		: 'EqjtdUeooUB9a2w9F0AN1jG0v',
+		'consumerSecret' 	: 'eravWvAwtyMkwSEeVKU5V9N8axthvTK8Cf9kO43zdc7tcfErCz',
 		'callbackURL' 		: 'http://app-enem.dev.inep.gov.br:3000/auth/twitter/callback'
 	},
 
