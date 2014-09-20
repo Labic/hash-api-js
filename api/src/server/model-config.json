@@ -1,0 +1,32 @@
+{
+  "_meta": {
+    "sources": [
+      "../common/models",
+      "./models"
+    ]
+  },
+  "User": {
+    "dataSource": "appENEM",
+    "public": true
+  },
+  "AccessToken": {
+    "dataSource": "appENEM",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "appENEM",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "appENEM",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "appENEM",
+    "public": false
+  },
+  "Tweet": {
+    "dataSource": "appENEM",
+    "public": true
+  }
+}
