@@ -1,11 +1,12 @@
-/web/src/.jshintrc
-/web/src/.project
-/web/src/.settings
+*.sublime-project
+*.sublime-workspace
+*.jshintrc
+*.project
+*.settings
 /web/src/node_modules
 /resources/webarch/barebone
 /resources/webarch/psd
 /resources/webarch/frontend
 /resources/webarch/webarch/HAML
 /resources/webarch/webarch/SLIM
-/*.sublime-project
-/*.sublime-workspace
+/api/src/node_modules

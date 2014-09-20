@@ -1,0 +1,24 @@
+{
+  "name": "app-enem-api",
+  "version": "0.0.1",
+  "description": "API para o App ENEM Web",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gustavorps@bitbucket.org/cddvv/app-enem.git"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": "CCD VV",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.8.2",
+    "express": "^4.9.3",
+    "mongoose": "^3.8.16"
+  }
+}
