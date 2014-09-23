@@ -22,7 +22,7 @@ mixin widgetProgressBar(title, color, value, symbol, position, progress_bar, val
 					span.text-white.mini-description= value_difference + '% higher'
 						span.blend= period
 
-mixin wodgetTwettsUpdates()
+mixin widgetTwettsUpdates()
 	.row.tiles-container.m-b-10.hidden-xlg
 		.col-md-12
 			.m-l-10
@@ -207,3 +207,45 @@ mixin widgetGraphics()
 							.swatch(style='background-color: rgb(115, 96, 134);')
 							span.label Downloads
 
+mixin widgetSignUp()
+	.row.tiles-container.m-b-10
+		.col-md-12
+			.tiles.white.p-t-15.p-l-15.p-r-15.p-b-25
+				h2.text-center
+					| Sign up, it's
+					span.semi-bold.text-success free
+					h4.text-center.muted.m-l-10.m-r-10
+						| The talent of success is nothing more than doing
+						| what you can do, well.
+					form#frm_signup_form_2.m-t-30.m-l-15.m-r-15
+						.form-group
+							label.form-label Email address
+								.controls
+									input.form-control(type='text')
+						.form-group
+							label.form-label Password
+							.controls
+								input.form-control(type='password', placeholder='Min. 8 characters')
+							.controls
+								input.form-control(type='password', placeholder='Confirm password')
+						.row
+							.col-md-6
+								.form-group
+									label.form-label Date of birth
+										.controls
+											input.form-control(type='text')
+							.col-md-6
+								.form-group
+									label.form-label Gender
+										.controls
+											.radio
+												input#genderm(type='radio', name='gender', value='male', checked='checked')
+												label(for='genderm') Male
+												input#genderf(type='radio', name='gender', value='female')
+												label(for='genderf') Female
+						.checkbox.checkbox.check-success
+							input#chkTerms1(type='checkbox', value='1')
+							label(for='chkTerms1') I Here by agree on the Term and condition. 
+						button.btn.btn-block.btn-primary.m-t-10(type='button')
+							i.icon-cloud-download
+							| Iconic Button Block

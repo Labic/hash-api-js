@@ -7,7 +7,6 @@
 .project
 .settings
 .editorconfig
-.npmignore
 /web/src/node_modules
 /resources/webarch/barebone
 /resources/webarch/psd
