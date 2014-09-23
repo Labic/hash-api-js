@@ -1,3 +1,6 @@
+//- ========================================================================================
+//- Progress Bar ===========================================================================
+//- ========================================================================================
 mixin widgetProgressBar(title, color, value, symbol, position, progress_bar, value_difference, period)
 	.col-md-3.col-sm-6.m-b-10
 		.tiles(class=color)
@@ -22,73 +25,85 @@ mixin widgetProgressBar(title, color, value, symbol, position, progress_bar, val
 					span.text-white.mini-description= value_difference + '% higher'
 						span.blend= period
 
-mixin widgetTwettsUpdates()
+//- ========================================================================================
+//- Tweets Updates =========================================================================
+//- ========================================================================================
+mixin widgetTwettsUpdates(options, tweets)
 	.row.tiles-container.m-b-10.hidden-xlg
 		.col-md-12
 			.m-l-10
 				.tiles.grey.p-t-15.p-b-15.p-l-25
-					h5.text-black.semi-bold MOST POPULAR
+					h5.text-black.semi-bold
+						| #{options.title}
 				.tiles.white
-					.p-t-20.p-b-15.b-b.b-grey
-						.post.overlap-left-10
-							.user-profile-pic-wrapper
-								.user-profile-pic-2x.white-border
-									img(width='45', height='45', src='assets/img/profiles/avatar.jpg', alt='', data-src='assets/img/profiles/avatar.jpg', data-src-retina='assets/img/profiles/avatar2x.jpg')
-							.info-wrapper.small-width.inline
-								.info.text-black
-									p
-										| Jane Smith Commented on webarch new year bundle
-										| "Would you like to display collections on your..."
-									p.muted.small-text	2 mins ago 
+					each tweet in tweets
+						.p-t-20.p-b-15.b-b.b-grey
+							.post.overlap-left-10
+								.user-profile-pic-wrapper
+									.user-profile-pic-2x.white-border
+										img(width='45', height='45', src='#{tweet.user.profile_image_url}', alt='', data-src='#{tweet.user.profile_image_url}', data-src-retina='#{tweet.user.profile_image_url}')
+								.info-wrapper.small-width.inline
+									.info.text-black
+										p
+											| #{tweet.text}
+										p.muted.small-text
+											| #{moment(tweet.created_at).fromNow()}
+								//-	.clearfix
+								//-.inline.pull-right
+								//-	.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+								//-		i.fa.fa-heart-o.fa-lg
+								//-	.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+								//-		i.fa.fa-comment-o.fa-lg
 								.clearfix
-							.inline.pull-right
-								.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
-									i.fa.fa-heart-o.fa-lg
-								.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
-									i.fa.fa-comment-o.fa-lg
-							.clearfix
-					.p-t-20.p-b-15.b-b.b-grey
-						.post.overlap-left-10
-							.user-profile-pic-wrapper
-								.user-profile-pic-2x.tiles.blue.white-border
-									.text-white.inherit-size.p-t-10.p-l-15
-										i.fa.fa-map-marker.fa-lg
-							.info-wrapper.small-width
-								.info.text-black
-									p
-										| You've got 302 Followers in 59 Diffrent places.
-										| region legally identified as a distinct entity in ...."
-									p.muted.small-text	2 mins ago 
-								.clearfix
-							.inline.pull-right
-								.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
-									i.fa.fa-heart-o.fa-lg
-								.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
-									i.fa.fa-comment-o.fa-lg
-							.clearfix
-					.p-t-20.p-b-15
-						.post.overlap-left-10
-							.user-profile-pic-wrapper
-								.user-profile-pic-2x.tiles.grey.white-border
-									.text-grey.inherit-size.p-t-10.p-l-10
-										i.fa.fa-clock-o.fa-lg
-							.info-wrapper.small-width
-								.info.text-black
-									p
-										| Jane Smith Commented on webarch new year bundle
-										| "Would you like to display collections on your..."
-									p.muted.small-text	2 mins ago 
-								.clearfix
-							.inline.pull-right
-								.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
-									i.fa.fa-heart-o.fa-lg
-								.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
-									i.fa.fa-comment-o.fa-lg
-							.clearfix
+					//-.p-t-20.p-b-15.b-b.b-grey
+					//-	.post.overlap-left-10
+					//-		.user-profile-pic-wrapper
+					//-			.user-profile-pic-2x.tiles.blue.white-border
+					//-				.text-white.inherit-size.p-t-10.p-l-15
+					//-					i.fa.fa-map-marker.fa-lg
+					//-		.info-wrapper.small-width
+					//-			.info.text-black
+					//-				p
+					//-					| You've got 302 Followers in 59 Diffrent places.
+					//-					| region legally identified as a distinct entity in ...."
+					//-				p.muted.small-text
+					//-					| 2 mins ago 
+					//-			.clearfix
+					//-		.inline.pull-right
+					//-			.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+					//-				i.fa.fa-heart-o.fa-lg
+					//-			.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+					//-				i.fa.fa-comment-o.fa-lg
+					//-		.clearfix
+					//-.p-t-20.p-b-15
+					//-	.post.overlap-left-10
+					//-		.user-profile-pic-wrapper
+					//-			.user-profile-pic-2x.tiles.grey.white-border
+					//-				.text-grey.inherit-size.p-t-10.p-l-10
+					//-					i.fa.fa-clock-o.fa-lg
+					//-		.info-wrapper.small-width
+					//-			.info.text-black
+					//-				p
+					//-					| Jane Smith Commented on webarch new year bundle
+					//-					| "Would you like to display collections on your..."
+					//-				p.muted.small-text
+					//-					| 2 mins ago 
+					//-			.clearfix
+					//-		.inline.pull-right
+					//-			.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+					//-				i.fa.fa-heart-o.fa-lg
+					//-			.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+					//-				i.fa.fa-comment-o.fa-lg
+					//-		.clearfix
 				.tiles.grey.p-t-5.p-b-5
 					p.text-center
-						a.text-black.semi-bold.small-text(href='#') Load More
+						a.text-black.semi-bold.small-text(href='#')
+							//- TODO: Fazer tradução
+							| Carregar Mais
 
+//- ========================================================================================
+//- ProgreessBarWitInfo ====================================================================
+//- ========================================================================================
 mixin widgetProgressBarWithInfo(title, color)
 	.col-md-4.col-vlg-3.col-sm-6
 		.tiles.m-b-10(class= color)
@@ -124,6 +139,9 @@ mixin widgetProgressBarWithInfo(title, color)
 						span.blend
 							| than last month
 
+//- =========================================================================================
+//- Graphics ================================================================================
+//- =========================================================================================
 mixin widgetGraphics()
 	.col-md-12
 		.tiles.white.col-md-8.col-sm-8.no-padding
@@ -207,6 +225,9 @@ mixin widgetGraphics()
 							.swatch(style='background-color: rgb(115, 96, 134);')
 							span.label Downloads
 
+//- ========================================================================================
+//- Sign Up ================================================================================
+//- ========================================================================================
 mixin widgetSignUp()
 	.row.tiles-container.m-b-10
 		.col-md-12
