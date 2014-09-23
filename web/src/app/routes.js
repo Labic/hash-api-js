@@ -1,6 +1,3 @@
-var moment = require('moment');
-moment.locale('pt-BR');
-
 var request = require('request');
 
 // app/routes.js
@@ -14,47 +11,12 @@ module.exports = function(app, passport) {
 	});
 	
 	// =====================================
-	// HOME PAGE (with login links) ========
+	// Twitter =============================
 	// =====================================
 	app.get('/twitter', function(req, res) {
-		
-		var tweets = 
-		[
-			{
-				text: "Universidade do Estado do Amapá abre cursinho preparatório para o Enem 2014 http://t.co/Gs4APS47SA",
-				created_at: "Mon May 03 21:01:32 +0000 2010",
-				user: {
-					utc_offset: -10800,
-					profile_image_url: "https://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.png"
-				}
-			},
-			{
-				text: "Universidade do Estado do Amapá abre cursinho preparatório para o Enem 2014 http://t.co/Gs4APS47SA",
-				created_at: "Mon May 03 21:01:32 +0000 2010",
-				user: {
-					utc_offset: -10800,
-					profile_image_url: "https://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.png"
-				}
-			},
-			{
-				text: "Universidade do Estado do Amapá abre cursinho preparatório para o Enem 2014 http://t.co/Gs4APS47SA",
-				created_at: "Mon May 03 21:01:32 +0000 2010",
-				user: {
-					utc_offset: -10800,
-					profile_image_url: "https://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.png"
-				}
-			},
-			{
-				text: "Universidade do Estado do Amapá abre cursinho preparatório para o Enem 2014 http://t.co/Gs4APS47SA",
-				created_at: "Mon May 03 21:01:32 +0000 2010",
-				user: {
-					utc_offset: -10800,
-					profile_image_url: "https://pbs.twimg.com/profile_images/2284174872/7df3h38zabcvjylnyfe3_normal.png"
-				}
-			}
-		];
-		
-		res.render('twitter', {title: 'Twitter - App ENEM | Inep', tweets: tweets});
+    request.get({url: 'http://app-enem.dev.inep.gov.br:3000/api/Tweets/', json: true}, function (e, r, tweets) {
+      res.render('twitter', {title: 'Twitter - App ENEM | Inep', tweets: tweets});
+    });
 	});
 	
 	// =====================================

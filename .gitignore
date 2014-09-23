@@ -14,3 +14,5 @@
 /resources/webarch/webarch/HAML
 /resources/webarch/webarch/SLIM
 /api/src/node_modules
+/*.sublime-project
+/*.sublime-workspace

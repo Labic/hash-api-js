@@ -47,7 +47,7 @@ mixin widgetTwettsUpdates(options, tweets)
 										p
 											| #{tweet.text}
 										p.muted.small-text
-											| #{moment(tweet.created_at).fromNow()}
+											| #{moment(tweet.created_at).zone(tweet.user.utc_offset).fromNow()}
 								//-	.clearfix
 								//-.inline.pull-right
 								//-	.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline

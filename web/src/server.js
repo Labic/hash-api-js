@@ -9,10 +9,6 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash 	 = require('connect-flash');
 
-var i18n = require("i18next");
-i18n.init({ lng: "pt-BR", resGetPath: './locales/__ns__-__lng__.json' });
-i18n.registerAppHelper(app);
-
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
@@ -25,7 +21,9 @@ mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
-app.locals.moment = require('moment');
+var moment = require('moment');
+moment.locale('pt-BR');
+app.locals.moment =moment;
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
@@ -34,7 +32,10 @@ app.use(bodyParser()); // get information from html forms
 
 app.set('view engine', 'jade');
 app.use(express.static(process.cwd() + '/public'));
-// i18m Register Handler
+// i18n
+var i18n = require("i18next");
+i18n.init({ lng: "pt-BR", resGetPath: './locales/__ns__-__lng__.json' });
+i18n.registerAppHelper(app);
 app.use(i18n.handle);
 
 // required for passport
