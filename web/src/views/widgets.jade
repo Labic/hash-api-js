@@ -36,25 +36,30 @@ mixin widgetTwettsUpdates(options, tweets)
 					h5.text-black.semi-bold
 						| #{options.title}
 				.tiles.white
-					each tweet in tweets
-						.p-t-20.p-b-15.b-b.b-grey
-							.post.overlap-left-10
-								.user-profile-pic-wrapper
-									.user-profile-pic-2x.white-border
-										img(width='45', height='45', src='#{tweet.user.profile_image_url}', alt='', data-src='#{tweet.user.profile_image_url}', data-src-retina='#{tweet.user.profile_image_url}')
-								.info-wrapper.small-width.inline
-									.info.text-black
-										p
-											| #{tweet.text}
-										p.muted.small-text
-											| #{moment(tweet.created_at).zone(tweet.user.utc_offset).fromNow()}
-								//-	.clearfix
-								//-.inline.pull-right
-								//-	.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
-								//-		i.fa.fa-heart-o.fa-lg
-								//-	.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
-								//-		i.fa.fa-comment-o.fa-lg
-								.clearfix
+					if tweet
+						each tweet in tweets
+							.p-t-20.p-b-15.b-b.b-grey
+								.post.overlap-left-10
+									.user-profile-pic-wrapper
+										.user-profile-pic-2x.white-border
+											img(width='45', height='45', src='#{tweet.user.profile_image_url}', alt='', data-src='#{tweet.user.profile_image_url}', data-src-retina='#{tweet.user.profile_image_url}')
+									.info-wrapper.small-width.inline
+										.info.text-black
+											p
+												| #{tweet.text}
+											p.muted.small-text
+												| #{moment(tweet.created_at).zone(tweet.user.utc_offset).fromNow()}
+									//-	.clearfix
+									//-.inline.pull-right
+									//-	.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+									//-		i.fa.fa-heart-o.fa-lg
+									//-	.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+									//-		i.fa.fa-comment-o.fa-lg
+									.clearfix
+					else
+						//- TODO: Fazer tradução
+						.p-t-20.p-b-15.b-b.b-grey.empty
+								| Sem Tweets a serem exibidos. :-(
 					//-.p-t-20.p-b-15.b-b.b-grey
 					//-	.post.overlap-left-10
 					//-		.user-profile-pic-wrapper
