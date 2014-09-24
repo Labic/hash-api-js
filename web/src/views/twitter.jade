@@ -7,31 +7,21 @@ html
 		include header.jade
 		
 		// BEGIN CONTAINER
-		.page-container.row-fluid
+		#twitter.page-container.row-fluid
 			include sidebar.jade
 			
 			// BEGIN PAGE CONTAINER
 			.page-content
-				#portlet-config.modal.hide
-					.modal-header
-						button.close(type="button", data-dismiss="modal")
-						h3
-							| Widget Settings
-					.modal-body
-						| Widget settings form goes here
-				.clearfix
 				.content.sm-gutter
-					//-.page-title
-						//-h3
-							//-| Master Page
-					//- Widgets Mixins
 					include widgets.jade
-					.row.scroll-wrapper.scrollbar-dynamic
-						#twetts-columns.scrollbar-dynamic.scroll-content.scroll-scrollx_visible
-							.col-md-6.hidden-xlg
-								+widgetTwettsUpdates({title: "Mais Populares"}, tweets)
-		
-							
+					.row
+						.col-md-4.hidden-xlg
+							+widgetTwettsUpdates({title: "Mais Populares"}, tweets)
+						.col-md-4.hidden-xlg
+							+widgetTwettsUpdates({title: "Top 20"}, tweets)
+						.col-md-4.hidden-xlg
+							+widgetTwettsUpdates({title: "Estado de Espírito Santo"}, tweets)
+			
 			// END PAGE CONTAINER
 			
 			include chat.jade
