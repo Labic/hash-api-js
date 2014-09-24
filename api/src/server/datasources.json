@@ -1,8 +1,8 @@
 {
   "appENEM": {
-    "name": "appENEM",
-    "connector": "mongodb",
+    "url": "mongodb://localhost/app-enem",
     "database": "app-enem",
-    "url": "mongodb://localhost/app-enem"
+    "name": "appENEM",
+    "connector": "mongodb"
   }
 }

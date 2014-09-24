@@ -32,5 +32,9 @@
   "TweetUser": {
     "dataSource": "appENEM",
     "public": false
+  },
+  "TweetEntities": {
+    "dataSource": "appENEM",
+    "public": false
   }
 }

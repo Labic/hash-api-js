@@ -1,0 +1,25 @@
+{
+  "name": "TweetEntities",
+  "base": "PersistedModel",
+  "properties": {
+    "trends": {
+      "type": ["string"]
+    },
+    "symbols": {
+      "type": ["string"]
+    },
+    "urls": {
+      "type": ["string"]
+    },
+    "hashtags": {
+      "type": ["string"]
+    },
+    "user_mentions": {
+      "type": ["string"]
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
