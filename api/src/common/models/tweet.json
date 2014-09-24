@@ -68,10 +68,10 @@
       "type": "string"
     },
     "place": {
-      "type": "object"
+      "type": "string"
     },
     "user": {
-      "type": "object"
+      "type": "TweetUser"
     },
     "coordinates": {
       "type": "geopoint"

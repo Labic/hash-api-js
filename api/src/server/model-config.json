@@ -28,5 +28,9 @@
   "Tweet": {
     "dataSource": "appENEM",
     "public": true
+  },
+  "TweetUser": {
+    "dataSource": "appENEM",
+    "public": false
   }
 }
