@@ -5,7 +5,7 @@
     "location": {
       "type": "string"
     },
-    "false": {
+    "default_profile": {
       "type": "boolean"
     },
     "statuses_count": {
@@ -54,7 +54,7 @@
       "type": "string"
     },
     "created_at": {
-      "type": "date"
+      "type": "string"
     },
     "default_profile_image": {
       "type": "boolean"

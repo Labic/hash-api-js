@@ -9,6 +9,8 @@ app.use(loopback.favicon());
 // request pre-processing middleware
 app.use(loopback.compress());
 
+app.disable('x-powered-by');
+
 // -- Add your pre-processing middleware here --
 
 // boot scripts mount components like REST API

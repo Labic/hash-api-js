@@ -4,27 +4,27 @@
   "properties": {
     "trends": {
       "type": [
-        "string"
+        "object"
       ]
     },
     "symbols": {
       "type": [
-        "string"
+        "object"
       ]
     },
     "urls": {
       "type": [
-        "string"
+        "object"
       ]
     },
     "hashtags": {
       "type": [
-        "string"
+        "object"
       ]
     },
     "user_mentions": {
       "type": [
-        "string"
+        "object"
       ]
     }
   },

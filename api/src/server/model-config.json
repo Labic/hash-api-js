@@ -6,35 +6,39 @@
     ]
   },
   "User": {
-    "dataSource": "appENEM",
+    "dataSource": "mongodb-dev",
     "public": true
   },
   "AccessToken": {
-    "dataSource": "appENEM",
+    "dataSource": "mongodb-dev",
     "public": false
   },
   "ACL": {
-    "dataSource": "appENEM",
+    "dataSource": "mongodb-dev",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "appENEM",
+    "dataSource": "mongodb-dev",
     "public": false
   },
   "Role": {
-    "dataSource": "appENEM",
+    "dataSource": "mongodb-dev",
     "public": false
   },
   "Tweet": {
-    "dataSource": "appENEM",
+    "dataSource": "mongodb-dev",
     "public": true
   },
   "TweetUser": {
-    "dataSource": "appENEM",
+    "dataSource": "mongodb-dev",
     "public": false
   },
   "TweetEntities": {
-    "dataSource": "appENEM",
+    "dataSource": "mongodb-dev",
+    "public": false
+  },
+  "TweetStatus": {
+    "dataSource": "mongodb-dev",
     "public": false
   }
 }

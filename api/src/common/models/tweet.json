@@ -3,101 +3,21 @@
   "plural": "Tweets",
   "base": "PersistedModel",
   "properties": {
-    "filter_level": {
-      "type": "string"
+    "time": {
+      "type": ["number"]
     },
-    "contributors": {
-      "type": "boolean"
+    "status": {
+      "type": "TweetStatus"
     },
-    "text": {
-      "type": "string",
-      "required": true
-    },
-    "geo": {
-      "type": "boolean"
-    },
-    "retweeted": {
-      "type": "boolean"
-    },
-    "in_reply_to_screen_name": {
-      "type": "boolean"
-    },
-    "possibly_sensitive": {
-      "type": "boolean"
-    },
-    "truncated": {
-      "type": "boolean"
-    },
-    "lang": {
-      "type": "string"
-    },
-    "entities": {
-      "type": "TweetEntities"
-    },
-    "in_reply_to_status_id_str": {
-      "type": "string"
-    },
-    "id": {
+    "rts": {
       "type": "number"
     },
-    "source": {
-      "type": "string"
-    },
-    "in_reply_to_user_id_str": {
-      "type": "string"
-    },
-    "favorited": {
-      "type": "boolean"
-    },
-    "in_reply_to_status_id": {
-      "type": "number"
-    },
-    "retweet_count": {
-      "type": "number"
-    },
-    "in_reply_to_user_id": {
-      "type": "number"
-    },
-    "created_at": {
-      "type": "date"
-    },
-    "favorite_count": {
-      "type": "number"
-    },
-    "id_str": {
-      "type": "string"
-    },
-    "place": {
-      "type": "string"
-    },
-    "user": {
-      "type": "TweetUser"
-    },
-    "coordinates": {
-      "type": "geopoint"
+    "categories": {
+      "type": ["string"]
     }
   },
   "validations": [],
   "relations": {},
-  "acls": [
-    {
-      "accessType": "READ",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "app",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "admin",
-      "permission": "ALLOW"
-    }
-  ],
+  "acls": [],
   "methods": []
 }

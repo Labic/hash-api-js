@@ -1,11 +1,18 @@
 {
-  "appENEM": {
+  "mongodb": {
     "connector": "mongodb",
-    "name": "appENEM",
-    "host": "ds039850.mongolab.com",
-    "port": "39850",
-    "database": "app-enem-api-dev",
-    "user": "app-enem-api-dev",
-    "password": "app-enem-api-dev"
+    "name": "mongodb",
+    "host": "104.131.228.31",
+    "port": "27017",
+    "database": "twixplorer",
+    "user": "labic",
+    "password": "60jpp"
+  },
+  "mongodb-dev": {
+    "connector": "mongodb",
+    "name": "mongodb-dev",
+    "host": "localhost",
+    "port": "27017",
+    "database": "app-enem"
   }
 }

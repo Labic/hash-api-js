@@ -1,0 +1,83 @@
+{
+  "name": "TweetStatus",
+  "base": "PersistedModel",
+  "properties": {
+    "filter_level": {
+      "type": "string"
+    },
+    "contributors": {
+      "type": "boolean"
+    },
+    "text": {
+      "type": "string",
+      "required": true
+    },
+    "geo": {
+      "type": "boolean"
+    },
+    "retweeted": {
+      "type": "boolean"
+    },
+    "in_reply_to_screen_name": {
+      "type": "boolean"
+    },
+    "possibly_sensitive": {
+      "type": "boolean"
+    },
+    "truncated": {
+      "type": "boolean"
+    },
+    "lang": {
+      "type": "string"
+    },
+    "entities": {
+      "type": "TweetEntities"
+    },
+    "in_reply_to_status_id_str": {
+      "type": "string"
+    },
+    "id": {
+      "type": "number"
+    },
+    "source": {
+      "type": "string"
+    },
+    "in_reply_to_user_id_str": {
+      "type": "string"
+    },
+    "favorited": {
+      "type": "boolean"
+    },
+    "in_reply_to_status_id": {
+      "type": "number"
+    },
+    "retweet_count": {
+      "type": "number"
+    },
+    "in_reply_to_user_id": {
+      "type": "number"
+    },
+    "created_at": {
+      "type": "date"
+    },
+    "favorite_count": {
+      "type": "number"
+    },
+    "id_str": {
+      "type": "string"
+    },
+    "place": {
+      "type": "string"
+    },
+    "user": {
+      "type": "TweetUser"
+    },
+    "coordinates": {
+      "type": "object"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
