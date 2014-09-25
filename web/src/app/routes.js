@@ -1,4 +1,5 @@
 var request = require('request');
+var Parallel = require('node-parallel')
 
 // app/routes.js
 module.exports = function(app, passport) {
@@ -14,7 +15,56 @@ module.exports = function(app, passport) {
 	// Twitter =============================
 	// =====================================
 	app.get('/twitter', function(req, res) {
-    request.get({url: 'http://app-enem.dev.inep.gov.br:3000/api/Tweets/', json: true}, function (e, r, tweets) {
+    var filterHumor = {
+      "where": {
+        "categories": {"inq": ["humor"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterOficial = {
+      "where": {
+        "categories": {"inq": ["OFICIAL"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterInstitucional = {
+      "where": {
+        "categories": {"inq": ["institucional"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterOrientacoes = {
+      "where": {
+        "categories": {"inq": ["ORIENTACOES"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var tweetApiUrl = 'http://app-enem.dev.inep.gov.br:3000/api/Tweets?filter=';
+
+    var urls = [
+      tweetApiUrl + JSON.stringify(filterHumor),
+      tweetApiUrl + JSON.stringify(filterOficial),
+      tweetApiUrl + JSON.stringify(filterInstitucional),
+      tweetApiUrl + JSON.stringify(filterOrientacoes)
+    ];
+
+    var parallel = new Parallel();
+    parallel.timeout(5000);
+
+    urls.forEach(function (url) {
+      parallel.add(function (done) {
+        request.get({url: url, json: true}, function(err, res) {
+          done(err, res.body);
+        })
+      })
+    });
+
+    parallel.done(function (err, tweets) {
+      console.log(tweets);
       res.render('twitter', {title: 'Twitter - App ENEM | Inep', tweets: tweets});
     });
 	});

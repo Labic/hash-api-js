@@ -48,12 +48,7 @@ mixin widgetTwettsUpdates(options, tweets)
 											p
 												| #{tweet.status.text}
 											p.muted.small-text
-												| por 
-												a(href='https://twitter.com/#{tweet.status.user.screen_name}', title='Ir para o perfil de #{tweet.status.user.screen_name}', target='_blank')
-													| #{tweet.status.user.screen_name}
-												|  a #{moment(tweet.status.created_at).fromNow()}
-											p.muted.small-text
-												| Retweets: #{tweet.rts}
+												| #{moment(tweet.status.created_at).fromNow()}
 									//-	.clearfix
 									//-.inline.pull-right
 									//-	.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline

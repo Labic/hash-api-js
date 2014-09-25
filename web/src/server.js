@@ -21,14 +21,17 @@ mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
-var moment = require('moment');
-moment.locale('pt-BR');
-app.locals.moment =moment;
-
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
+
+var moment = require('moment');
+moment.locale('pt-BR');
+app.locals.moment = moment;
+
+// Security
+app.disable('x-powered-by');
 
 app.set('view engine', 'jade');
 app.use(express.static(process.cwd() + '/public'));
