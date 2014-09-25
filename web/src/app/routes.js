@@ -43,13 +43,61 @@ module.exports = function(app, passport) {
         "limit": 10
     };
 
+    var filterLogisticaInfraestrutura = {
+      "where": {
+        "categories": {"inq": ["LOGISTICA_E_INFRA", "INFRAESTRUTURA_E_LOGISTICA"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterMidia = {
+      "where": {
+        "categories": {"inq": ["COBERTURA_DE_MIDIA", "midia"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterQuestoesPedagogicas = {
+      "where": {
+        "categories": {"inq": ["QUESTOES_PEDAGOGICAS"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterEducacional = {
+      "where": {
+        "categories": {"inq": ["educacional"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterSentimentos = {
+      "where": {
+        "categories": {"inq": ["SENTIMENTOS"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterRumores = {
+      "where": {
+        "categories": {"inq": ["RUMORES"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
     var tweetApiUrl = 'http://app-enem.dev.inep.gov.br:3000/api/Tweets?filter=';
 
     var urls = [
       tweetApiUrl + JSON.stringify(filterHumor),
       tweetApiUrl + JSON.stringify(filterOficial),
       tweetApiUrl + JSON.stringify(filterInstitucional),
-      tweetApiUrl + JSON.stringify(filterOrientacoes)
+      tweetApiUrl + JSON.stringify(filterOrientacoes),
+      tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura),
+      tweetApiUrl + JSON.stringify(filterMidia),
+      tweetApiUrl + JSON.stringify(filterQuestoesPedagogicas),
+      tweetApiUrl + JSON.stringify(filterEducacional),
+      tweetApiUrl + JSON.stringify(filterSentimentos),
+      tweetApiUrl + JSON.stringify(filterRumores)
     ];
 
     var parallel = new Parallel();
@@ -73,7 +121,7 @@ module.exports = function(app, passport) {
 	// LOGIN ===============================
 	// =====================================
 	// show the login form
-	app.get('/login', function(req, res) {
+	app.get('/login', function (req, res) {
 		// render the page and pass in any flash data if it exists
 		res.render('login', { message: req.flash('loginMessage') }); 
 	});
@@ -82,7 +130,7 @@ module.exports = function(app, passport) {
 	// SIGNUP ==============================
 	// =====================================
 	// show the signup form
-	app.get('/signup', function(req, res) {
+	app.get('/signup', function (req, res) {
 		
 		// render the page and pass in any flash data if it exists
 		res.render('signup', { message: req.flash('signupMessage') });

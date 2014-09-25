@@ -11,19 +11,36 @@ html
 			include sidebar.jade
 			
 			// BEGIN PAGE CONTAINER
+			
 			.page-content
 				.content.sm-gutter
 					include widgets.jade
 					.row
-						.col-md-4.hidden-xlg
+						#tweets-humor.col-md-4
 							+widgetTwettsUpdates({title: "Humor"}, tweets[0])
-						.col-md-4.hidden-xlg
+						#tweets-oficial.col-md-4
 							+widgetTwettsUpdates({title: "Oficial"}, tweets[1])
-						.col-md-4.hidden-xlg
+						#tweets-institucional.col-md-4
 							+widgetTwettsUpdates({title: "Institucional"}, tweets[2])
+					.row
+						#tweets-orientacoes.col-md-4
+							+widgetTwettsUpdates({title: "Orientações"}, tweets[3])
+						#tweets-logistica-infraestrutura.col-md-4
+							+widgetTwettsUpdates({title: "Logistica & Infraestrutura"}, tweets[4])
+						#tweets-cobertura-midia.col-md-4
+							+widgetTwettsUpdates({title: "Cobertura da Mídia"}, tweets[5])
+					.row
+						#tweets-questoes-pedagogicas.col-md-4
+							+widgetTwettsUpdates({title: "Questões Pedagógicas"}, tweets[6])
+						#tweets-educacional.col-md-4
+							+widgetTwettsUpdates({title: "Educacional"}, tweets[7])
+						#tweets-sentimento.col-md-4
+							+widgetTwettsUpdates({title: "Sentimentos"}, tweets[8])
+					.row
+						#tweets-rumor.col-md-4
+							+widgetTwettsUpdates({title: "Rumores"}, tweets[9])
 			
 			// END PAGE CONTAINER
 			
-			include chat.jade
 			script(src='/assets/js/twitter.js')
 			include footer.jade
