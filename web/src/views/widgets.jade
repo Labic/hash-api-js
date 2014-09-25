@@ -42,18 +42,19 @@ mixin widgetTwettsUpdates(options, tweets)
 								.post.overlap-left-10
 									.user-profile-pic-wrapper
 										.user-profile-pic-2x.white-border
-											img(width='45', height='45', src='#{tweet.status.user.profile_image_url_https}', alt='#{tweet.status.user.screen_name}')
+											a(
+												href='https://twitter.com/#{tweet.status.user.screen_name}', 
+												target='_blank',
+												data-toggle='tooltip',
+												data-placement='top',
+												title='#{tweet.status.user.screen_name} - #{tweet.status.user.followers_count} Seguidores')
+												img(width='45', height='45', src='#{tweet.status.user.profile_image_url_https}', alt='#{tweet.status.user.screen_name}')
 									.info-wrapper.small-width.inline
 										.info.text-black
 											p
 												| #{tweet.status.text}
 											p.muted.small-text
-												| por 
-												a(href='https://twitter.com/#{tweet.status.user.screen_name}', title='Ir para o perfil de #{tweet.status.user.screen_name}', target='_blank')
-													| #{tweet.status.user.screen_name}
-												|  a #{moment(tweet.status.created_at).fromNow()}
-											p.muted.small-text
-												| Retweets: #{tweet.rts}
+												|  a #{moment(tweet.status.created_at).fromNow()} | #{tweet.rts} Retweets 
 									//-	.clearfix
 									//-.inline.pull-right
 									//-	.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline

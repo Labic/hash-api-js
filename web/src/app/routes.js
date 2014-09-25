@@ -50,9 +50,16 @@ module.exports = function(app, passport) {
         "limit": 10
     };
 
+    var filterCoberturaMidia = {
+      "where": {
+        "categories": {"inq": ["COBERTURA_DE_MIDIA"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
     var filterMidia = {
       "where": {
-        "categories": {"inq": ["COBERTURA_DE_MIDIA", "midia"]}}, 
+        "categories": {"inq": ["midia"]}}, 
         "order": "rts DESC", 
         "limit": 10
     };
@@ -112,19 +119,36 @@ module.exports = function(app, passport) {
     });
 
     parallel.done(function (err, tweets) {
-      console.log(tweets);
       res.render('twitter', {title: 'Twitter - App ENEM | Inep', tweets: tweets});
     });
 	});
-	
-	// =====================================
-	// LOGIN ===============================
-	// =====================================
-	// show the login form
-	app.get('/login', function (req, res) {
-		// render the page and pass in any flash data if it exists
-		res.render('login', { message: req.flash('loginMessage') }); 
-	});
+  
+  // =====================================
+  // Twitter Gráficos ====================
+  // =====================================
+  // show the login form
+  app.get('/twitter/graficos', function (req, res) {
+    // render the page and pass in any flash data if it exists
+    res.render('twitter-graficos', { title: 'Gráficos do Twitter - App ENEM | Inep' }); 
+  });
+  
+  // =====================================
+  // Facebook Gráficos ===================
+  // =====================================
+  // show the login form
+  app.get('/facebook/graficos', function (req, res) {
+    // render the page and pass in any flash data if it exists
+    res.render('facebook-graficos', { title: 'Gráficos do Facebooks - App ENEM | Inep' }); 
+  });
+  
+  // =====================================
+  // LOGIN ===============================
+  // =====================================
+  // show the login form
+  app.get('/login', function (req, res) {
+    // render the page and pass in any flash data if it exists
+    res.render('login', { message: req.flash('loginMessage') }); 
+  });
 
 	// =====================================
 	// SIGNUP ==============================

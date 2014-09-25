@@ -11,7 +11,7 @@ html
 			include sidebar.jade
 			
 			// BEGIN PAGE CONTAINER
-			
+
 			.page-content
 				.content.sm-gutter
 					include widgets.jade
@@ -30,17 +30,20 @@ html
 						#tweets-cobertura-midia.col-md-4
 							+widgetTwettsUpdates({title: "Cobertura da Mídia"}, tweets[5])
 					.row
+						#tweets-cobertura-midia.col-md-4
+							+widgetTwettsUpdates({title: "Mídia"}, tweets[6])
 						#tweets-questoes-pedagogicas.col-md-4
-							+widgetTwettsUpdates({title: "Questões Pedagógicas"}, tweets[6])
+							+widgetTwettsUpdates({title: "Questões Pedagógicas"}, tweets[7])
 						#tweets-educacional.col-md-4
-							+widgetTwettsUpdates({title: "Educacional"}, tweets[7])
-						#tweets-sentimento.col-md-4
-							+widgetTwettsUpdates({title: "Sentimentos"}, tweets[8])
+							+widgetTwettsUpdates({title: "Educacional"}, tweets[8])
 					.row
+						#tweets-sentimento.col-md-4
+							+widgetTwettsUpdates({title: "Sentimentos"}, tweets[9])
 						#tweets-rumor.col-md-4
-							+widgetTwettsUpdates({title: "Rumores"}, tweets[9])
+							+widgetTwettsUpdates({title: "Rumores"}, tweets[10])
 			
 			// END PAGE CONTAINER
 			
-			script(src='/assets/js/twitter.js')
-			include footer.jade
+		include footer.jade
+			block pageScripts
+				script(src='/assets/js/twitter.js')
