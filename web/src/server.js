@@ -35,7 +35,7 @@ app.disable('x-powered-by');
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
-app.use(express.static(process.cwd() + '/public'));
+app.use(express.static(__dirname + '/public'));
 // i18n
 var i18n = require("i18next");
 i18n.init({ lng: "pt-BR", resGetPath: './locales/__ns__-__lng__.json' });
