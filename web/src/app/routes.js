@@ -1,5 +1,5 @@
 var request = require('request');
-var Parallel = require('node-parallel')
+var Parallel = require('node-parallel');
 
 // app/routes.js
 module.exports = function(app, passport) {
@@ -8,7 +8,8 @@ module.exports = function(app, passport) {
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/', function(req, res) {
-		res.render('index', {title: 'App ENEM | Inep'});
+		//res.render('index', {title: 'App ENEM | Inep'});
+    res.redirect('/twitter');
 	});
 	
 	// =====================================
@@ -92,34 +93,34 @@ module.exports = function(app, passport) {
         "limit": 10
     };
 
-    var tweetApiUrl = 'http://app-enem.dev.inep.gov.br:3000/api/Tweets?filter=';
+    var tweetApiUrl = 'http://104.131.228.31:3000/api/Tweets?filter=';
 
     var urls = [
-      tweetApiUrl + JSON.stringify(filterHumor),
-      tweetApiUrl + JSON.stringify(filterOficial),
-      tweetApiUrl + JSON.stringify(filterInstitucional),
-      tweetApiUrl + JSON.stringify(filterOrientacoes),
-      tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura),
-      tweetApiUrl + JSON.stringify(filterMidia),
-      tweetApiUrl + JSON.stringify(filterQuestoesPedagogicas),
-      tweetApiUrl + JSON.stringify(filterEducacional),
-      tweetApiUrl + JSON.stringify(filterSentimentos),
-      tweetApiUrl + JSON.stringify(filterRumores)
+      { name: "humor", uri: tweetApiUrl + JSON.stringify(filterHumor) },
+      { name: "oficial", uri: tweetApiUrl + JSON.stringify(filterOficial) },
+      { name: "institucional", uri: tweetApiUrl + JSON.stringify(filterInstitucional) },
+      { name: "orientacoes", uri: tweetApiUrl + JSON.stringify(filterOrientacoes) },
+      { name: "logisticaInfraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
+      { name: "midia", uri: tweetApiUrl + JSON.stringify(filterCoberturaMidia) },
+      { name: "midia", uri: tweetApiUrl + JSON.stringify(filterMidia) },
+      { name: "questoesPedagogicas", uri: tweetApiUrl + JSON.stringify(filterQuestoesPedagogicas) },
+      { name: "educacional", uri: tweetApiUrl + JSON.stringify(filterEducacional) },
+      { name: "sentimentos", uri: tweetApiUrl + JSON.stringify(filterSentimentos) },
+      { name: "rumores", uri: tweetApiUrl + JSON.stringify(filterRumores) }
     ];
 
     var parallel = new Parallel();
-    parallel.timeout(5000);
 
     urls.forEach(function (url) {
-      parallel.add(function (done) {
-        request.get({url: url, json: true}, function(err, res) {
+      parallel.timeout(5000).add(function (done) {
+        request.get({url: url.uri, json: true}, function(err, res) {
           done(err, res.body);
         })
       })
     });
 
     parallel.done(function (err, tweets) {
-      res.render('twitter', {title: 'Twitter - App ENEM | Inep', tweets: tweets});
+      res.render('twitter', { route: req.route, title: 'Twitter - App ENEM | Inep', tweets: tweets });
     });
 	});
   
@@ -129,7 +130,7 @@ module.exports = function(app, passport) {
   // show the login form
   app.get('/twitter/graficos', function (req, res) {
     // render the page and pass in any flash data if it exists
-    res.render('twitter-graficos', { title: 'Gráficos do Twitter - App ENEM | Inep' }); 
+    res.render('twitter-graficos', { route: req.route, title: 'Gráficos do Twitter - App ENEM | Inep' }); 
   });
   
   // =====================================
@@ -138,7 +139,7 @@ module.exports = function(app, passport) {
   // show the login form
   app.get('/facebook/graficos', function (req, res) {
     // render the page and pass in any flash data if it exists
-    res.render('facebook-graficos', { title: 'Gráficos do Facebooks - App ENEM | Inep' }); 
+    res.render('facebook-graficos', { route: req.route, title: 'Gráficos do Facebooks - App ENEM | Inep' }); 
   });
   
   // =====================================
@@ -147,7 +148,7 @@ module.exports = function(app, passport) {
   // show the login form
   app.get('/login', function (req, res) {
     // render the page and pass in any flash data if it exists
-    res.render('login', { message: req.flash('loginMessage') }); 
+    res.render('login', { route: req.route, message: req.flash('loginMessage') }); 
   });
 
 	// =====================================
@@ -157,7 +158,7 @@ module.exports = function(app, passport) {
 	app.get('/signup', function (req, res) {
 		
 		// render the page and pass in any flash data if it exists
-		res.render('signup', { message: req.flash('signupMessage') });
+		res.render('signup', { route: req.route, message: req.flash('signupMessage') });
 	});
 
 	// process the signup form
@@ -200,6 +201,7 @@ module.exports = function(app, passport) {
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
 		res.render('profile', {
+      route: req.route, 
 			user : req.user // get the user out of session and pass to template
 		});
 	});

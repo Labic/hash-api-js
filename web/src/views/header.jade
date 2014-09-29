@@ -16,14 +16,6 @@
 				li#header_task_bar.dropdown
 					a.dropdown-toggle.active(href="index.html")
 						.iconset.top-home
-				li#iconset.top-home.dropdown.dropdown-toggle
-					a.dropdown-toggle(href="email.html")
-						.iconset.top-messages
-						span#msgs-badge.badge
-							| 2
-				li#portrait-chat-toggler.dropdown(style="display:none")
-					a.chat-menu-toggle(href="#sidr")
-						.iconset.top-chat-white
 			// END RESPONSIVE MENU TOGGLER
 		.header-quick-nav
 			.pull-left
@@ -31,7 +23,7 @@
 					li.quicklinks
 						a#layout-condensed-toggle(href="#")
 							.iconset.top-menu-toggle-dark
-				ul.nav.quick-section
+				//-ul.nav.quick-section
 					li.quicklinks
 						a(href="#")
 							.iconset.top-reload
@@ -51,50 +43,11 @@
 					a#my-task-list.dropdown-toggle(href="#", data-placement="bottom", data-content="", data-toggle="dropdown", data-original-title="Notifications")
 						.user-details
 							.username
-								span.badge.badge-important
-									| 3
 								|  Inep
-								//-span.bold
-									| Smith
 						.iconset.top-down-arrow
-					#notification-list(style="display:none")
-						div(style="width:300px")
-							.notification-messages.info
-								.user-profile
-									img(src="https://pbs.twimg.com/profile_images/483952849391329281/m5XvJeHz.png", alt="User", data-src="https://pbs.twimg.com/profile_images/483952849391329281/m5XvJeHz.png", data-src-retina="https://pbs.twimg.com/profile_images/483952849391329281/m5XvJeHz.png", width="35", height="35")
-								.message-wrapper
-									.heading
-										| David Nester - Commented on your wall
-									.description
-										| Meeting postponed to tomorrow
-									.date.pull-left
-										| A min ago
-								.clearfix
-							.notification-messages.danger
-								.iconholder
-									i.icon-warning-sign
-								.message-wrapper
-									.heading
-										| Server load limited
-									.description
-										| Database server has reached its daily capicity
-									.date.pull-left
-										| 2 mins ago
-								.clearfix
-							.notification-messages.success
-								.user-profile
-									img(src="/assets/img/profiles/h.jpg", alt="User", data-src="/assets/img/profiles/g.jpg", data-src-retina="assets/img/profiles/h2x.jpg", width="35", height="35")
-								.message-wrapper
-									.heading
-										| You haveve got 150 messages
-									.description
-										| 150 newly unread messages in your inbox
-									.date.pull-left
-										| An hour ago
-								.clearfix
 					.profile-pic
 						img(src="https://pbs.twimg.com/profile_images/483952849391329281/m5XvJeHz.png", alt="Profile Pic", data-src="https://pbs.twimg.com/profile_images/483952849391329281/m5XvJeHz.png", data-src-retina="data-src-retina",width="35", height="35")
-				ul.nav.quick-section
+				//-ul.nav.quick-section
 					li.quicklinks
 						a#user-options.dropdown-toggle.pull-right(href="#", data-toggle="dropdown")
 							.iconset.top-settings-dark
@@ -115,21 +68,6 @@
 								a(href="login.html")
 									i.fa.fa-power-off
 									| Log Out
-					li.quicklinks
-						span.h-seperate
-					li.quicklinks
-						a#chat-menu-toggle.chat-menu-toggle(href="#")
-							.iconset.top-chat-dark
-								span#chat-message-count.badge.badge-important.hide
-									| 1
-						.simple-chat-popup.chat-menu-toggle.hide
-							.simple-chat-popup-arrow
-							.simple-chat-popup-inner
-								div(style="width:100px")
-									.semi-bold
-										| David Nester
-									.message
-										| Hey you there
 			// END CHAT TOGGLER
 		// END TOP NAVIGATION MENU
 	// END TOP NAVIGATION BAR

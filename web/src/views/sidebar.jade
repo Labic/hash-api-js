@@ -10,48 +10,81 @@
 					| Bem Vindo!
 				.username
 					| Inep
-					span.semi-bold
-						//-| Smith
-				.status
-					| Status
-					a(href="#")
-						.status-icon.green
-						| Online
 		// BEGIN MINI-PROFILE
 		
 		// BEGIN SIDEBAR MENU
 		p.menu-title
-			| BROWSE
-			span.pull-right
+			| MENU #{route.path}
+			//-span.pull-right
 				a(href="#")
 					i.fa.fa-refresh
 		ul
-			li.start.active
-				a(href="#")
-					i.fa.fa-twitter
-					span.title
-						| Twitter
-					span.arrow
-				ul.sub-menu
-					li.active
-						a(href="/twitter")
-							| Visão Geral
-					//-li
-						a(href="/twitter/estados")
-							| Estados
-					li
-						a(href="/twitter/graficos")
-							| Gráficos
-			li
-				a(href="#")
-					i.fa.fa-facebook
-					span.title
-						| Facebook
-					span.arrow
-				ul.sub-menu
-					li
-						a(href="/facebook/graficos")
-							| Gráficos
+			if (route.path == '/twitter' || route.path == '/twitter/graficos')
+				li.start.active
+					a(href="#")
+						i.fa.fa-twitter
+						span.title
+							| Twitter
+						span.arrow
+					ul.sub-menu
+						if (route.path === '/twitter')
+							li.active
+								a(href="/twitter")
+									| Visão Geral
+						else
+							li
+								a(href="/twitter")
+									| Visão Geral
+							//-li
+								a(href="/twitter/estados")
+									| Estados
+						if (route.path === '/twitter/graficos')
+							li.active
+								a(href="/twitter/graficos")
+									| Gráficos
+						else
+							li
+								a(href="/twitter/graficos")
+									| Gráficos
+			else
+				li
+					a(href="#")
+						i.fa.fa-twitter
+						span.title
+							| Twitter
+						span.arrow
+					ul.sub-menu
+						li
+							a(href="/twitter")
+								| Visão Geral
+						//-li
+							a(href="/twitter/estados")
+								| Estados
+						li
+							a(href="/twitter/graficos")
+								| Gráficos
+			if (route.path == '/facebook' || route.path == '/facebook/graficos')
+				li.start.active
+					a(href="#")
+						i.fa.fa-facebook
+						span.title
+							| Facebook
+						span.arrow
+					ul.sub-menu
+						li.active
+							a(href="/facebook/graficos")
+								| Gráficos
+			else
+				li
+					a(href="#")
+						i.fa.fa-facebook
+						span.title
+							| Facebook
+						span.arrow
+					ul.sub-menu
+						li
+							a(href="/facebook/graficos")
+								| Gráficos
 			.clearfix
 	// END SIDEBAR MENU
 	
