@@ -28,26 +28,25 @@ mixin widgetProgressBar(title, color, value, symbol, position, progress_bar, val
 //- ========================================================================================
 //- Tweets Updates =========================================================================
 //- ========================================================================================
-mixin widgetTwettsUpdates(options, tweets)
+mixin widgetTweetsUpdates(options, tweets)
 	.row.tiles-container.m-b-10.hidden-xlg
 		.col-md-12
 			.m-l-10
 				.tiles.grey.p-t-15.p-b-15.p-l-25
 					h5.text-black.semi-bold
 						| #{options.title}
-				.tiles.white
+				.tweets.tiles.white
 					if tweets
 						each tweet in tweets
 							.p-t-20.p-b-15.b-b.b-grey
 								.post.overlap-left-10
 									.user-profile-pic-wrapper
 										.user-profile-pic-2x.white-border
-											a(
-												href='https://twitter.com/#{tweet.status.user.screen_name}', 
-												target='_blank',
-												data-toggle='tooltip',
-												data-placement='top',
-												title='#{tweet.status.user.screen_name} - #{tweet.status.user.followers_count} Seguidores')
+											a(href='https://twitter.com/#{tweet.status.user.screen_name}', 
+											  target='_blank',
+											  data-toggle='tooltip',
+											  data-placement='top',
+											  title='#{tweet.status.user.screen_name} - #{tweet.status.user.followers_count} Seguidores')
 												img(width='45', height='45', src='#{tweet.status.user.profile_image_url_https}', alt='#{tweet.status.user.screen_name}')
 									.info-wrapper.inline
 										.info.text-black
@@ -66,9 +65,9 @@ mixin widgetTwettsUpdates(options, tweets)
 						//- TODO: Fazer tradução
 						.p-t-20.p-b-15.b-b.b-grey.bg-danger
 								| Sem Tweets a serem exibidos. :-(
-				//-.tiles.grey.p-t-5.p-b-5
+				.tiles.grey.p-t-5.p-b-5
 					p.text-center
-						a.text-black.semi-bold.small-text(href='#')
+						a.load-more.text-black.semi-bold.small-text(href='#', data-uri='#{tweets.url}', data-skip='10')
 							//- TODO: Fazer tradução
 							| Carregar Mais
 

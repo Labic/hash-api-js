@@ -1,3 +1,2 @@
-$(document).ready(function(){
-	$('#twetts-columns').scrollbar();
-});
+$(document).ready(function() {
+}); 

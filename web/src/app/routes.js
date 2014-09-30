@@ -3,6 +3,22 @@ var Parallel = require('node-parallel');
 
 // app/routes.js
 module.exports = function(app, passport) {
+  // Handle 404
+  app.use(function (err, req, res, next) {
+    if (err.status !== 404)
+      return next();
+
+    res.status(404).render('404.jade', {title: '404: File Not Found'});
+  });
+
+  // Handle 500
+  app.use(function (err, req, res, next) {
+    if (err.status !== 500)
+      return next();
+
+    console.error(err.stack);
+    res.status(500).render('500.jade', {title:'500: Internal Server Error', error: error});
+  });
 	
 	// =====================================
 	// HOME PAGE (with login links) ========
@@ -114,6 +130,7 @@ module.exports = function(app, passport) {
     urls.forEach(function (url) {
       parallel.timeout(5000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
+          res.body.url = url.uri;
           done(err, res.body);
         })
       })
