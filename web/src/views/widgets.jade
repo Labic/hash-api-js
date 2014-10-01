@@ -35,7 +35,7 @@ mixin widgetTweetsUpdates(options, tweets)
 				.tiles.grey.p-t-10.p-b-10.p-l-25
 					h5.text-black.semi-bold
 						| #{options.title}
-				.tweets.tiles.white
+				.scrollbar.tiles.white(data-uri='#{tweets.url}', data-skip='10')
 					if tweets
 						each tweet in tweets
 							.p-t-10.p-b-5.b-b.b-grey
@@ -54,6 +54,7 @@ mixin widgetTweetsUpdates(options, tweets)
 												| #{tweet.status.text}
 											p.muted.small-text
 												|  a #{moment(tweet.status.created_at).fromNow()} | #{tweet.rts} Retweets 
+												i.fa.fa-star-o.pull-right
 									//-	.clearfix
 									//-.inline.pull-right
 									//-	.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
@@ -63,13 +64,8 @@ mixin widgetTweetsUpdates(options, tweets)
 									.clearfix
 					else
 						//- TODO: Fazer tradução
-						.p-t-20.p-b-15.b-b.b-grey.bg-danger
+						.p-t-10.p-b-5.b-b.b-grey.bg-danger
 								| Sem Tweets a serem exibidos. :-(
-				.tiles.grey.p-t-5.p-b-5
-					p.text-center
-						a.load-more.text-black.semi-bold.small-text(href='#', data-uri='#{tweets.url}', data-skip='10')
-							//- TODO: Fazer tradução
-							| Carregar Mais
 
 //- ========================================================================================
 //- ProgreessBarWitInfo ====================================================================
