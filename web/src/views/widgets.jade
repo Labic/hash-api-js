@@ -29,17 +29,17 @@ mixin widgetProgressBar(title, color, value, symbol, position, progress_bar, val
 //- Tweets Updates =========================================================================
 //- ========================================================================================
 mixin widgetTweetsUpdates(options, tweets)
-	.row.tiles-container.m-b-10.hidden-xlg
+	.row.tiles-container
 		.col-md-12
 			.m-l-10
-				.tiles.grey.p-t-15.p-b-15.p-l-25
+				.tiles.grey.p-t-10.p-b-10.p-l-25
 					h5.text-black.semi-bold
 						| #{options.title}
 				.tweets.tiles.white
 					if tweets
 						each tweet in tweets
-							.p-t-20.p-b-15.b-b.b-grey
-								.post.overlap-left-10
+							.p-t-10.p-b-5.b-b.b-grey
+								.post
 									.user-profile-pic-wrapper
 										.user-profile-pic-2x.white-border
 											a(href='https://twitter.com/#{tweet.status.user.screen_name}', 

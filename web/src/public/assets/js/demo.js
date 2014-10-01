@@ -1,9 +1,9 @@
 $(document).ready(function() {	
 	moment.locale('pt-BR');
 
-	//$('#left-panel').addClass('animated bounceInRight');
-	$('#project-progress').css('width', '50%');
-	$('#msgs-badge').addClass('animated bounceIn');	
+	$('.tweets').height($(window).height() - 200);
+
+	var tweetsScroll = $('.tweets').niceScroll();
 
 	$('a.load-more').on('click', function () {
 		var loadMore = $(this);
@@ -23,6 +23,10 @@ $(document).ready(function() {
 		return false;
 	});
 }); 
+
+$(window).resize(function() {
+
+});
 
 
 function getParameterByName(name, url) {
