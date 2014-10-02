@@ -1,0 +1,37 @@
+{
+  "name": "FacebookPost",
+  "base": "PersistedModel",
+  "properties": {
+    "Caption": {
+      "type": "string"
+    },
+    "Section": {
+      "type": ["string"]
+    },
+    "CommentsCount": {
+      "type": "number"
+    },
+    "CreatedTime": {
+      "type": "number"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "LikesCount": {
+      "type": "number"
+    },
+    "Message": {
+      "type": "string"
+    },
+    "SharesCount": {
+      "type": "number"
+    },
+    "UserName": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

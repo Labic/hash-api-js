@@ -40,5 +40,9 @@
   "TweetStatus": {
     "dataSource": "mongodb-dev",
     "public": false
-  }
+  },
+  "FacebookPost": {
+    "dataSource": "mongodb-dev",
+    "public": true
+  },
 }
