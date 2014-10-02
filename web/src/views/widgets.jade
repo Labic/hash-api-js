@@ -52,8 +52,9 @@ mixin widgetTweetsUpdates(options, tweets)
 										.info.text-black
 											p
 												| #{tweet.status.text}
-											p.muted.small-text
+											span.muted.small-text
 												|  a #{moment(tweet.status.created_at).fromNow()} | #{tweet.rts} Retweets 
+											//-a(href='#')
 												i.fa.fa-star-o.pull-right
 									//-	.clearfix
 									//-.inline.pull-right

@@ -1,6 +1,8 @@
 doctype html
 html
 	include head.jade
+		block pluginCSS
+			link(rel="stylesheet", type="text/css", href="/assets/plugins/fancybox/jquery.fancybox.min.css")
 	
 	// BEGIN BODY
 	body.no-top
@@ -19,35 +21,43 @@ html
 						.col-md-6
 							h2
 								| Seção 1
-							img(src='http://104.131.228.31/teste/secao_1.jpeg?timestamp=#{moment().format("X")}', width='100%')
+							a.fancybox(href='http://104.131.228.31/teste/secao_1.jpeg?timestamp=#{moment().format("X")}')
+								img(src='http://104.131.228.31/teste/secao_1.jpeg?timestamp=#{moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Seção 2
-							img(src='http://104.131.228.31/teste/secao_2.jpeg?timestamp={moment().format("X")}', width='100%')
+							a.fancybox(href='http://104.131.228.31/teste/secao_2.jpeg?timestamp={moment().format("X")}')
+								img(src='http://104.131.228.31/teste/secao_2.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Seção 3
-							img(src='http://104.131.228.31/teste/secao_3.jpeg?timestamp={moment().format("X")}', width='100%')
+							a.fancybox(href='http://104.131.228.31/teste/secao_3.jpeg?timestamp={moment().format("X")}')
+								img(src='http://104.131.228.31/teste/secao_3.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Seção 4 - Norte
-							img(src='http://104.131.228.31/teste/secao_4_norte.jpeg?timestamp={moment().format("X")}', width='100%')
+							a.fancybox(href='http://104.131.228.31/teste/secao_4_norte.jpeg?timestamp={moment().format("X")}')
+								img(src='http://104.131.228.31/teste/secao_4_norte.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Seção 4 - Nordeste
-							img(src='http://104.131.228.31/teste/secao_4_nordeste.jpeg?timestamp={moment().format("X")}', width='100%')
+							a.fancybox(href='http://104.131.228.31/teste/secao_4_nordeste.jpeg?timestamp={moment().format("X")}')
+								img(src='http://104.131.228.31/teste/secao_4_nordeste.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Seção 4 - Centro
-							img(src='http://104.131.228.31/teste/secao_4_centro.jpeg?timestamp={moment().format("X")}', width='100%')
+							a.fancybox(href='http://104.131.228.31/teste/secao_4_centro.jpeg?timestamp={moment().format("X")}')
+								img(src='http://104.131.228.31/teste/secao_4_centro.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Seção 4 - Sudeste
-							img(src='http://104.131.228.31/teste/secao_4_sudeste.jpeg?timestamp={moment().format("X")}', width='100%')
+							a.fancybox(href='http://104.131.228.31/teste/secao_4_sudeste.jpeg?timestamp={moment().format("X")}')
+								img(src='http://104.131.228.31/teste/secao_4_sudeste.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Seção 4 - Sul
-							img(src='http://104.131.228.31/teste/secao_4_sul.jpeg?timestamp={moment().format("X")}', width='100%')
+							a.fancybox(href='http://104.131.228.31/teste/secao_4_sul.jpeg?timestamp={moment().format("X")}')
+								img(src='http://104.131.228.31/teste/secao_4_sul.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Nuvem de palavras Twitter
@@ -57,4 +67,4 @@ html
 			
 		include footer.jade
 			block pageScripts
-				script(src='/assets/js/twitter.js')
+				script(src='/assets/plugins/fancybox/jquery.fancybox.pack.min.js')

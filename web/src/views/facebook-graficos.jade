@@ -1,6 +1,8 @@
 doctype html
 html
 	include head.jade
+		block pluginCSS
+			link(rel="stylesheet", type="text/css", href="/assets/plugins/fancybox/jquery.fancybox.min.css")
 	
 	// BEGIN BODY
 	body.no-top
@@ -19,11 +21,13 @@ html
 						.col-md-6
 							h2
 								| Seção 2
-							img(src='http://104.131.228.31/facebook/secao_2_face.jpeg?timestamp={moment().format("X")}', width='100%')
+							a.fancybox(href='http://104.131.228.31/facebook/secao_2_face.jpeg?timestamp={moment().format("X")}')
+								img(src='http://104.131.228.31/facebook/secao_2_face.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Seção 3
-							img(src='http://104.131.228.31/facebook/secao_3_face.jpeg?timestamp={moment().format("X")}', width='100%')
+							a.fancybox(href='http://104.131.228.31/facebook/secao_3_face.jpeg?timestamp={moment().format("X")}')
+								img(src='http://104.131.228.31/facebook/secao_3_face.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Nuvem de palavras Facebook
@@ -33,4 +37,4 @@ html
 			
 		include footer.jade
 			block pageScripts
-				script(src='/assets/js/twitter.js')
+				script(src='/assets/plugins/fancybox/jquery.fancybox.pack.min.js')

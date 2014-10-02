@@ -18,32 +18,13 @@ html
 			.page-content
 				#board.content.sm-gutter
 					include widgets.jade
-					
-					#tweets-humor.col-md-4
-						+widgetTweetsUpdates({title: "Humor"}, tweets[0])
-					#tweets-oficial.col-md-4
-						+widgetTweetsUpdates({title: "Oficial"}, tweets[1])
-					#tweets-institucional.col-md-4
-						+widgetTweetsUpdates({title: "Institucional"}, tweets[2])
-					#tweets-orientacoes.col-md-4
-						+widgetTweetsUpdates({title: "Orientações"}, tweets[3])
-					#tweets-logistica-infraestrutura.col-md-4
-						+widgetTweetsUpdates({title: "Logistica & Infraestrutura"}, tweets[4])
-					#tweets-cobertura-midia.col-md-4
-						+widgetTweetsUpdates({title: "Cobertura da Mídia"}, tweets[5])
-					#tweets-cobertura-midia.col-md-4
-						+widgetTweetsUpdates({title: "Mídia"}, tweets[6])
-					#tweets-questoes-pedagogicas.col-md-4
-						+widgetTweetsUpdates({title: "Questões Pedagógicas"}, tweets[7])
-					#tweets-educacional.col-md-4
-						+widgetTweetsUpdates({title: "Educacional"}, tweets[8])
-					#tweets-sentimento.col-md-4
-						+widgetTweetsUpdates({title: "Sentimentos"}, tweets[9])
-					#tweets-rumor.col-md-4
-						+widgetTweetsUpdates({title: "Rumores"}, tweets[10])
-			
+
+					each tweetsCategorie in tweetsCategories
+						if tweetsCategorie.length > 0
+							section(id=tweetsCategorie.categorieId).col-md-4
+								+widgetTweetsUpdates({title: tweetsCategorie.categorieTitle}, tweetsCategorie)
 			// END PAGE CONTAINER
-			
+		
 		include footer.jade
 			block pageScripts
 				script(src='/assets/plugins/moment/moment-with-locales.min.js')

@@ -14,11 +14,25 @@ var color_info="#3b4751";
 
 $(document).ready(function () {
     calculateHeight();
+
+    if ($.fancybox) {
+        //Fancybox
+        $('a.fancybox').fancybox({
+            'transitionIn'  :   'elastic',
+            'transitionOut' :   'elastic',
+            'speedIn'       :   600, 
+            'speedOut'      :   200, 
+            'overlayShow'   :   false
+        });
+    } else {
+        console.log('fancybox not loaded');
+    }
+
     $(".remove-widget").click(function () {
         $(this).parent().parent().parent().addClass('animated fadeOut');
         $(this).parent().parent().parent().attr('id', 'id_a');
 
-        //$(this).parent().parent().parent().hide();
+        //$(this).parentfancybox().parent().parent().hide();
         setTimeout(function () {
             $('#id_a').remove();
         }, 400);

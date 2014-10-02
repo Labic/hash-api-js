@@ -19,7 +19,7 @@
 				a(href="#")
 					i.fa.fa-refresh
 		ul
-			if (route.path == '/twitter' || route.path == '/twitter/graficos')
+			if (route.path == '/twitter/secoes' || route.path == '/twitter/graficos' || route.path == '/twitter/estados')
 				li.start.active
 					a(href="#")
 						i.fa.fa-twitter
@@ -27,17 +27,24 @@
 							| Twitter
 						span.arrow
 					ul.sub-menu
-						if (route.path === '/twitter')
+						if (route.path === '/twitter/secoes')
 							li.active
-								a(href="/twitter")
-									| Visão Geral
+								a(href="/twitter/secoes")
+									| Seções
 						else
 							li
-								a(href="/twitter")
-									| Visão Geral
-							//-li
+								a(href="/twitter/secoes")
+									| Seções
+
+						if (route.path === '/twitter/estados')
+							li.active
 								a(href="/twitter/estados")
 									| Estados
+						else
+							li
+								a(href="/twitter/estados")
+									| Estados
+
 						if (route.path === '/twitter/graficos')
 							li.active
 								a(href="/twitter/graficos")

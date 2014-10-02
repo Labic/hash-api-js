@@ -25,13 +25,13 @@ module.exports = function(app, passport) {
 	// =====================================
 	app.get('/', function(req, res) {
 		//res.render('index', {title: 'App ENEM | Inep'});
-    res.redirect('/twitter');
+    res.redirect('/twitter/secoes');
 	});
 	
 	// =====================================
 	// Twitter =============================
 	// =====================================
-	app.get('/twitter', function(req, res) {
+	app.get('/twitter/secoes', function(req, res) {
     var filterHumor = {
       "where": {
         "categories": {"inq": ["humor"]}}, 
@@ -42,13 +42,6 @@ module.exports = function(app, passport) {
     var filterOficial = {
       "where": {
         "categories": {"inq": ["OFICIAL"]}}, 
-        "order": "rts DESC", 
-        "limit": 10
-    };
-
-    var filterInstitucional = {
-      "where": {
-        "categories": {"inq": ["institucional"]}}, 
         "order": "rts DESC", 
         "limit": 10
     };
@@ -112,17 +105,16 @@ module.exports = function(app, passport) {
     var tweetApiUrl = 'http://104.131.228.31:3000/api/Tweets?filter=';
 
     var urls = [
-      { name: "humor", uri: tweetApiUrl + JSON.stringify(filterHumor) },
-      { name: "oficial", uri: tweetApiUrl + JSON.stringify(filterOficial) },
-      { name: "institucional", uri: tweetApiUrl + JSON.stringify(filterInstitucional) },
-      { name: "orientacoes", uri: tweetApiUrl + JSON.stringify(filterOrientacoes) },
-      { name: "logisticaInfraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
-      { name: "midia", uri: tweetApiUrl + JSON.stringify(filterCoberturaMidia) },
-      { name: "midia", uri: tweetApiUrl + JSON.stringify(filterMidia) },
-      { name: "questoesPedagogicas", uri: tweetApiUrl + JSON.stringify(filterQuestoesPedagogicas) },
-      { name: "educacional", uri: tweetApiUrl + JSON.stringify(filterEducacional) },
-      { name: "sentimentos", uri: tweetApiUrl + JSON.stringify(filterSentimentos) },
-      { name: "rumores", uri: tweetApiUrl + JSON.stringify(filterRumores) }
+      { id: "humor", title: "Humor", uri: tweetApiUrl + JSON.stringify(filterHumor) },
+      { id: "oficial", title: "Oficial", uri: tweetApiUrl + JSON.stringify(filterOficial) },
+      { id: "orientacoes", title: "Orientações", uri: tweetApiUrl + JSON.stringify(filterOrientacoes) },
+      { id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
+      { id: "cobertura-midia", title: "Cobertura da Mídia", uri: tweetApiUrl + JSON.stringify(filterCoberturaMidia) },
+      { id: "midia", title: "Mídia", uri: tweetApiUrl + JSON.stringify(filterMidia) },
+      { id: "questoes-pedagogicas", title: "Questões Pedagógicas", uri: tweetApiUrl + JSON.stringify(filterQuestoesPedagogicas) },
+      { id: "educacional", title: "Educacional", uri: tweetApiUrl + JSON.stringify(filterEducacional) },
+      { id: "sentimentos", title: "Sentimentos", uri: tweetApiUrl + JSON.stringify(filterSentimentos) },
+      { id: "rumores", title: "Rumores", uri: tweetApiUrl + JSON.stringify(filterRumores) }
     ];
 
     var parallel = new Parallel();
@@ -131,15 +123,90 @@ module.exports = function(app, passport) {
       parallel.timeout(5000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
           res.body.url = url.uri;
+          res.body.categorieId = url.id;
+          res.body.categorieTitle = url.title;
           done(err, res.body);
         })
       })
     });
 
-    parallel.done(function (err, tweets) {
-      res.render('twitter', { route: req.route, title: 'Twitter - App ENEM | Inep', tweets: tweets });
+    parallel.done(function (err, tweetsCategoriesQuery) {
+      res.render('twitter', { route: req.route, title: 'Twitter por Estados - App ENEM | Inep', tweetsCategories: tweetsCategoriesQuery });
     });
 	});
+
+
+  app.get('/twitter/estados', function(req, res) {
+    var filterRioGrandeDoSul = {
+      "where": {
+        "categories": {"inq": ["Rio Grande do Sul"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterRioGrandeDoNorte = {
+      "where": {
+        "categories": {"inq": ["Rio Grande do Norte"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterParana = {
+      "where": {
+        "categories": {"inq": ["Parana"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterEspiritoSanto = {
+      "where": {
+        "categories": {"inq": ["Espirito Santo"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterSaoPaulo = {
+      "where": {
+        "categories": {"inq": ["Sao Paulo"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterPara = {
+      "where": {
+        "categories": {"inq": ["Para"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var tweetApiUrl = 'http://104.131.228.31:3000/api/Tweets?filter=';
+
+    var urls = [
+      { id: "rs", title: "Rio Grande do Sul", uri: tweetApiUrl + JSON.stringify(filterRioGrandeDoSul) },
+      { id: "rn", title: "Rio Grande do Norte", uri: tweetApiUrl + JSON.stringify(filterRioGrandeDoNorte) },
+      { id: "pr", title: "Paraná", uri: tweetApiUrl + JSON.stringify(filterParana) },
+      { id: "es", title: "Espírito Santo", uri: tweetApiUrl + JSON.stringify(filterEspiritoSanto) },
+      { id: "sp", title: "São Paulo", uri: tweetApiUrl + JSON.stringify(filterSaoPaulo) },
+      { id: "pa", title: "Pará", uri: tweetApiUrl + JSON.stringify(filterPara) }
+    ];
+
+    var parallel = new Parallel();
+
+    urls.forEach(function (url) {
+      parallel.timeout(5000).add(function (done) {
+        request.get({url: url.uri, json: true}, function(err, res) {
+          res.body.url = url.uri;
+          res.body.categorieId = url.id;
+          res.body.categorieTitle = url.title;
+          done(err, res.body);
+        })
+      })
+    });
+
+    parallel.done(function (err, tweetsCategoriesQuery) {
+      res.render('twitter', { route: req.route, title: 'Twitter por Estados - App ENEM | Inep', tweetsCategories: tweetsCategoriesQuery });
+    });
+  });
   
   // =====================================
   // Twitter Gráficos ====================
