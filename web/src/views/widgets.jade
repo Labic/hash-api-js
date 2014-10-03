@@ -35,7 +35,7 @@ mixin widgetTweetsUpdates(options, tweets)
 				.tiles.grey.p-t-10.p-b-10.p-l-25
 					h5.text-black.semi-bold
 						| #{options.title}
-				.scrollbar.tiles.white(data-uri='#{tweets.url}', data-skip='10')
+				.scrollbar.tiles.white(data-uri='#{tweets.url}', data-skip='10', data-loading='false')
 					if tweets
 						each tweet in tweets
 							.p-t-10.p-b-5.b-b.b-grey
@@ -51,7 +51,7 @@ mixin widgetTweetsUpdates(options, tweets)
 									.info-wrapper.inline
 										.info.text-black
 											p
-												| #{tweet.status.text}
+												| #{tweet.status.text.replace(/\n/g, '<br />')}
 											span.muted.small-text
 												|  a #{moment(tweet.status.created_at).fromNow()} | #{tweet.rts} Retweets 
 											//-a(href='#')
@@ -77,27 +77,26 @@ mixin widgetFacebookPosts(options, facebookSections)
 				.tiles.grey.p-t-10.p-b-10.p-l-25
 					h5.text-black.semi-bold
 						| #{options.title}
-				.scrollbar.tiles.white(data-uri='#{facebookSections.url}', data-skip='10')
+				.scrollbar.tiles.white(data-uri='#{facebookSections.url}', data-skip='10', data-loading='false')
 					if facebookSections
 						each facebookSection in facebookSections
 							.p-t-10.p-b-5.b-b.b-grey
 								.post
 									.info-wrapper.inline
 										.info.text-black
-											p
-												a(href='#', target='_blank')
-													| #{facebookSection.UserName}
+											strong
+												| #{facebookSection.UserName}
 											if facebookSection.Description
 												p
-													| #{facebookSection.Description}
+													| #{facebookSection.Description.replace(/\n/g, '<br />')}
 											if facebookSection.Message
 												p
-													| #{facebookSection.Message}
+													| #{facebookSection.Message.replace(/\n/g, '<br />')}
 											if facebookSection.Caption
 												p
-													| #{facebookSection.Caption}
+													| #{facebookSection.Caption.replace(/\n/g, '<br />')}
 											span.muted.small-text
-												|  a #{moment(facebookSection.CreatedTime).fromNow()} | #{facebookSection.LikesCount} Likes | #{facebookSection.CommentsCount} Coment&aacute;rios | #{facebookSection.SharesCount} Compartilhamentos
+												|  a #{moment.unix(facebookSection.CreatedTime).fromNow()} | #{facebookSection.LikesCount} Likes | #{facebookSection.CommentsCount} Coment&aacute;rios | #{facebookSection.SharesCount} Compartilhamentos
 											//-a(href='#')
 												i.fa.fa-star-o.pull-right
 									//-	.clearfix

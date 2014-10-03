@@ -1,23 +1,23 @@
 doctype html
 html
 	include head.jade
-		meta(http-equiv="refresh", content="60")
 		block pluginCSS
 			link(rel="stylesheet", type="text/css", href="/assets/css/twitter.css")
 	
 	// BEGIN BODY
-	body.no-top.hide-top-content-header
+	body.no-top.hide-top-content-header.facebook
 		include header.jade
 		
 		// BEGIN CONTAINER
-		#twitter.page-container
+		.page-container
 			include sidebar.jade
 			
 			// BEGIN PAGE CONTAINER
 
 			.page-content
-				.board.facebook.content.sm-gutter
+				.board.content.sm-gutter
 					include widgets.jade
+
 					each facebookSection in facebookSections
 						if facebookSection.length > 0
 							section(id=facebookSection.sectionId).col-md-5
@@ -29,3 +29,4 @@ html
 				script(src='/assets/plugins/moment/moment-with-locales.min.js')
 				script(src='/assets/plugins/jquery-tmpl/jquery.tmpl.min.js')
 				script(src='/assets/plugins/jquery-nicescroll/jquery.nicescroll.min.js')
+				script(src='/assets/plugins/autolinker/autolinker.min.js')

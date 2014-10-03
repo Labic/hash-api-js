@@ -8,6 +8,7 @@ var port     = process.env.PORT || 8080;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash 	 = require('connect-flash');
+var autolinker = require( 'autolinker' );
 
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -29,6 +30,8 @@ app.use(bodyParser()); // get information from html forms
 var moment = require('moment');
 moment.locale('pt-BR');
 app.locals.moment = moment;
+
+app.locals.autolinker = autolinker;
 
 // Security
 app.disable('x-powered-by');
