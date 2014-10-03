@@ -62,15 +62,16 @@
 						span.arrow
 					ul.sub-menu
 						li
-							a(href="/twitter")
-								| Visão Geral
-						//-li
+							a(href="/twitter/secoes")
+								| Seções
+						li
 							a(href="/twitter/estados")
 								| Estados
 						li
 							a(href="/twitter/graficos")
 								| Gráficos
-			if (route.path == '/facebook' || route.path == '/facebook/graficos')
+
+			if (route.path == '/facebook/secoes' || route.path == '/facebook/graficos')
 				li.start.active
 					a(href="#")
 						i.fa.fa-facebook
@@ -78,9 +79,23 @@
 							| Facebook
 						span.arrow
 					ul.sub-menu
-						li.active
-							a(href="/facebook/graficos")
-								| Gráficos
+						if (route.path === '/facebook/secoes')
+							li.active
+								a(href="/facebook/secoes")
+									| Seções
+						else
+							li
+								a(href="/facebook/graficos")
+									| Seções
+
+						if (route.path === '/facebook/graficos')
+							li.active
+								a(href="/facebook/graficos")
+									| Gráficos
+						else
+							li
+								a(href="/facebook/graficos")
+									| Gráficos
 			else
 				li
 					a(href="#")
@@ -89,6 +104,9 @@
 							| Facebook
 						span.arrow
 					ul.sub-menu
+						li
+							a(href="/facebook/secoes")
+								| Seções
 						li
 							a(href="/facebook/graficos")
 								| Gráficos

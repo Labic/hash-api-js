@@ -16,19 +16,16 @@ html
 			// BEGIN PAGE CONTAINER
 
 			.page-content
-				.board.content.sm-gutter
+				.board.facebook.content.sm-gutter
 					include widgets.jade
-
-					each tweetsCategorie in tweetsCategories
-						if tweetsCategorie.length > 0
-							section(id=tweetsCategorie.categorieId).col-md-4
-								+widgetTweetsUpdates({title: tweetsCategorie.categorieTitle}, tweetsCategorie)
+					each facebookSection in facebookSections
+						if facebookSection.length > 0
+							section(id=facebookSection.sectionId).col-md-5
+								+widgetFacebookPosts({title: facebookSection.sectionTitle}, facebookSection)
 			// END PAGE CONTAINER
 		
 		include footer.jade
 			block pageScripts
-				script(src='/assets/js/twitter.js')
 				script(src='/assets/plugins/moment/moment-with-locales.min.js')
 				script(src='/assets/plugins/jquery-tmpl/jquery.tmpl.min.js')
-				script(src='/assets/plugins/infinite-scroll/jquery.infinitescroll.min.js')
 				script(src='/assets/plugins/jquery-nicescroll/jquery.nicescroll.min.js')

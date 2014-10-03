@@ -131,7 +131,7 @@ module.exports = function(app, passport) {
     });
 
     parallel.done(function (err, tweetsCategoriesQuery) {
-      res.render('twitter', { route: req.route, title: 'Twitter por Estados - App ENEM | Inep', tweetsCategories: tweetsCategoriesQuery });
+      res.render('twitter', { route: req.route, title: 'Twitter por Seções - App ENEM | Inep', tweetsCategories: tweetsCategoriesQuery });
     });
 	});
 
@@ -207,6 +207,103 @@ module.exports = function(app, passport) {
       res.render('twitter', { route: req.route, title: 'Twitter por Estados - App ENEM | Inep', tweetsCategories: tweetsCategoriesQuery });
     });
   });
+
+
+  app.get('/facebook/secoes', function(req, res) {
+    var filterPerfilQuestoesPedagogicas = {
+      "where": {
+        "Section": {"inq": ["PERFIL QUESTOES PEDAGOGICAS"]}}, 
+        "order": ["LikesCount DESC", "CommentsCount DESC"], 
+        "limit": 10
+    };
+    
+    var filterQuestoesPedagogicas = {
+      "where": {
+        "Section": {"inq": ["QUESTOES PEDAGOGICAS"]}}, 
+        "order": ["LikesCount DESC", "CommentsCount DESC"], 
+        "limit": 10
+    };
+    
+    var filterSentimentos = {
+      "where": {
+        "Section": {"inq": ["SENTIMENTOS"]}}, 
+        "order": ["LikesCount DESC", "CommentsCount DESC"], 
+        "limit": 10
+    };
+    
+    var filterCoberturaMidia = {
+      "where": {
+        "Section": {"inq": ["COBERTURA DA MIDIA"]}}, 
+        "order": ["LikesCount DESC", "CommentsCount DESC"], 
+        "limit": 10
+    };
+    
+    var filterOrientacoes = {
+      "where": {
+        "Section": {"inq": ["ORIENTACOES"]}}, 
+        "order": ["LikesCount DESC", "CommentsCount DESC"], 
+        "limit": 10
+    };
+    
+    var filterOficial = {
+      "where": {
+        "Section": {"inq": ["OFICIAIS"]}}, 
+        "order": ["LikesCount DESC", "CommentsCount DESC"], 
+        "limit": 10
+    };
+    
+    var filterRumores = {
+      "where": {
+        "Section": {"inq": ["RUMORES"]}}, 
+        "order": ["LikesCount DESC", "CommentsCount DESC"], 
+        "limit": 10
+    };
+    
+    var filterLogisticaInfraestrutura = {
+      "where": {
+        "Section": {"inq": ["LOGISTICA E INFRA-ESTRUTURA", "INFRAESTRUTURA E LOGISTICA"]}}, 
+        "order": ["LikesCount DESC", "CommentsCount DESC"], 
+        "limit": 10
+    };
+    
+    var filterPerfisOficiais = {
+      "where": {
+        "Section": {"inq": ["PERFIS OFICIAIS"]}}, 
+        "order": ["LikesCount DESC", "CommentsCount DESC"], 
+        "limit": 10
+    };
+
+    var facebookpiUrl = 'http://localhost:3000/api/FacebookPosts?filter=';
+
+    var urls = [
+      { id: "perfil-questoes-pedagogicas", title: "Perfil de Questões Pedagógicas", uri: facebookpiUrl + JSON.stringify(filterPerfilQuestoesPedagogicas) },
+      { id: "questoes-pedagogicas", title: "Questões Pedagógicas", uri: facebookpiUrl + JSON.stringify(filterQuestoesPedagogicas) },
+      { id: "sentimentos", title: "Sentimentos", uri: facebookpiUrl + JSON.stringify(filterSentimentos) },
+      { id: "cobertura-midia", title: "Cobertura da Mídia", uri: facebookpiUrl + JSON.stringify(filterCoberturaMidia) },
+      { id: "orientacoes", title: "Orientações", uri: facebookpiUrl + JSON.stringify(filterOrientacoes) },
+      { id: "oficial", title: "Oficial", uri: facebookpiUrl + JSON.stringify(filterOficial) },
+      { id: "rumores", title: "Rumores", uri: facebookpiUrl + JSON.stringify(filterRumores) },
+      { id: "Logistica", title: "Logistica", uri: facebookpiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
+      { id: "perfis-oficiais", title: "Perfis Oficiais", uri: facebookpiUrl + JSON.stringify(filterPerfisOficiais) }
+    ];
+
+    var parallel = new Parallel();
+
+    urls.forEach(function (url) {
+      parallel.timeout(5000).add(function (done) {
+        request.get({url: url.uri, json: true}, function(err, res) {
+          res.body.url = url.uri;
+          res.body.sectionId = url.id;
+          res.body.sectionTitle = url.title;
+          done(err, res.body);
+        })
+      })
+    });
+
+    parallel.done(function (err, facebookSectionsQuery) {
+      res.render('facebook', { route: req.route, title: 'Facebook por Seções - App ENEM | Inep', facebookSections: facebookSectionsQuery });
+    });
+  });
   
   // =====================================
   // Twitter Gráficos ====================
@@ -223,7 +320,7 @@ module.exports = function(app, passport) {
   // show the login form
   app.get('/facebook/graficos', function (req, res) {
     // render the page and pass in any flash data if it exists
-    res.render('facebook-graficos', { route: req.route, title: 'Gráficos do Facebooks - App ENEM | Inep' }); 
+    res.render('facebook-graficos', { route: req.route, title: 'Gráficos do Facebook - App ENEM | Inep' }); 
   });
   
   // =====================================

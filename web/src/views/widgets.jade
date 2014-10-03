@@ -67,6 +67,50 @@ mixin widgetTweetsUpdates(options, tweets)
 						//- TODO: Fazer tradução
 						.p-t-10.p-b-5.b-b.b-grey.bg-danger
 								| Sem Tweets a serem exibidos. :-(
+//- ========================================================================================
+//- Facebook Posts =========================================================================
+//- ========================================================================================
+mixin widgetFacebookPosts(options, facebookSections)
+	.row.tiles-container
+		.col-md-12
+			.m-l-10
+				.tiles.grey.p-t-10.p-b-10.p-l-25
+					h5.text-black.semi-bold
+						| #{options.title}
+				.scrollbar.tiles.white(data-uri='#{facebookSections.url}', data-skip='10')
+					if facebookSections
+						each facebookSection in facebookSections
+							.p-t-10.p-b-5.b-b.b-grey
+								.post
+									.info-wrapper.inline
+										.info.text-black
+											p
+												a(href='#', target='_blank')
+													| #{facebookSection.UserName}
+											if facebookSection.Description
+												p
+													| #{facebookSection.Description}
+											if facebookSection.Message
+												p
+													| #{facebookSection.Message}
+											if facebookSection.Caption
+												p
+													| #{facebookSection.Caption}
+											span.muted.small-text
+												|  a #{moment(facebookSection.CreatedTime).fromNow()} | #{facebookSection.LikesCount} Likes | #{facebookSection.CommentsCount} Coment&aacute;rios | #{facebookSection.SharesCount} Compartilhamentos
+											//-a(href='#')
+												i.fa.fa-star-o.pull-right
+									//-	.clearfix
+									//-.inline.pull-right
+									//-	.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+									//-		i.fa.fa-heart-o.fa-lg
+									//-	.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+									//-		i.fa.fa-comment-o.fa-lg
+									.clearfix
+					else
+						//- TODO: Fazer tradução
+						.p-t-10.p-b-5.b-b.b-grey.bg-danger
+								| Sem Posts a serem exibidos. :-(
 
 //- ========================================================================================
 //- ProgreessBarWitInfo ====================================================================
