@@ -13,6 +13,8 @@
     "name": "mongodb-dev",
     "host": "localhost",
     "port": "27017",
-    "database": "app-enem"
+    "database": "twixplorer",
+    "user": "labic",
+    "password": "60jpp"
   }
 }
