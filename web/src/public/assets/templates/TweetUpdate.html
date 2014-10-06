@@ -2,14 +2,20 @@
   <div class="post">
     <div class="user-profile-pic-wrapper">
       <div class="user-profile-pic-2x white-border">
-        <a href="https://twitter.com/${status.user.screen_name}" target="_blank" data-toggle="tooltip" data-placement="top" title="${status.user.screen_name} - ${status.user.followers_count} Seguidores">
-          <img width="45" height="45" src="${status.user.profile_image_url_https}" alt="${status.user.screen_name}">
-        </a>
+        <img width="45" height="45" src="${status.user.profile_image_url_https}" alt="${status.user.screen_name}">
       </div>
     </div>
     <div class="info-wrapper inline">
       <div class="info text-black">
-        <p>
+        <strong class="user-info">
+          <a href="https://twitter.com/${status.user.screen_name}" target="_blank">
+            @${status.user.screen_name} 
+          </a>
+        </strong> - 
+        <span class="user-followers">
+          ${status.user.followers_count} Seguidores
+        </span>
+        <p class="text">
           ${status.text}
         </p>
         <p class="muted small-text">

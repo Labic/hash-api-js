@@ -50,7 +50,13 @@ mixin widgetTweetsUpdates(options, tweets)
 												img(width='45', height='45', src='#{tweet.status.user.profile_image_url_https}', alt='#{tweet.status.user.screen_name}')
 									.info-wrapper.inline
 										.info.text-black
-											p
+											strong.user-info
+												a(href='https://twitter.com/#{tweet.status.user.screen_name}', target='_blank')
+													| @#{tweet.status.user.screen_name} 
+											| - 
+											span.user-followers
+												| #{tweet.status.user.followers_count} Seguidores
+											p.text
 												| #{tweet.status.text.replace(/\n/g, '<br />')}
 											span.muted.small-text
 												|  a #{moment(tweet.status.created_at).fromNow()} | #{tweet.rts} Retweets 
