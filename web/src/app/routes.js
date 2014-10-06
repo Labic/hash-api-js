@@ -50,6 +50,13 @@ module.exports = function(app, passport) {
         "limit": 10
     };
 
+    var filterMidia = {
+      "where": {
+        "categories": {"inq": ["midia"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
     var filterInstitucional = {
       "where": {
         "categories": {"inq": ["institucional"]}}, 
@@ -59,6 +66,7 @@ module.exports = function(app, passport) {
 
     var urls = [
       { id: "humor", title: "Humor", uri: tweetApiUrl + JSON.stringify(filterHumor) },
+      { id: "midia", title: "Mídia", uri: tweetApiUrl + JSON.stringify(filterMidia) },
       { id: "educacional", title: "Educacional", uri: tweetApiUrl + JSON.stringify(filterEducacional) },
       { id: "institucional", title: "Institucional", uri: tweetApiUrl + JSON.stringify(filterInstitucional) }
     ];
@@ -66,7 +74,7 @@ module.exports = function(app, passport) {
     var parallel = new Parallel();
 
     urls.forEach(function (url) {
-      parallel.timeout(5000).add(function (done) {
+      parallel.timeout(10000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
           res.body.url = url.uri;
           res.body.categorieId = url.id;
@@ -99,7 +107,7 @@ module.exports = function(app, passport) {
         "limit": 10
     };
 
-    var filterLogisticaInfraestrutura = {
+    var filterInfraestruturaLogistica = {
       "where": {
         "categories": {"inq": ["INFRAESTRUTURA_E_LOGISTICA"]}}, 
         "order": "rts DESC", 
@@ -123,7 +131,7 @@ module.exports = function(app, passport) {
     var urls = [
       { id: "orientacoes", title: "Orientações", uri: tweetApiUrl + JSON.stringify(filterOrientacoes) },
       { id: "questoes-pedagogicas", title: "Questões Pedagógicas", uri: tweetApiUrl + JSON.stringify(filterQuestoesPedagogicas) },
-      { id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
+      { id: "infraestrutura-logistica", title: "Infraestrutura & Logistica", uri: tweetApiUrl + JSON.stringify(filterInfraestruturaLogistica) },
       { id: "rumores", title: "Rumores", uri: tweetApiUrl + JSON.stringify(filterRumores) },
       { id: "sentimentos", title: "Sentimentos", uri: tweetApiUrl + JSON.stringify(filterSentimentos) }
     ];
@@ -131,7 +139,7 @@ module.exports = function(app, passport) {
     var parallel = new Parallel();
 
     urls.forEach(function (url) {
-      parallel.timeout(5000).add(function (done) {
+      parallel.timeout(10000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
           res.body.url = url.uri;
           res.body.categorieId = url.id;
@@ -150,16 +158,16 @@ module.exports = function(app, passport) {
   // Twitter =============================
   // =====================================
   app.get('/twitter/secoes/midia', function(req, res) {
-    var filterCoberturaMidia = {
+    var filterOficial = {
       "where": {
-        "categories": {"inq": ["COBERTURA_DE_MIDIA"]}}, 
+        "categories": {"inq": ["OFICIAL"]}}, 
         "order": "rts DESC", 
         "limit": 10
     };
 
     var filterQuestoesPedagogicas = {
       "where": {
-        "categories": {"inq": ["QUESTOES_PEDAGOGICAS"]}}, 
+        "categories": {"inq": ["PEDAGOGICAS_QUESTOES"]}}, 
         "order": "rts DESC", 
         "limit": 10
     };
@@ -172,7 +180,7 @@ module.exports = function(app, passport) {
     };
 
     var urls = [
-      { id: "cobertura-midia", title: "Cobertura da Mídia", uri: tweetApiUrl + JSON.stringify(filterCoberturaMidia) },
+      { id: "oficial", title: "Oficial", uri: tweetApiUrl + JSON.stringify(filterOficial) },
       { id: "questoes-pedagogicas", title: "Questões Pedagógicas", uri: tweetApiUrl + JSON.stringify(filterQuestoesPedagogicas) },
       { id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) }
     ];
@@ -180,7 +188,7 @@ module.exports = function(app, passport) {
     var parallel = new Parallel();
 
     urls.forEach(function (url) {
-      parallel.timeout(5000).add(function (done) {
+      parallel.timeout(10000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
           res.body.url = url.uri;
           res.body.categorieId = url.id;
@@ -235,7 +243,7 @@ module.exports = function(app, passport) {
     var parallel = new Parallel();
 
     urls.forEach(function (url) {
-      parallel.timeout(5000).add(function (done) {
+      parallel.timeout(1000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
           res.body.url = url.uri;
           res.body.categorieId = url.id;
@@ -283,7 +291,7 @@ module.exports = function(app, passport) {
     var parallel = new Parallel();
 
     urls.forEach(function (url) {
-      parallel.timeout(5000).add(function (done) {
+      parallel.timeout(10000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
           res.body.url = url.uri;
           res.body.categorieId = url.id;
@@ -300,6 +308,13 @@ module.exports = function(app, passport) {
 
   app.get('/twitter/estados/centro-oeste', function(req, res) {
     //Centro-Oeste  
+    var filterBrasilia = {
+      "where": {
+        "categories": {"inq": ["Brasilia"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
     var filterMT = {
       "where": {
         "categories": {"inq": ["Mato Grosso"]}}, 
@@ -322,6 +337,7 @@ module.exports = function(app, passport) {
     };
 
     var urls = [
+      { id: "brasilia", title: "Brasília", uri: tweetApiUrl + JSON.stringify(filterMT) },
       { id: "mt", title: "Mato Grosso", uri: tweetApiUrl + JSON.stringify(filterMT) },
       { id: "rs", title: "Mato Grosso do Sul", uri: tweetApiUrl + JSON.stringify(filterRS) },
       { id: "go", title: "Goiás", uri: tweetApiUrl + JSON.stringify(filterGO) }
@@ -330,7 +346,7 @@ module.exports = function(app, passport) {
     var parallel = new Parallel();
 
     urls.forEach(function (url) {
-      parallel.timeout(5000).add(function (done) {
+      parallel.timeout(10000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
           res.body.url = url.uri;
           res.body.categorieId = url.id;
@@ -426,7 +442,7 @@ module.exports = function(app, passport) {
     var parallel = new Parallel();
 
     urls.forEach(function (url) {
-      parallel.timeout(5000).add(function (done) {
+      parallel.timeout(10000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
           res.body.url = url.uri;
           res.body.categorieId = url.id;
@@ -506,7 +522,7 @@ app.get('/twitter/estados/norte', function(req, res) {
     var parallel = new Parallel();
 
     urls.forEach(function (url) {
-      parallel.timeout(5000).add(function (done) {
+      parallel.timeout(10000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
           res.body.url = url.uri;
           res.body.categorieId = url.id;
@@ -601,7 +617,7 @@ app.get('/twitter/estados/norte', function(req, res) {
     var parallel = new Parallel();
 
     urls.forEach(function (url) {
-      parallel.timeout(5000).add(function (done) {
+      parallel.timeout(10000).add(function (done) {
         request.get({url: url.uri, json: true}, function(err, res) {
           res.body.url = url.uri;
           res.body.sectionId = url.id;
