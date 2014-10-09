@@ -15,6 +15,9 @@
 		// BEGIN SIDEBAR MENU
 		p.menu-title
 			| MENU
+			//-span.pull-right
+				a(href="#")
+					i.fa.fa-refresh
 		ul
 			if (route.path.indexOf('/twitter/') > -1)
 				li.start.active
@@ -192,11 +195,11 @@
 								a(href="/facebook/secoes")
 									| Seções
 
-						if (route.path === '/facebook/graficos')
+						//-if (route.path === '/facebook/graficos')
 							li.active
 								a(href="/facebook/graficos")
 									| Gráficos
-						else
+						//-else
 							li
 								a(href="/facebook/graficos")
 									| Gráficos
@@ -211,7 +214,7 @@
 						li
 							a(href="/facebook/secoes")
 								| Seções
-						li
+						//-li
 							a(href="/facebook/graficos")
 								| Gráficos
 			.clearfix
