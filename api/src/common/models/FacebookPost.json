@@ -29,7 +29,7 @@
     "UserName": {
       "type": "string"
     },
-    "Caption": {
+    "Profile": {
       "type": "string"
     }
   },
