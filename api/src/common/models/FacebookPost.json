@@ -28,6 +28,9 @@
     },
     "UserName": {
       "type": "string"
+    },
+    "Caption": {
+      "type": "string"
     }
   },
   "validations": [],
