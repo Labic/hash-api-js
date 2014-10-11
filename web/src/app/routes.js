@@ -50,13 +50,6 @@ module.exports = function(app, passport) {
         "limit": 10
     };
 
-    var filterMidia = {
-      "where": {
-        "categories": {"inq": ["midia"]}}, 
-        "order": "rts DESC", 
-        "limit": 10
-    };
-
     var filterInstitucional = {
       "where": {
         "categories": {"inq": ["institucional"]}}, 
@@ -66,7 +59,6 @@ module.exports = function(app, passport) {
 
     var urls = [
       { id: "humor", title: "Humor", uri: tweetApiUrl + JSON.stringify(filterHumor) },
-      { id: "midia", title: "Mídia", uri: tweetApiUrl + JSON.stringify(filterMidia) },
       { id: "educacional", title: "Educacional", uri: tweetApiUrl + JSON.stringify(filterEducacional) },
       { id: "institucional", title: "Institucional", uri: tweetApiUrl + JSON.stringify(filterInstitucional) }
     ];
@@ -165,6 +157,13 @@ module.exports = function(app, passport) {
         "limit": 10
     };
 
+    var filterCoberturaMidia = {
+      "where": {
+        "categories": {"inq": ["COBERTURA_DE_MIDIA"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
     var filterQuestoesPedagogicas = {
       "where": {
         "categories": {"inq": ["PEDAGOGICAS_QUESTOES"]}}, 
@@ -181,6 +180,7 @@ module.exports = function(app, passport) {
 
     var urls = [
       { id: "oficial", title: "Oficial", uri: tweetApiUrl + JSON.stringify(filterOficial) },
+      { id: "cobertura-midia", title: "Cobertura de Mídia", uri: tweetApiUrl + JSON.stringify(filterCoberturaMidia) },
       { id: "questoes-pedagogicas", title: "Questões Pedagógicas", uri: tweetApiUrl + JSON.stringify(filterQuestoesPedagogicas) },
       { id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) }
     ];
