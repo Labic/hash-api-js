@@ -43,10 +43,7 @@ mixin widgetTweetsUpdates(options, tweets)
 									.user-profile-pic-wrapper
 										.user-profile-pic-2x.white-border
 											a(href='https://twitter.com/#{tweet.status.user.screen_name}', 
-											  target='_blank',
-											  data-toggle='tooltip',
-											  data-placement='top',
-											  title='#{tweet.status.user.screen_name} - #{tweet.status.user.followers_count} Seguidores')
+											  target='_blank')
 												img(width='45', height='45', src='#{tweet.status.user.profile_image_url_https}', alt='#{tweet.status.user.screen_name}')
 									.info-wrapper.inline
 										.info.text-black
@@ -88,19 +85,23 @@ mixin widgetFacebookPosts(options, facebookSections)
 						each facebookSection in facebookSections
 							.p-t-10.p-b-5.b-b.b-grey
 								.post
+									.user-profile-pic-wrapper
+										.user-profile-pic-2x.white-border
+											a(href='#')
+												img(width='45', height='45', src='#{facebookSection.Profile}', alt='#{facebookSection.UserName}')
 									.info-wrapper.inline
 										.info.text-black
 											strong
 												| #{facebookSection.UserName}
+											if facebookSection.Caption
+												p.readmore
+													| #{facebookSection.Caption.replace(/\n/g, '<br />')}
 											if facebookSection.Description
-												p
+												p.readmore
 													| #{facebookSection.Description.replace(/\n/g, '<br />')}
 											if facebookSection.Message
-												p
+												p.readmore
 													| #{facebookSection.Message.replace(/\n/g, '<br />')}
-											if facebookSection.Caption
-												p
-													| #{facebookSection.Caption.replace(/\n/g, '<br />')}
 											span.muted.small-text
 												|  a #{moment.unix(facebookSection.CreatedTime).fromNow()} | #{facebookSection.LikesCount} Likes | #{facebookSection.CommentsCount} Coment&aacute;rios | #{facebookSection.SharesCount} Compartilhamentos
 											//-a(href='#')

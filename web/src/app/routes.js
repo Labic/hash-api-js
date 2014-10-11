@@ -539,79 +539,39 @@ app.get('/twitter/estados/norte', function(req, res) {
 
 
   app.get('/facebook/secoes', function(req, res) {
-    var filterPerfilQuestoesPedagogicas = {
+    var filterHumor = {
       "where": {
-        "Section": {"inq": ["PERFIL QUESTOES PEDAGOGICAS"]}}, 
+        "Section": {"inq": ["PERFIS DE HUMOR - Perfis"]}}, 
         "order": ["LikesCount DESC", "CommentsCount DESC"], 
         "limit": 10
     };
     
-    var filterQuestoesPedagogicas = {
+    var filterEducacional = {
       "where": {
-        "Section": {"inq": ["QUESTOES PEDAGOGICAS"]}}, 
+        "Section": {"inq": ["PERFIS EDUCACIONAIS - Perfis"]}}, 
         "order": ["LikesCount DESC", "CommentsCount DESC"], 
         "limit": 10
     };
     
-    var filterSentimentos = {
+    var filterInstitucional = {
       "where": {
-        "Section": {"inq": ["SENTIMENTOS"]}}, 
+        "Section": {"inq": ["PERFIS INSTITUCIONAIS - Perfis"]}}, 
         "order": ["LikesCount DESC", "CommentsCount DESC"], 
         "limit": 10
     };
     
-    var filterCoberturaMidia = {
+    var filterMidia = {
       "where": {
-        "Section": {"inq": ["COBERTURA DA MIDIA"]}}, 
-        "order": ["LikesCount DESC", "CommentsCount DESC"], 
-        "limit": 10
-    };
-    
-    var filterOrientacoes = {
-      "where": {
-        "Section": {"inq": ["ORIENTACOES"]}}, 
-        "order": ["LikesCount DESC", "CommentsCount DESC"], 
-        "limit": 10
-    };
-    
-    var filterOficial = {
-      "where": {
-        "Section": {"inq": ["OFICIAIS"]}}, 
-        "order": ["LikesCount DESC", "CommentsCount DESC"], 
-        "limit": 10
-    };
-    
-    var filterRumores = {
-      "where": {
-        "Section": {"inq": ["RUMORES"]}}, 
-        "order": ["LikesCount DESC", "CommentsCount DESC"], 
-        "limit": 10
-    };
-    
-    var filterLogisticaInfraestrutura = {
-      "where": {
-        "Section": {"inq": ["LOGISTICA E INFRA-ESTRUTURA", "INFRAESTRUTURA E LOGISTICA"]}}, 
-        "order": ["LikesCount DESC", "CommentsCount DESC"], 
-        "limit": 10
-    };
-    
-    var filterPerfisOficiais = {
-      "where": {
-        "Section": {"inq": ["PERFIS OFICIAIS"]}}, 
+        "Section": {"inq": ["PERFIS DE MÍDIA - Perfis"]}}, 
         "order": ["LikesCount DESC", "CommentsCount DESC"], 
         "limit": 10
     };
 
     var urls = [
-      { id: "perfil-questoes-pedagogicas", title: "Perfil de Questões Pedagógicas", uri: facebookpiUrl + JSON.stringify(filterPerfilQuestoesPedagogicas) },
-      { id: "questoes-pedagogicas", title: "Questões Pedagógicas", uri: facebookpiUrl + JSON.stringify(filterQuestoesPedagogicas) },
-      { id: "sentimentos", title: "Sentimentos", uri: facebookpiUrl + JSON.stringify(filterSentimentos) },
-      { id: "cobertura-midia", title: "Cobertura da Mídia", uri: facebookpiUrl + JSON.stringify(filterCoberturaMidia) },
-      { id: "orientacoes", title: "Orientações", uri: facebookpiUrl + JSON.stringify(filterOrientacoes) },
-      { id: "oficial", title: "Oficial", uri: facebookpiUrl + JSON.stringify(filterOficial) },
-      { id: "rumores", title: "Rumores", uri: facebookpiUrl + JSON.stringify(filterRumores) },
-      { id: "Logistica", title: "Logistica", uri: facebookpiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
-      { id: "perfis-oficiais", title: "Perfis Oficiais", uri: facebookpiUrl + JSON.stringify(filterPerfisOficiais) }
+      { id: "humor", title: "Humor", uri: facebookpiUrl + JSON.stringify(filterHumor) },
+      { id: "educacional", title: "Educacional", uri: facebookpiUrl + JSON.stringify(filterEducacional) },
+      { id: "institucional", title: "Institucional", uri: facebookpiUrl + JSON.stringify(filterInstitucional) },
+      { id: "midia", title: "Mídia", uri: facebookpiUrl + JSON.stringify(filterMidia) }
     ];
 
     var parallel = new Parallel();
