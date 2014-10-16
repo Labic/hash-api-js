@@ -28,7 +28,12 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
 var moment = require('moment');
-moment.locale('pt-BR');
+moment.locale('pt-BR', {
+	relativeTime: {
+		past: '%s'
+	}
+});
+
 app.locals.moment = moment;
 
 app.locals.autolinker = autolinker;

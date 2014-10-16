@@ -1,5 +1,9 @@
 $(document).ready(function () {	
-    moment.locale('pt-BR');
+    moment.locale('pt-BR', {
+        relativeTime: {
+            past: '%s'
+        }
+    });
     
     $('.scrollbar').height($(window).height() - 130);
     var autolinker = new Autolinker({truncate: 20});
@@ -16,8 +20,8 @@ $(document).ready(function () {
         });
     }
 
-    $.template('tweetUpdateTemplate', '<div class="p-t-10 p-b-5 b-b b-grey"><div class="post"><div class="user-profile-pic-wrapper"><div class="user-profile-pic-2x white-border"><img width="45" height="45" src="${status.user.profile_image_url_https}" alt="${status.user.screen_name}"></div></div><div class="info-wrapper inline"><div class="info text-black"><strong class="user-info"><a href="https://twitter.com/${status.user.screen_name}" target="_blank"> @${status.user.screen_name}</a></strong> - <span class="user-followers"> ${status.user.followers_count}Seguidores </span><p class="text"> ${status.text}</p><p class="muted small-text"> ${status.created_at}| ${rts} Retweets </p></div></div><div class="clearfix"></div></div></div>');
-    $.template('facebookUpdateTemplate', '<div class="p-t-10 p-b-5 b-b b-grey"><div class="post"><div class="user-profile-pic-wrapper"><div class="user-profile-pic-2x white-border"><a href="#"><img src="${Profile}", alt="${UserName}" width="45" height="45"></a></div></div><div class="info-wrapper inline"><div class="info text-black"><strong> ${UserName}</strong><p class="readmore"> ${Description}</p><p class="readmore"> ${Message}</p><p class="readmore"> ${Caption}</p><span class="muted small-text"> ${CreatedTime}| ${LikesCount} Likes | ${CommentsCount} Comentários | ${SharesCount} Compartilhamentos </span></div></div><div class="clearfix"></div></div></div>');
+    $.template('tweetUpdateTemplate', '<div class="p-t-10 p-b-5 b-b b-grey"><div class="post"><div class="user-profile-pic-wrapper"><div class="user-profile-pic-2x white-border"><img width="45" height="45" src="${status.user.profile_image_url_https}" alt="${status.user.screen_name}"></div></div><div class="info-wrapper inline"><div class="info text-black"><strong class="user-info"><a href="https://twitter.com/${status.user.screen_name}" target="_blank"> @${status.user.screen_name}</a></strong> - <span class="user-followers"> ${status.user.followers_count}Seguidores </span><p class="text"> ${status.text}</p><a href="https://twitter.com/${status.user.screen_name}/status/${status.id_str}" target="_blank" class="muted small-text">${status.created_at} | ${rts} Retweets</a></div></div><div class="clearfix"></div></div></div>');
+    $.template('facebookUpdateTemplate', '<div class="p-t-10 p-b-5 b-b b-grey"><div class="post"><div class="user-profile-pic-wrapper"><div class="user-profile-pic-2x white-border"><a href="#"><img src="${Profile}", alt="${UserName}" width="45" height="45"></a></div></div><div class="info-wrapper inline"><div class="info text-black"><strong> ${UserName}</strong><p class="readmore"> ${Description}</p><p class="readmore"> ${Message}</p><p class="readmore"> ${Caption}</p><span class="muted small-text">${CreatedTime} | ${LikesCount} Likes | ${CommentsCount} Comentários | ${SharesCount} Compartilhamentos</span></div></div><div class="clearfix"></div></div></div>');
 
     $('.scrollbar').each(function () {
         var updatesToLoad = this;

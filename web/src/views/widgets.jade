@@ -55,7 +55,7 @@ mixin widgetTweetsUpdates(options, tweets)
 												| #{tweet.status.user.followers_count} Seguidores
 											p.text
 												| #{tweet.status.text.replace(/\n/g, '<br />')}
-											span.muted.small-text
+											a.muted.small-text(href="https://twitter.com/#{tweet.status.user.screen_name}/status/#{tweet.status.id_str}", target="_blank")
 												|  a #{moment(tweet.status.created_at).fromNow()} | #{tweet.rts} Retweets 
 											//-a(href='#')
 												i.fa.fa-star-o.pull-right
