@@ -4,7 +4,7 @@
 // get all the tools we need
 var express  = require('express');
 var app      = express();
-var port     = process.env.PORT || 8080;
+var port     = process.env.PORT || 8081;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash 	 = require('connect-flash');
@@ -29,7 +29,6 @@ app.use(bodyParser()); // get information from html forms
 
 var moment = require('moment');
 moment.locale('pt-BR');
-
 app.locals.moment = moment;
 
 app.locals.autolinker = autolinker;
