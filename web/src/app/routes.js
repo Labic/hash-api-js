@@ -596,18 +596,18 @@ app.get('/twitter/estados/norte', function(req, res) {
   // Twitter Gráficos ====================
   // =====================================
   // show the login form
-  app.get('/twitter/graficos', function (req, res) {
+  app.get('/twitter/estatisticas', function (req, res) {
     // render the page and pass in any flash data if it exists
-    res.render('twitter-graficos', { route: req.route, title: 'Gráficos do Twitter - App ENEM | Inep' }); 
+    res.render('twitter-estatisticas', { route: req.route, title: 'Gráficos do Twitter - App ENEM | Inep' }); 
   });
   
   // =====================================
   // Facebook Gráficos ===================
   // =====================================
   // show the login form
-  app.get('/facebook/graficos', function (req, res) {
+  app.get('/facebook/estatisticas', function (req, res) {
     // render the page and pass in any flash data if it exists
-    res.render('facebook-graficos', { route: req.route, title: 'Gráficos do Facebook - App ENEM | Inep' }); 
+    res.render('facebook-estatisticas', { route: req.route, title: 'Gráficos do Facebook - App ENEM | Inep' }); 
   });
   
   // =====================================

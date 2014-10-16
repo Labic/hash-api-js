@@ -30,35 +30,35 @@
 						if (route.path === '/twitter/secoes/hits')
 							li.active
 								a(href="/twitter/secoes/hits")
-									| Seção 1 - Hits
+									| Hits
 						else
 							li
 								a(href="/twitter/secoes/hits")
-									| Seção 1 - Hits
+									| Hits
 
 						if (route.path === '/twitter/secoes/publico-geral')
 							li.active
 								a(href="/twitter/secoes/publico-geral")
-									| Seção 2- Público Geral
+									| Público Geral
 						else
 							li
 								a(href="/twitter/secoes/publico-geral")
-									| Seção 2 - Público Geral
+									| Público Geral
 
 						if (route.path === '/twitter/secoes/midia')
 							li.active
 								a(href="/twitter/secoes/midia")
-									| Seção 3 - Mídia
+									| Mídia
 						else
 							li
 								a(href="/twitter/secoes/midia")
-									| Seção 3 - Mídia
+									| Mídia
 
 						if (route.path.indexOf('/twitter/estados') > -1)
 							li.open
 								a(href="/twitter/estados")
 									span.title
-										| Seção 4 - Estados
+										| Estados
 									span.arrow.open
 								ul.sub-menu
 									if (route.path === '/twitter/estados/norte')
@@ -128,14 +128,14 @@
 										a(href="/twitter/estados/sul")
 											| Sul
 
-						if (route.path === '/twitter/graficos')
+						if (route.path === '/twitter/estatisticas')
 							li.active
-								a(href="/twitter/graficos")
-									| Gráficos
+								a(href="/twitter/estatisticas")
+									| Estatísticas
 						else
 							li
-								a(href="/twitter/graficos")
-									| Gráficos
+								a(href="/twitter/estatisticas")
+									| Estatísticas
 			else
 				li
 					a(href="#")
@@ -146,17 +146,17 @@
 					ul.sub-menu
 						li
 							a(href="/twitter/secoes/hits")
-								| Seção 1 - Hits
+								| Hits
 						li
 							a(href="/twitter/secoes/publico-geral")
-								| Seção 2 - Público Geral
+								| Público Geral
 						li
 							a(href="/twitter/secoes/midia")
-								| Seção 3 - Mídia
+								| Mídia
 						li
 							a(href="#")
 								span.title
-									| Seção 4 - Estados
+									| Estados
 								span.arrow
 							ul.sub-menu
 								li
@@ -175,10 +175,10 @@
 									a(href="/twitter/estados/sul")
 										| Sul
 						li
-							a(href="/twitter/graficos")
-								| Gráficos
+							a(href="/twitter/estatisticas")
+								| Estatísticas
 
-			if (route.path == '/facebook/secoes' || route.path == '/facebook/graficos')
+			if (route.path == '/facebook/secoes' || route.path == '/facebook/estatisticas')
 				li.start.active
 					a(href="#")
 						i.fa.fa-facebook
@@ -195,14 +195,14 @@
 								a(href="/facebook/secoes")
 									| Seções
 
-						//-if (route.path === '/facebook/graficos')
+						//-if (route.path === '/facebook/estatisticas')
 							li.active
-								a(href="/facebook/graficos")
-									| Gráficos
+								a(href="/facebook/estatisticas")
+									| Estatísticas
 						//-else
 							li
-								a(href="/facebook/graficos")
-									| Gráficos
+								a(href="/facebook/estatisticas")
+									| Estatísticas
 			else
 				li
 					a(href="#")
@@ -215,8 +215,8 @@
 							a(href="/facebook/secoes")
 								| Seções
 						//-li
-							a(href="/facebook/graficos")
-								| Gráficos
+							a(href="/facebook/estatisticas")
+								| Estatísticas
 			.clearfix
 	// END SIDEBAR MENU
 	
