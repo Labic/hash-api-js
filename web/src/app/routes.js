@@ -36,6 +36,55 @@ module.exports = function(app, passport) {
   // Twitter =============================
   // =====================================
   app.get('/twitter/secoes/hits', function(req, res) {
+    var filterHumor = {
+      "where": {
+        "categories": {"inq": ["humor"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterEducacional = {
+      "where": {
+        "categories": {"inq": ["educacional"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var filterInstitucional = {
+      "where": {
+        "categories": {"inq": ["institucional"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
+    var urls = [
+      { id: "humor", title: "Humor", uri: tweetApiUrl + JSON.stringify(filterHumor) },
+      { id: "educacional", title: "Educacional", uri: tweetApiUrl + JSON.stringify(filterEducacional) },
+      { id: "institucional", title: "Institucional", uri: tweetApiUrl + JSON.stringify(filterInstitucional) }
+    ];
+
+    var parallel = new Parallel();
+
+    urls.forEach(function (url) {
+      parallel.timeout(10000).add(function (done) {
+        request.get({url: url.uri, json: true}, function(err, res) {
+          res.body.url = url.uri;
+          res.body.categorieId = url.id;
+          res.body.categorieTitle = url.title;
+          done(err, res.body);
+        })
+      })
+    });
+
+    parallel.done(function (err, tweetsCategoriesQuery) {
+      res.render('twitter-secao', { route: req.route, title: 'Twitter por Seções - App ENEM | Inep', tweetsCategories: tweetsCategoriesQuery });
+    });
+  });
+  
+  // =====================================
+  // Twitter =============================
+  // =====================================
+  app.get('/twitter/secoes/publico-geral', function(req, res) {
     var filterOrientacoes = {
       "where": {
         "categories": {"inq": ["ORIENTACOES"]}}, 

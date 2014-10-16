@@ -36,6 +36,15 @@
 								a(href="/twitter/secoes/hits")
 									| Hits
 
+						if (route.path === '/twitter/secoes/publico-geral')
+							li.active
+								a(href="/twitter/secoes/publico-geral")
+									| Público Geral
+						else
+							li
+								a(href="/twitter/secoes/publico-geral")
+									| Público Geral
+
 						if (route.path === '/twitter/secoes/midia')
 							li.active
 								a(href="/twitter/secoes/midia")
@@ -138,6 +147,9 @@
 						li
 							a(href="/twitter/secoes/hits")
 								| Hits
+						li
+							a(href="/twitter/secoes/publico-geral")
+								| Público Geral
 						li
 							a(href="/twitter/secoes/midia")
 								| Mídia
