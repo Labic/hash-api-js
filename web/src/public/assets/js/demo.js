@@ -1,9 +1,5 @@
 $(document).ready(function () {	
-    moment.locale('pt-BR', {
-        relativeTime: {
-            past: '%s'
-        }
-    });
+    moment.locale('pt-BR');
     
     $('.scrollbar').height($(window).height() - 130);
     var autolinker = new Autolinker({truncate: 20});
