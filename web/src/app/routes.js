@@ -337,7 +337,7 @@ module.exports = function(app, passport) {
     };
 
     var urls = [
-      { id: "brasilia", title: "Brasília", uri: tweetApiUrl + JSON.stringify(filterMT) },
+      { id: "brasilia", title: "Brasília", uri: tweetApiUrl + JSON.stringify(filterBrasilia) },
       { id: "mt", title: "Mato Grosso", uri: tweetApiUrl + JSON.stringify(filterMT) },
       { id: "rs", title: "Mato Grosso do Sul", uri: tweetApiUrl + JSON.stringify(filterRS) },
       { id: "go", title: "Goiás", uri: tweetApiUrl + JSON.stringify(filterGO) }
