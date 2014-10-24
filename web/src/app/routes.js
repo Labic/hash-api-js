@@ -36,15 +36,15 @@ module.exports = function(app, passport) {
   // Twitter =============================
   // =====================================
   app.get('/twitter/secoes/hits', function(req, res) {
-    var filterEducacional = {
+    var filterTopTweets = {
       "where": {
-        "categories": {"inq": ["educacional"]}}, 
+        "categories": {"inq": ["topTweets"]}}, 
         "order": "rts DESC", 
         "limit": 10
     };
 
     var urls = [
-      { id: "educacional", title: "Educacional", uri: tweetApiUrl + JSON.stringify(filterEducacional) }
+      { id: "top-tweets", title: "Top Tweets", uri: tweetApiUrl + JSON.stringify(filterTopTweets) }
     ];
 
     var parallel = new Parallel();
@@ -106,7 +106,7 @@ module.exports = function(app, passport) {
 
     var filterHumor = {
       "where": {
-        "categories": {"inq": ["humor"]}}, 
+        "categories": {"inq": ["HUMOR"]}}, 
         "order": "rts DESC", 
         "limit": 10
     };
@@ -588,7 +588,7 @@ app.get('/twitter/estados/norte', function(req, res) {
   // Twitter Gráficos ====================
   // =====================================
   // show the login form
-  app.get('/twitter/estatisticas', function (req, res) {
+  app.get('/twitter/analytics', function (req, res) {
     // render the page and pass in any flash data if it exists
     res.render('twitter-estatisticas', { route: req.route, title: 'Gráficos do Twitter - App ENEM | Inep' }); 
   });
@@ -597,7 +597,7 @@ app.get('/twitter/estados/norte', function(req, res) {
   // Facebook Gráficos ===================
   // =====================================
   // show the login form
-  app.get('/facebook/estatisticas', function (req, res) {
+  app.get('/facebook/analytics', function (req, res) {
     // render the page and pass in any flash data if it exists
     res.render('facebook-estatisticas', { route: req.route, title: 'Gráficos do Facebook - App ENEM | Inep' }); 
   });
