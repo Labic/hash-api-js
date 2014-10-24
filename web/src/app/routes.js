@@ -36,13 +36,6 @@ module.exports = function(app, passport) {
   // Twitter =============================
   // =====================================
   app.get('/twitter/secoes/hits', function(req, res) {
-    var filterHumor = {
-      "where": {
-        "categories": {"inq": ["humor"]}}, 
-        "order": "rts DESC", 
-        "limit": 10
-    };
-
     var filterEducacional = {
       "where": {
         "categories": {"inq": ["educacional"]}}, 
@@ -50,17 +43,8 @@ module.exports = function(app, passport) {
         "limit": 10
     };
 
-    var filterInstitucional = {
-      "where": {
-        "categories": {"inq": ["institucional"]}}, 
-        "order": "rts DESC", 
-        "limit": 10
-    };
-
     var urls = [
-      { id: "humor", title: "Humor", uri: tweetApiUrl + JSON.stringify(filterHumor) },
-      { id: "educacional", title: "Educacional", uri: tweetApiUrl + JSON.stringify(filterEducacional) },
-      { id: "institucional", title: "Institucional", uri: tweetApiUrl + JSON.stringify(filterInstitucional) }
+      { id: "educacional", title: "Educacional", uri: tweetApiUrl + JSON.stringify(filterEducacional) }
     ];
 
     var parallel = new Parallel();
@@ -85,27 +69,27 @@ module.exports = function(app, passport) {
   // Twitter =============================
   // =====================================
   app.get('/twitter/secoes/publico-geral', function(req, res) {
-    var filterOrientacoes = {
+    var filterDicasOrientacoes = {
       "where": {
         "categories": {"inq": ["ORIENTACOES"]}}, 
         "order": "rts DESC", 
         "limit": 10
     };
-
-    var filterQuestoesPedagogicas = {
-      "where": {
-        "categories": {"inq": ["QUESTOES_PEDAGOGICAS"]}}, 
-        "order": "rts DESC", 
-        "limit": 10
-    };
-
+    
     var filterInfraestruturaLogistica = {
       "where": {
         "categories": {"inq": ["INFRAESTRUTURA_E_LOGISTICA"]}}, 
         "order": "rts DESC", 
         "limit": 10
     };
-
+    
+    var filterConteudoProva = {
+      "where": {
+        "categories": {"inq": ["PROVA"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+    
     var filterRumores = {
       "where": {
         "categories": {"inq": ["RUMORES"]}}, 
@@ -120,12 +104,20 @@ module.exports = function(app, passport) {
         "limit": 10
     };
 
+    var filterHumor = {
+      "where": {
+        "categories": {"inq": ["humor"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
     var urls = [
-      { id: "orientacoes", title: "Orientações", uri: tweetApiUrl + JSON.stringify(filterOrientacoes) },
-      { id: "questoes-pedagogicas", title: "Questões Pedagógicas", uri: tweetApiUrl + JSON.stringify(filterQuestoesPedagogicas) },
+      { id: "dicas-orientacoes", title: "Dicas & Orientações", uri: tweetApiUrl + JSON.stringify(filterDicasOrientacoes) },
       { id: "infraestrutura-logistica", title: "Infraestrutura & Logistica", uri: tweetApiUrl + JSON.stringify(filterInfraestruturaLogistica) },
+      { id: "conteudo-prova", title: "Conteúdo da Prova", uri: tweetApiUrl + JSON.stringify(filterConteudoProva) },
       { id: "rumores", title: "Rumores", uri: tweetApiUrl + JSON.stringify(filterRumores) },
-      { id: "sentimentos", title: "Sentimentos", uri: tweetApiUrl + JSON.stringify(filterSentimentos) }
+      { id: "sentimentos", title: "Sentimentos", uri: tweetApiUrl + JSON.stringify(filterSentimentos) },
+      { id: "humor", title: "Humor", uri: tweetApiUrl + JSON.stringify(filterHumor) }
     ];
 
     var parallel = new Parallel();
@@ -149,24 +141,17 @@ module.exports = function(app, passport) {
   // =====================================
   // Twitter =============================
   // =====================================
-  app.get('/twitter/secoes/midia', function(req, res) {
-    var filterOficial = {
+  app.get('/twitter/secoes/repercussao-midiatica', function(req, res) {
+    var filterNoticiasPopulares = {
       "where": {
-        "categories": {"inq": ["OFICIAL"]}}, 
+        "categories": {"inq": ["NOTICIAS"]}}, 
         "order": "rts DESC", 
         "limit": 10
     };
 
-    var filterCoberturaMidia = {
+    var filterConteudoProva = {
       "where": {
-        "categories": {"inq": ["COBERTURA_DE_MIDIA"]}}, 
-        "order": "rts DESC", 
-        "limit": 10
-    };
-
-    var filterQuestoesPedagogicas = {
-      "where": {
-        "categories": {"inq": ["PEDAGOGICAS_QUESTOES"]}}, 
+        "categories": {"inq": ["PROVA"]}}, 
         "order": "rts DESC", 
         "limit": 10
     };
@@ -178,11 +163,18 @@ module.exports = function(app, passport) {
         "limit": 10
     };
 
+    var filterCanaisEspecializados = {
+      "where": {
+        "categories": {"inq": ["CANAIS"]}}, 
+        "order": "rts DESC", 
+        "limit": 10
+    };
+
     var urls = [
-      { id: "oficial", title: "Oficial", uri: tweetApiUrl + JSON.stringify(filterOficial) },
-      { id: "cobertura-midia", title: "Cobertura de Mídia", uri: tweetApiUrl + JSON.stringify(filterCoberturaMidia) },
-      { id: "questoes-pedagogicas", title: "Questões Pedagógicas", uri: tweetApiUrl + JSON.stringify(filterQuestoesPedagogicas) },
-      { id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) }
+      { id: "noticias-populares", title: "Notícias Mais Populares", uri: tweetApiUrl + JSON.stringify(filterNoticiasPopulares) },
+      { id: "conteudo-prova", title: "Conteúdo da Prova", uri: tweetApiUrl + JSON.stringify(filterConteudoProva) },
+      { id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
+      { id: "canais-especializados", title: "Canais Especializados", uri: tweetApiUrl + JSON.stringify(filterCanaisEspecializados) }
     ];
 
     var parallel = new Parallel();
