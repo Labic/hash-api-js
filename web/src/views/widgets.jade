@@ -31,45 +31,44 @@ mixin widgetProgressBar(title, color, value, symbol, position, progress_bar, val
 mixin widgetTweetsUpdates(options, tweets)
 	.row.tiles-container
 		.col-md-12
-			.m-l-10
-				.tiles.grey.p-t-10.p-b-10.p-l-25
-					h5.text-black.semi-bold
-						| #{options.title}
-				.scrollbar.tiles.white(data-uri='#{tweets.url}', data-skip='10', data-loading='false')
-					if tweets
-						each tweet in tweets
-							.p-t-10.p-b-5.b-b.b-grey
-								.post
-									.user-profile-pic-wrapper
-										.user-profile-pic-2x.white-border
-											a(href='https://twitter.com/#{tweet.status.user.screen_name}', 
-											  target='_blank')
-												img(width='45', height='45', src='#{tweet.status.user.profile_image_url_https}', alt='#{tweet.status.user.screen_name}')
-									.info-wrapper.inline
-										.info.text-black
-											strong.user-info
-												a(href='https://twitter.com/#{tweet.status.user.screen_name}', target='_blank')
-													| @#{tweet.status.user.screen_name} 
-											| - 
-											span.user-followers
-												| #{tweet.status.user.followers_count} Seguidores
-											p.text
-												| #{tweet.status.text.replace(/\n/g, '<br />')}
-											a.muted.small-text(href="https://twitter.com/#{tweet.status.user.screen_name}/status/#{tweet.status.id_str}", target="_blank")
-												|  #{moment(tweet.status.created_at).fromNow()} | #{tweet.rts} Retweets 
-											//-a(href='#')
-												i.fa.fa-star-o.pull-right
-									//-	.clearfix
-									//-.inline.pull-right
-									//-	.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
-									//-		i.fa.fa-heart-o.fa-lg
-									//-	.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
-									//-		i.fa.fa-comment-o.fa-lg
-									.clearfix
-					else
-						//- TODO: Fazer tradução
-						.p-t-10.p-b-5.b-b.b-grey.bg-danger
-								| Sem Tweets a serem exibidos. :-(
+			.tiles.grey.p-t-10.p-b-10.p-l-25
+				h5.text-black.semi-bold
+					| #{options.title}
+			.scrollbar.tiles.white(data-uri='#{tweets.url}', data-skip='20', data-loading='false')
+				if tweets
+					each tweet in tweets
+						.p-t-10.p-b-5.b-b.b-grey
+							.post
+								.user-profile-pic-wrapper
+									.user-profile-pic-2x.white-border
+										a(href='https://twitter.com/#{tweet.status.user.screen_name}', 
+										  target='_blank')
+											img(width='45', height='45', src='#{tweet.status.user.profile_image_url_https}', alt='#{tweet.status.user.screen_name}')
+								.info-wrapper.inline
+									.info.text-black
+										strong.user-info
+											a(href='https://twitter.com/#{tweet.status.user.screen_name}', target='_blank')
+												| @#{tweet.status.user.screen_name} 
+										| - 
+										span.user-followers
+											| #{tweet.status.user.followers_count} Seguidores
+										p.text
+											| !{autolinker.link(tweet.status.text.replace(/\n/g, '<br />'))}
+										a.muted.small-text(href="https://twitter.com/#{tweet.status.user.screen_name}/status/#{tweet.status.id_str}", target="_blank")
+											|  #{moment(tweet.status.created_at).fromNow()} | #{tweet.rts} Retweets 
+										//-a(href='#')
+											i.fa.fa-star-o.pull-right
+								//-	.clearfix
+								//-.inline.pull-right
+								//-	.tiles.text-white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+								//-		i.fa.fa-heart-o.fa-lg
+								//-	.tiles.white.p-t-5.p-l-5.p-b-5.p-r-5.inline
+								//-		i.fa.fa-comment-o.fa-lg
+								.clearfix
+				else
+					//- TODO: Fazer tradução
+					.p-t-10.p-b-5.b-b.b-grey.bg-danger
+							| Sem Tweets a serem exibidos. :-(
 //- ========================================================================================
 //- Facebook Posts =========================================================================
 //- ========================================================================================

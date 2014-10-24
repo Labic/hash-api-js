@@ -2,6 +2,8 @@ var request = require('request');
 var Parallel = require('node-parallel');
 var slug = require('slug');
 
+var DOCUMENTS_LIMIT = 20;
+
 var tweetApiUrl = 'http://104.131.228.31:3000/api/Tweets?filter=';
 var facebookpiUrl = 'http://104.131.228.31:3000/api/FacebookPosts?filter=';
 
@@ -40,7 +42,7 @@ module.exports = function(app, passport) {
       "where": {
         "categories": {"inq": ["topTweets"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var urls = [
@@ -73,42 +75,42 @@ module.exports = function(app, passport) {
       "where": {
         "categories": {"inq": ["ORIENTACOES"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
     
     var filterInfraestruturaLogistica = {
       "where": {
         "categories": {"inq": ["INFRAESTRUTURA_E_LOGISTICA"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
     
     var filterConteudoProva = {
       "where": {
         "categories": {"inq": ["PROVA"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
     
     var filterRumores = {
       "where": {
         "categories": {"inq": ["RUMORES"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterSentimentos = {
       "where": {
         "categories": {"inq": ["SENTIMENTOS"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterHumor = {
       "where": {
         "categories": {"inq": ["HUMOR"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var urls = [
@@ -146,28 +148,28 @@ module.exports = function(app, passport) {
       "where": {
         "categories": {"inq": ["NOTICIAS"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterConteudoProva = {
       "where": {
         "categories": {"inq": ["PROVA"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterLogisticaInfraestrutura = {
       "where": {
         "categories": {"inq": ["LOGISTICA_E_INFRA"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterCanaisEspecializados = {
       "where": {
         "categories": {"inq": ["CANAIS"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var urls = [
@@ -201,28 +203,28 @@ module.exports = function(app, passport) {
       "where": {
         "categories": {"inq": ["Sao Paulo"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterRJ = {
       "where": {
         "categories": {"inq": ["Rio de Janeiro"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterES = {
       "where": {
         "categories": {"inq": ["Espirito Santo"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterMG = {
       "where": {
         "categories": {"inq": ["Minas Gerais"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var urls = [
@@ -257,21 +259,21 @@ module.exports = function(app, passport) {
       "where": {
         "categories": {"inq": ["Parana"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterSC = {
       "where": {
         "categories": {"inq": ["Santa Catarina"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterRS = {
       "where": {
         "categories": {"inq": ["Rio Grande do Sul"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var urls = [
@@ -304,28 +306,28 @@ module.exports = function(app, passport) {
       "where": {
         "categories": {"inq": ["Brasilia"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterMT = {
       "where": {
         "categories": {"inq": ["Mato Grosso"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterRS = {
       "where": {
         "categories": {"inq": ["Mato Grosso do Sul"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterGO = {
       "where": {
         "categories": {"inq": ["Goias"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var urls = [
@@ -360,63 +362,63 @@ module.exports = function(app, passport) {
       "where": {
         "categories": {"inq": ["Maranhao"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterPI = {
       "where": {
         "categories": {"inq": ["Piaui"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterCE = {
       "where": {
         "categories": {"inq": ["Ceara"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterRN = {
       "where": {
         "categories": {"inq": ["Rio Grande do Norte"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterPB = {
       "where": {
         "categories": {"inq": ["Paraiba"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterPE = {
       "where": {
         "categories": {"inq": ["Pernambuco"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterAL = {
       "where": {
         "categories": {"inq": ["Alagoas"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterSE = {
       "where": {
         "categories": {"inq": ["Sergipe"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterBA = {
       "where": {
         "categories": {"inq": ["Bahia"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var urls = [
@@ -456,49 +458,49 @@ app.get('/twitter/estados/norte', function(req, res) {
       "where": {
         "categories": {"inq": ["Amazonas"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterAC = {
       "where": {
         "categories": {"inq": ["Acre"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterRR = {
       "where": {
         "categories": {"inq": ["Roraima"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterRO = {
       "where": {
         "categories": {"inq": ["Rondonia"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterAP = {
       "where": {
         "categories": {"inq": ["Amapa"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterPA = {
       "where": {
         "categories": {"inq": ["Para"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var filterTO = {
       "where": {
         "categories": {"inq": ["Tocantins"]}}, 
         "order": "rts DESC", 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var urls = [
@@ -535,28 +537,28 @@ app.get('/twitter/estados/norte', function(req, res) {
       "where": {
         "Section": {"inq": ["PERFIS DE HUMOR - Perfis"]}}, 
         "order": ["LikesCount DESC", "CommentsCount DESC"], 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
     
     var filterEducacional = {
       "where": {
         "Section": {"inq": ["PERFIS EDUCACIONAIS - Perfis"]}}, 
         "order": ["LikesCount DESC", "CommentsCount DESC"], 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
     
     var filterInstitucional = {
       "where": {
         "Section": {"inq": ["PERFIS INSTITUCIONAIS - Perfis"]}}, 
         "order": ["LikesCount DESC", "CommentsCount DESC"], 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
     
     var filterMidia = {
       "where": {
         "Section": {"inq": ["PERFIS DE MÍDIA - Perfis"]}}, 
         "order": ["LikesCount DESC", "CommentsCount DESC"], 
-        "limit": 10
+        "limit": DOCUMENTS_LIMIT
     };
 
     var urls = [
