@@ -82,9 +82,29 @@ mixin widgetMentionList(options, mentions)
 			.scrollbar.tiles.white(data-uri='#{mentions.url}', data-skip='20', data-loading='false')
 				if mentions
 					ol.mentions
-						each mention in mentions
+						each mention in mentions[0].MENTIONS
 							li
 								| #{mention.key} - #{mention.value}
+				else
+					//- TODO: Fazer tradução
+					.p-t-10.p-b-5.b-b.b-grey.bg-danger
+							| Sem mennções a serem exibidas. :-(
+
+//- ========================================================================================
+//- Tweets Updates =========================================================================
+//- ========================================================================================
+mixin widgetUrlsList(options, urls)
+	.row.tiles-container
+		.col-md-12
+			.tiles.grey.p-t-10.p-b-10.p-l-25
+				h5.text-black.semi-bold
+					| #{options.title}
+			.scrollbar.tiles.white(data-uri='#{urls.url}', data-skip='20', data-loading='false')
+				if urls
+					ol.mentions
+						each url in urls[0].URL
+							li
+								| #{url.key} - #{url.value}
 				else
 					//- TODO: Fazer tradução
 					.p-t-10.p-b-5.b-b.b-grey.bg-danger

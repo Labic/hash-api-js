@@ -6,8 +6,8 @@ var DOCUMENTS_LIMIT = 20;
 
 var tweetApiUrl = 'http://104.131.228.31:3000/api/Tweets?filter=';
 var facebookApiUrl = 'http://104.131.228.31:3000/api/FacebookPosts?filter=';
-var tweetTopsApiUrl = 'http://104.131.228.31:3000/api/Tops?'
-var tweetTopDiaryApiUrl = 'http://104.131.228.31:3000/api/TopDiaries?'
+var tweetTopsApiUrl = 'http://104.131.228.31:3000/api/Tops?filter='
+var tweetTopDiaryApiUrl = 'http://104.131.228.31:3000/api/TopDiaries?filter='
 
 // app/routes.js
 module.exports = function(app, passport) {
@@ -47,46 +47,18 @@ module.exports = function(app, passport) {
         "limit": DOCUMENTS_LIMIT
     };
     
-    var filterTopMentions = {
-      "filter": {
-        "fields": {
-          "MENTIONS": true,
-          "URL": false
-        }
-      }
-    };
+    var filterTopURL = '{"fields": { "MENTIONS": false, "URL": true }}';
     
-    var filterTopURL = {
-      "filter": {
-        "fields": {
-          "MENTIONS": false,
-          "URL": true
-        }
-      }
-    };
+    var filterTopMentions = '{"fields": { "MENTIONS": true, "URL": false }}';
     
-    var filterTopDiaryURL = {
-      "filter": {
-        "fields": {
-          "MENTIONS": false,
-          "URL": true
-        }
-      }
-    };
+    var filterTopDiaryMentions ='{"fields": { "MENTIONS": true, "URL": false }}';
     
-    var filterTopDiaryMentions = {
-      "filter": {
-        "fields": {
-          "MENTIONS": true,
-          "URL": false
-        }
-      }
-    };
+    var filterTopDiaryURL = '{"fields": { "MENTIONS": false, "URL": true }}';
 
     var urls = [
       { id: "top-tweets", title: "Top Tweets", uri: tweetApiUrl + JSON.stringify(filterTopTweets) },
-      { id: "top-urls", title: "Top URLS", uri: tweetTopDiaryApiUrl + JSON.stringify(filterTopDiaryURL) },
-      { id: "top-mencoes", title: "Top Menções", uri: tweetTopDiaryApiUrl + JSON.stringify(filterTopDiaryMentions) }
+      { id: "top-mencoes", title: "Top Menções", uri: tweetTopDiaryApiUrl + filterTopDiaryMentions },
+      { id: "top-urls", title: "Top URLS", uri: tweetTopDiaryApiUrl + filterTopDiaryURL }
     ];
 
     var parallel = new Parallel();
@@ -97,7 +69,7 @@ module.exports = function(app, passport) {
           res.body.url = url.uri;
           res.body.categorieId = url.id;
           res.body.categorieTitle = url.title;
-          console.log(res.body);
+          
           done(err, res.body);
         })
       })
