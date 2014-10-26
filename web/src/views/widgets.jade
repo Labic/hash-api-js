@@ -69,6 +69,27 @@ mixin widgetTweetsUpdates(options, tweets)
 					//- TODO: Fazer tradução
 					.p-t-10.p-b-5.b-b.b-grey.bg-danger
 							| Sem Tweets a serem exibidos. :-(
+
+//- ========================================================================================
+//- Tweets Updates =========================================================================
+//- ========================================================================================
+mixin widgetMentionList(options, mentions)
+	.row.tiles-container
+		.col-md-12
+			.tiles.grey.p-t-10.p-b-10.p-l-25
+				h5.text-black.semi-bold
+					| #{options.title}
+			.scrollbar.tiles.white(data-uri='#{mentions.url}', data-skip='20', data-loading='false')
+				if mentions
+					ol.mentions
+						each mention in mentions
+							li
+								| #{mention.key} - #{mention.value}
+				else
+					//- TODO: Fazer tradução
+					.p-t-10.p-b-5.b-b.b-grey.bg-danger
+							| Sem mennções a serem exibidas. :-(
+
 //- ========================================================================================
 //- Facebook Posts =========================================================================
 //- ========================================================================================

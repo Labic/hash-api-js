@@ -5576,6 +5576,7 @@ form legend,
 }
 .tiles p {
   margin: 0 0 5px;
+  word-break: break-word;
 }
 .tiles hr {
   margin: 10px 0px;
