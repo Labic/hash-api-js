@@ -104,7 +104,9 @@ mixin widgetUrlsList(options, urls)
 					ol.mentions
 						each url in urls[0].URL
 							li
-								| #{url.key} - #{url.value}
+								a(href='#{url.key}', target="_blank")
+									| #{url.key} 
+								| - #{url.value}
 				else
 					//- TODO: Fazer tradução
 					.p-t-10.p-b-5.b-b.b-grey.bg-danger
