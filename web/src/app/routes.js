@@ -197,7 +197,7 @@ module.exports = function(app, passport) {
       //{ id: "conteudo-prova", title: "Conteúdo da Prova", uri: tweetApiUrl + JSON.stringify(filterConteudoProva) },
       //{ id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
       { id: "canais-especializados", title: "Canais Especializados", uri: tweetApiUrl + JSON.stringify(filterCanaisEspecializados) },
-      { id: "celebridades", title: "Celibridades", uri: tweetApiUrl + JSON.stringify(filterCelebridades) }
+      { id: "celebridades", title: "Celebridades", uri: tweetApiUrl + JSON.stringify(filterCelebridades) }
     ];
 
     var parallel = new Parallel();
