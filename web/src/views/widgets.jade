@@ -69,6 +69,57 @@ mixin widgetTweetsUpdates(options, tweets)
 					//- TODO: Fazer tradução
 					.p-t-10.p-b-5.b-b.b-grey.bg-danger
 							| Sem Tweets a serem exibidos. :-(
+
+//- ========================================================================================
+//- Tweets Updates =========================================================================
+//- ========================================================================================
+mixin widgetMentionList(options, mentions)
+	.row.tiles-container
+		.col-md-12
+			.tiles.grey.p-t-10.p-b-10.p-l-25
+				h5.text-black.semi-bold
+					| #{options.title}
+			.scrollbar.tiles.white(data-uri='#{mentions.url}', data-skip='20', data-loading='false')
+				if mentions
+					each mention in mentions[0].MENTIONS
+						.p-t-10.p-b-5.b-b.b-grey
+							.post
+								.info-wrapper.inline
+									.info.text-black
+											a(href='https://twitter.com/#{mention.key}', title='#{mention.key}', target="_blank")
+												| @#{mention.key} 
+											| | #{mention.value}
+								.clearfix
+				else
+					//- TODO: Fazer tradução
+					.p-t-10.p-b-5.b-b.b-grey.bg-danger
+							| Sem mennções a serem exibidas. :-(
+
+//- ========================================================================================
+//- Tweets Updates =========================================================================
+//- ========================================================================================
+mixin widgetUrlsList(options, urls)
+	.row.tiles-container
+		.col-md-12
+			.tiles.grey.p-t-10.p-b-10.p-l-25
+				h5.text-black.semi-bold
+					| #{options.title}
+			.scrollbar.tiles.white(data-uri='#{urls.url}', data-skip='20', data-loading='false')
+				if urls
+					each url in urls[0].URL
+						.p-t-10.p-b-5.b-b.b-grey
+							.post
+								.info-wrapper.inline
+									.info.text-black
+											a(href='#{url.key}', title='#{url.key}', target="_blank")
+												| !{autolinker.link(url.key, {truncate: 35})} 
+											| | #{url.value}
+								.clearfix
+				else
+					//- TODO: Fazer tradução
+					.p-t-10.p-b-5.b-b.b-grey.bg-danger
+							| Sem mennções a serem exibidas. :-(
+
 //- ========================================================================================
 //- Facebook Posts =========================================================================
 //- ========================================================================================

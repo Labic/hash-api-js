@@ -5,7 +5,9 @@ var slug = require('slug');
 var DOCUMENTS_LIMIT = 20;
 
 var tweetApiUrl = 'http://104.131.228.31:3000/api/Tweets?filter=';
-var facebookpiUrl = 'http://104.131.228.31:3000/api/FacebookPosts?filter=';
+var facebookApiUrl = 'http://104.131.228.31:3000/api/FacebookPosts?filter=';
+var tweetTopsApiUrl = 'http://104.131.228.31:3000/api/Tops?filter='
+var tweetTopDiaryApiUrl = 'http://104.131.228.31:3000/api/TopDiaries?filter='
 
 // app/routes.js
 module.exports = function(app, passport) {
@@ -44,9 +46,19 @@ module.exports = function(app, passport) {
         "order": "rts DESC", 
         "limit": DOCUMENTS_LIMIT
     };
+    
+    var filterTopURL = '{"fields": { "MENTIONS": false, "URL": true }}';
+    
+    var filterTopMentions = '{"fields": { "MENTIONS": true, "URL": false }}';
+    
+    var filterTopDiaryMentions ='{"fields": { "MENTIONS": true, "URL": false }}';
+    
+    var filterTopDiaryURL = '{"fields": { "MENTIONS": false, "URL": true }}';
 
     var urls = [
-      { id: "top-tweets", title: "Top Tweets", uri: tweetApiUrl + JSON.stringify(filterTopTweets) }
+      { id: "top-tweets", title: "Top Tweets", uri: tweetApiUrl + JSON.stringify(filterTopTweets) },
+      { id: "top-mencoes", title: "Top Menções", uri: tweetTopDiaryApiUrl + filterTopDiaryMentions },
+      { id: "top-urls", title: "Top URLS", uri: tweetTopDiaryApiUrl + filterTopDiaryURL }
     ];
 
     var parallel = new Parallel();
@@ -57,13 +69,14 @@ module.exports = function(app, passport) {
           res.body.url = url.uri;
           res.body.categorieId = url.id;
           res.body.categorieTitle = url.title;
+          
           done(err, res.body);
         })
       })
     });
 
-    parallel.done(function (err, tweetsCategoriesQuery) {
-      res.render('twitter-secao', { route: req.route, title: 'Twitter por Seções - App ENEM | Inep', tweetsCategories: tweetsCategoriesQuery });
+    parallel.done(function (err, hitsQueries) {
+      res.render('twitter-secao-hits', { route: req.route, title: 'Twitter por Seções - App ENEM | Inep', hitsQueries: hitsQueries });
     });
   });
   
@@ -172,11 +185,19 @@ module.exports = function(app, passport) {
         "limit": DOCUMENTS_LIMIT
     };
 
+    var filterCelebridades = {
+      "where": {
+        "categories": {"inq": ["CELEBRIDADES"]}}, 
+        "order": "rts DESC", 
+        "limit": DOCUMENTS_LIMIT
+    };
+
     var urls = [
       { id: "noticias-populares", title: "Notícias Mais Populares", uri: tweetApiUrl + JSON.stringify(filterNoticiasPopulares) },
-      { id: "conteudo-prova", title: "Conteúdo da Prova", uri: tweetApiUrl + JSON.stringify(filterConteudoProva) },
-      { id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
-      { id: "canais-especializados", title: "Canais Especializados", uri: tweetApiUrl + JSON.stringify(filterCanaisEspecializados) }
+      //{ id: "conteudo-prova", title: "Conteúdo da Prova", uri: tweetApiUrl + JSON.stringify(filterConteudoProva) },
+      //{ id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
+      { id: "canais-especializados", title: "Canais Especializados", uri: tweetApiUrl + JSON.stringify(filterCanaisEspecializados) },
+      { id: "celebridades", title: "Celebridades", uri: tweetApiUrl + JSON.stringify(filterCelebridades) }
     ];
 
     var parallel = new Parallel();
@@ -562,10 +583,10 @@ app.get('/twitter/estados/norte', function(req, res) {
     };
 
     var urls = [
-      { id: "humor", title: "Humor", uri: facebookpiUrl + JSON.stringify(filterHumor) },
-      { id: "educacional", title: "Educacional", uri: facebookpiUrl + JSON.stringify(filterEducacional) },
-      { id: "institucional", title: "Institucional", uri: facebookpiUrl + JSON.stringify(filterInstitucional) },
-      { id: "midia", title: "Mídia", uri: facebookpiUrl + JSON.stringify(filterMidia) }
+      { id: "humor", title: "Humor", uri: facebookApiUrl + JSON.stringify(filterHumor) },
+      { id: "educacional", title: "Educacional", uri: facebookApiUrl + JSON.stringify(filterEducacional) },
+      { id: "institucional", title: "Institucional", uri: facebookApiUrl + JSON.stringify(filterInstitucional) },
+      { id: "midia", title: "Mídia", uri: facebookApiUrl + JSON.stringify(filterMidia) }
     ];
 
     var parallel = new Parallel();

@@ -1,0 +1,12 @@
+{
+  "name": "KeyValue",
+  "base": "PersistedModel",
+  "properties": {
+    "value": "number",
+    "key": "string"
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

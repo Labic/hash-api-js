@@ -1,0 +1,12 @@
+{
+  "name": "TopDiary",
+  "base": "PersistedModel",
+  "properties": {
+    "MENTIONS": ["KeyValue"],
+    "URL": ["KeyValue"]
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

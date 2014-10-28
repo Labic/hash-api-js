@@ -44,5 +44,17 @@
   "FacebookPost": {
     "dataSource": "mongodb-dev",
     "public": true
+  },
+  "Top": {
+    "dataSource": "mongodb-dev",
+    "public": true
+  },
+  "TopDiary": {
+    "dataSource": "mongodb-dev",
+    "public": true
+  },
+  "KeyValue": {
+    "dataSource": "mongodb-dev",
+    "public": false
   }
 }
