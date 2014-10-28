@@ -81,10 +81,15 @@ mixin widgetMentionList(options, mentions)
 					| #{options.title}
 			.scrollbar.tiles.white(data-uri='#{mentions.url}', data-skip='20', data-loading='false')
 				if mentions
-					ol.mentions
-						each mention in mentions[0].MENTIONS
-							li
-								| #{mention.key} - #{mention.value}
+					each mention in mentions[0].MENTIONS
+						.p-t-10.p-b-5.b-b.b-grey
+							.post
+								.info-wrapper.inline
+									.info.text-black
+											a(href='https://twitter.com/#{mention.key}', title='#{mention.key}', target="_blank")
+												| @#{mention.key} 
+											| | #{mention.value}
+								.clearfix
 				else
 					//- TODO: Fazer tradução
 					.p-t-10.p-b-5.b-b.b-grey.bg-danger
@@ -101,12 +106,15 @@ mixin widgetUrlsList(options, urls)
 					| #{options.title}
 			.scrollbar.tiles.white(data-uri='#{urls.url}', data-skip='20', data-loading='false')
 				if urls
-					ol.mentions
-						each url in urls[0].URL
-							li
-								a(href='#{url.key}', target="_blank")
-									| #{url.key} 
-								| - #{url.value}
+					each url in urls[0].URL
+						.p-t-10.p-b-5.b-b.b-grey
+							.post
+								.info-wrapper.inline
+									.info.text-black
+											a(href='#{url.key}', title='#{url.key}', target="_blank")
+												| !{autolinker.link(url.key, {truncate: 35})} 
+											| | #{url.value}
+								.clearfix
 				else
 					//- TODO: Fazer tradução
 					.p-t-10.p-b-5.b-b.b-grey.bg-danger
