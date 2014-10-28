@@ -185,11 +185,19 @@ module.exports = function(app, passport) {
         "limit": DOCUMENTS_LIMIT
     };
 
+    var filterCelebridades = {
+      "where": {
+        "categories": {"inq": ["CELEBRIDADES"]}}, 
+        "order": "rts DESC", 
+        "limit": DOCUMENTS_LIMIT
+    };
+
     var urls = [
       { id: "noticias-populares", title: "Notícias Mais Populares", uri: tweetApiUrl + JSON.stringify(filterNoticiasPopulares) },
       //{ id: "conteudo-prova", title: "Conteúdo da Prova", uri: tweetApiUrl + JSON.stringify(filterConteudoProva) },
       //{ id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
-      { id: "canais-especializados", title: "Canais Especializados", uri: tweetApiUrl + JSON.stringify(filterCanaisEspecializados) }
+      { id: "canais-especializados", title: "Canais Especializados", uri: tweetApiUrl + JSON.stringify(filterCanaisEspecializados) },
+      { id: "celebridades", title: "Celibridades", uri: tweetApiUrl + JSON.stringify(filterCelebridades) }
     ];
 
     var parallel = new Parallel();
