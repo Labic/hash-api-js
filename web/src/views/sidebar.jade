@@ -1,23 +1,7 @@
 // BEGIN SIDEBAR
 #main-menu.page-sidebar
 	#main-menu-wrapper.page-sidebar-wrapper.scrollbar-dynamic
-		// BEGIN MINI-PROFILE
-		.user-info-wrapper
-			.profile-wrapper
-				img(src="https://pbs.twimg.com/profile_images/483952849391329281/m5XvJeHz.png", alt="", data-src="https://pbs.twimg.com/profile_images/483952849391329281/m5XvJeHz.png", data-src-retina="https://pbs.twimg.com/profile_images/483952849391329281/m5XvJeHz.png", width="69", height="69")
-			.user-info
-				.greeting
-					| Bem Vindo!
-				.username
-					| Inep
-		// BEGIN MINI-PROFILE
-		
 		// BEGIN SIDEBAR MENU
-		p.menu-title
-			| MENU
-			//-span.pull-right
-				a(href="#")
-					i.fa.fa-refresh
 		ul
 			if (route.path.indexOf('/twitter/') > -1)
 				li.start.active
