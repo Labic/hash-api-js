@@ -57,7 +57,7 @@ module.exports = function(app, passport) {
 
     var urls = [
       { id: "top-tweets", title: "Top Tweets", uri: tweetApiUrl + JSON.stringify(filterTopTweets) },
-      { id: "top-mencoes", title: "Top Menções", uri: tweetTopDiaryApiUrl + filterTopDiaryMentions },
+      { id: "top-mencoes", title: "Usuários Mais Mencionados", uri: tweetTopDiaryApiUrl + filterTopDiaryMentions },
       { id: "top-urls", title: "Top URLS", uri: tweetTopDiaryApiUrl + filterTopDiaryURL }
     ];
 
@@ -185,7 +185,7 @@ module.exports = function(app, passport) {
         "limit": DOCUMENTS_LIMIT
     };
 
-    var filterCelebridades = {
+    var filterPersonalidades = {
       "where": {
         "categories": {"inq": ["CELEBRIDADES"]}}, 
         "order": "rts DESC", 
@@ -197,7 +197,7 @@ module.exports = function(app, passport) {
       //{ id: "conteudo-prova", title: "Conteúdo da Prova", uri: tweetApiUrl + JSON.stringify(filterConteudoProva) },
       //{ id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
       { id: "canais-especializados", title: "Canais Especializados", uri: tweetApiUrl + JSON.stringify(filterCanaisEspecializados) },
-      { id: "celebridades", title: "Celebridades", uri: tweetApiUrl + JSON.stringify(filterCelebridades) }
+      { id: "personalidades", title: "Personalidades", uri: tweetApiUrl + JSON.stringify(filterPersonalidades) }
     ];
 
     var parallel = new Parallel();
