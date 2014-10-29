@@ -8118,3 +8118,6 @@ body.rtl .footer-widget {
   right: 0;
   left: auto;
 }
+.fancybox img {
+  border: 10px #fff solid;
+}
