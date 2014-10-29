@@ -7382,6 +7382,7 @@ input[type="checkbox"] {
 }
 .post {
   display: block;
+  padding: 0 10px 10px 10px;
 }
 .post .info-wrapper {
   display: inline-block;

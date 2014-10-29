@@ -88,7 +88,7 @@ mixin widgetMentionList(options, mentions)
 									.info.text-black
 											a(href='https://twitter.com/#{mention.key}', title='#{mention.key}', target="_blank")
 												| @#{mention.key} 
-											| | #{mention.value}
+											| - #{mention.value}
 								.clearfix
 				else
 					//- TODO: Fazer tradução
@@ -113,7 +113,7 @@ mixin widgetUrlsList(options, urls)
 									.info.text-black
 											a(href='#{url.key}', title='#{url.key}', target="_blank")
 												| !{autolinker.link(url.key, {truncate: 35})} 
-											| | #{url.value}
+											| - #{url.value}
 								.clearfix
 				else
 					//- TODO: Fazer tradução
