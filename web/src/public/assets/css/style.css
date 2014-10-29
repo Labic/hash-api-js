@@ -8122,3 +8122,9 @@ body.rtl .footer-widget {
 .content.sm-gutter {
   margin-bottom: 30px;
 }
+
+.fancybox img {
+  padding: 10px;
+  border-radius: 4px;
+  background: #fff;
+}
