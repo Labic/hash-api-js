@@ -91,7 +91,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url : "http://localhost:3000/api/Streams/54515eb8305eee6801c871e6/filters",
+            url : "http://104.131.228.31:3000/api/Streams/5451b0778cb2279b0cedd3b9/filters",
             type: "POST",
             data : data,
             success: function(filter, textStatus, jqXHR) {
@@ -115,7 +115,7 @@ function attachUserRemover () {
 
         var button = this;
         $.ajax({
-            url : "http://localhost:3000/api/Streams/54515eb8305eee6801c871e6/filters/" + this.id,
+            url : "http://104.131.228.31:3000/api/Streams/5451b0778cb2279b0cedd3b9/filters/" + this.id,
             type: "DELETE",
             success: function(filter, textStatus, jqXHR) {
                 $(button).parent().parent().remove();
