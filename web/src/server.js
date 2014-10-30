@@ -10,6 +10,8 @@ var passport = require('passport');
 var flash 	 = require('connect-flash');
 var autolinker = require('autolinker');
 
+var util = require('util');
+
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
@@ -32,6 +34,8 @@ moment.locale('pt-BR');
 app.locals.moment = moment;
 
 app.locals.autolinker = autolinker;
+
+app.locals.util = util;
 
 // Security
 app.disable('x-powered-by');

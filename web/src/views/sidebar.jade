@@ -201,6 +201,18 @@
 						//-li
 							a(href="/facebook/analytics")
 								| Analytics
+			if (route.path == '/configuracoes')
+				li.start.active
+					a(href="/configuracoes")
+						i.fa.fa-gears
+						span.title
+							| Configurações
+			else
+				li
+					a(href="/configuracoes")
+						i.fa.fa-gears
+						span.title
+							| Configurações
 			.clearfix
 	// END SIDEBAR MENU
 	

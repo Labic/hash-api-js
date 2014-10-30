@@ -56,5 +56,13 @@
   "KeyValue": {
     "dataSource": "mongodb-dev",
     "public": false
+  },
+  "Stream": {
+    "dataSource": "mongodb-dev",
+    "public": true
+  },
+  "StreamFilter": {
+    "dataSource": "mongodb-dev",
+    "public": false
   }
 }

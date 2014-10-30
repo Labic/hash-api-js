@@ -1,7 +1,7 @@
 doctype html
 html
 	include head.jade
-		block pluginCSS
+		block append pluginCSS
 			link(rel="stylesheet", type="text/css", href="/assets/plugins/fancybox/jquery.fancybox.min.css")
 	
 	// BEGIN BODY
@@ -20,7 +20,7 @@ html
 					.row
 						.col-md-6
 							h2
-								| Frequência
+								| Frequência de Usuários e Tweets
 							a.fancybox(href='http://104.131.228.31/teste/users.jpeg?timestamp={moment().format("X")}')
 								img(src='http://104.131.228.31/teste/users.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
@@ -30,14 +30,9 @@ html
 								img(src='http://104.131.228.31/teste/secao_2.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
-								| Mídia
+								| Repercussão Midiática
 							a.fancybox(href='http://104.131.228.31/teste/secao_3.jpeg?timestamp={moment().format("X")}')
 								img(src='http://104.131.228.31/teste/secao_3.jpeg?timestamp={moment().format("X")}', width='100%')
-						.col-md-6
-							h2
-								| Público Geral & Mídia
-							a.fancybox(href='http://104.131.228.31/teste/secao_2_3.jpeg?timestamp={moment().format("X")}')
-								img(src='http://104.131.228.31/teste/secao_2_3.jpeg?timestamp={moment().format("X")}', width='100%')
 						.col-md-6
 							h2
 								| Regiões
@@ -68,6 +63,7 @@ html
 								| Região: Sul
 							a.fancybox(href='http://104.131.228.31/teste/secao_4_sul.jpeg?timestamp={moment().format("X")}')
 								img(src='http://104.131.228.31/teste/secao_4_sul.jpeg?timestamp={moment().format("X")}', width='100%')
+					.row
 						.col-md-6
 							h2
 								| Nuvem de palavras Twitter
@@ -76,10 +72,13 @@ html
 							h2
 								| Hashtags
 							img(src='http://104.131.228.31/teste/nuvem_enem_twitter_hash.png?timestamp={moment().format("X")}', width='100%')
-						#test.col-md-6
 
 			// END PAGE CONTAINER
 			
 		include footer.jade
-			block pageScripts
-				script(src='/assets/plugins/fancybox/jquery.fancybox.pack.min.js')
+		block append pageScripts
+			script(src='/assets/plugins/fancybox/jquery.fancybox.pack.min.js')
+			//- TODO: Remover arquivos desnecessários
+			script(src='/assets/plugins/moment/moment-with-locales.min.js')
+			script(src='/assets/plugins/jquery-tmpl/jquery.tmpl.min.js')
+			script(src='/assets/plugins/autolinker/autolinker.min.js')

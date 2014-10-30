@@ -1,8 +1,7 @@
-/* Webarch Admin Dashboard 
+	/* Webarch Admin Dashboard 
 /* This JS is Only DEMO Purposes 
 -----------------------------------------------------------------*/	
 $(document).ready(function() {		
-
 	var d2 = [ [1, 30],
             [2, 20],
             [3, 10],

@@ -57,7 +57,7 @@ module.exports = function(app, passport) {
 
     var urls = [
       { id: "top-tweets", title: "Top Tweets", uri: tweetApiUrl + JSON.stringify(filterTopTweets) },
-      { id: "top-mencoes", title: "Top Menções", uri: tweetTopDiaryApiUrl + filterTopDiaryMentions },
+      { id: "top-mencoes", title: "Usuários Mais Mencionados", uri: tweetTopDiaryApiUrl + filterTopDiaryMentions },
       { id: "top-urls", title: "Top URLS", uri: tweetTopDiaryApiUrl + filterTopDiaryURL }
     ];
 
@@ -185,7 +185,7 @@ module.exports = function(app, passport) {
         "limit": DOCUMENTS_LIMIT
     };
 
-    var filterCelebridades = {
+    var filterPersonalidades = {
       "where": {
         "categories": {"inq": ["CELEBRIDADES"]}}, 
         "order": "rts DESC", 
@@ -197,7 +197,7 @@ module.exports = function(app, passport) {
       //{ id: "conteudo-prova", title: "Conteúdo da Prova", uri: tweetApiUrl + JSON.stringify(filterConteudoProva) },
       //{ id: "logistica-infraestrutura", title: "Logistica & Infraestrutura", uri: tweetApiUrl + JSON.stringify(filterLogisticaInfraestrutura) },
       { id: "canais-especializados", title: "Canais Especializados", uri: tweetApiUrl + JSON.stringify(filterCanaisEspecializados) },
-      { id: "celebridades", title: "Celebridades", uri: tweetApiUrl + JSON.stringify(filterCelebridades) }
+      { id: "personalidades", title: "Personalidades", uri: tweetApiUrl + JSON.stringify(filterPersonalidades) }
     ];
 
     var parallel = new Parallel();
@@ -623,6 +623,41 @@ app.get('/twitter/estados/norte', function(req, res) {
   app.get('/facebook/analytics', function (req, res) {
     // render the page and pass in any flash data if it exists
     res.render('facebook-estatisticas', { route: req.route, title: 'Gráficos do Facebook - App ENEM | Inep' }); 
+  });
+  
+  // =====================================
+  // Configurações =======================
+  // =====================================
+  // show the login form
+  app.get('/configuracoes', function (req, res) {
+    var filterUsersBannedTwitter = {
+      "where": {
+        "operator": "!="
+      }
+    };
+
+    var urls = [
+      { uri: 'http://104.131.228.31:3000/api/Streams/5451b0778cb2279b0cedd3b9/filters?filter=' + JSON.stringify(filterUsersBannedTwitter)}
+    ];
+
+    var parallel = new Parallel();
+
+    var configuration = {};
+    //configuration.usersBannedTwitter = []
+
+    urls.forEach(function (url) {
+      parallel.timeout(10000).add(function (done) {
+        request.get({url: url.uri, json: true}, function(err, res) {
+          configuration.usersBannedTwitter = res.body;
+          //console.log(configuration.usersBannedTwitter);
+          done(err, configuration);
+        })
+      })
+    });
+
+    parallel.done(function (err, configuration) {
+      res.render('configuracoes', { route: req.route, title: 'Configurações - App ENEM | Inep', configuration: configuration  }); 
+    });
   });
   
   // =====================================
