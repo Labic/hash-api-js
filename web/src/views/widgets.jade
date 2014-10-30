@@ -88,12 +88,12 @@ mixin widgetMentionList(options, mentions)
 									.info.text-black
 											a(href='https://twitter.com/#{mention.key}', title='#{mention.key}', target="_blank")
 												| @#{mention.key} 
-											| - #{mention.value}
+											| &#8226; #{mention.value}
 								.clearfix
 				else
 					//- TODO: Fazer tradução
 					.p-t-10.p-b-5.b-b.b-grey.bg-danger
-							| Sem mennções a serem exibidas. :-(
+							| Sem menções a serem exibidas. :-(
 
 //- ========================================================================================
 //- Tweets Updates =========================================================================
@@ -113,7 +113,7 @@ mixin widgetUrlsList(options, urls)
 									.info.text-black
 											a(href='#{url.key}', title='#{url.key}', target="_blank")
 												| !{autolinker.link(url.key, {truncate: 35})} 
-											| - #{url.value}
+											| &#8226; #{url.value}
 								.clearfix
 				else
 					//- TODO: Fazer tradução
