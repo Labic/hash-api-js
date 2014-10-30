@@ -49,13 +49,13 @@ mixin widgetTweetsUpdates(options, tweets)
 										strong.user-info
 											a(href='https://twitter.com/#{tweet.status.user.screen_name}', target='_blank')
 												| @#{tweet.status.user.screen_name} 
-										| - 
+										| &#8226; 
 										span.user-followers
 											| #{tweet.status.user.followers_count} Seguidores
 										p.text
 											| !{autolinker.link(tweet.status.text.replace(/\n/g, '<br />'))}
 										a.muted.small-text(href="https://twitter.com/#{tweet.status.user.screen_name}/status/#{tweet.status.id_str}", target="_blank")
-											|  #{moment(tweet.status.created_at).fromNow()} | #{tweet.rts} RTs 
+											|  #{moment(tweet.status.created_at).fromNow()} &#8226; #{tweet.rts} RTs 
 										//-a(href='#')
 											i.fa.fa-star-o.pull-right
 								//-	.clearfix
