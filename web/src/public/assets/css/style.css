@@ -8118,6 +8118,13 @@ body.rtl .footer-widget {
   right: 0;
   left: auto;
 }
+
+.content.sm-gutter {
+  margin-bottom: 30px;
+}
+
 .fancybox img {
-  border: 10px #fff solid;
+  padding: 10px;
+  border-radius: 4px;
+  background: #fff;
 }
