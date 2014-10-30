@@ -77,8 +77,57 @@ $(document).ready(function () {
             }
         });
     });
+    
+    attachUserRemover();
 
+    $('form#cadastrar_usuarios_banidos').on('submit', function (e) { 
+        e.preventDefault();
+        var form = this;
+        var data = $(this).serializeArray();
+
+        if (data[3].value.trim() === '') {
+            $(form).addClass('has-error');
+            return;
+        }
+
+        $.ajax({
+            url : "http://localhost:3000/api/Streams/54515eb8305eee6801c871e6/filters",
+            type: "POST",
+            data : data,
+            success: function(filter, textStatus, jqXHR) {
+                console.log(filter);
+                $('#lista_usuarios_banidos tbody tr:last').after('<tr><td><a id="' + filter.id +'" href="#" class="remove-user fa fa-times text-error"></a></td><td>@' + filter.element + '</td></tr>')
+                $(form).removeClass('has-error');
+                $('[name="element"]', form).val('');
+                
+                attachUserRemover();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+            }
+        });
+    });
 });
+
+function attachUserRemover () {
+    $('#lista_usuarios_banidos .remove-user').on('click', function (e) { 
+        e.preventDefault();
+
+        var button = this;
+        $.ajax({
+            url : "http://localhost:3000/api/Streams/54515eb8305eee6801c871e6/filters/" + this.id,
+            type: "DELETE",
+            success: function(filter, textStatus, jqXHR) {
+                $(button).parent().parent().remove();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+            }
+        });
+
+        return;
+    });
+}
 
 $(window).resize(function () {
     $('.scrollbar').height($(window).height() - 130);

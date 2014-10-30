@@ -626,6 +626,41 @@ app.get('/twitter/estados/norte', function(req, res) {
   });
   
   // =====================================
+  // Configurações =======================
+  // =====================================
+  // show the login form
+  app.get('/configuracoes', function (req, res) {
+    var filterUsersBannedTwitter = {
+      "where": {
+        "operator": "!="
+      }
+    };
+
+    var urls = [
+      { uri: 'http://localhost:3000/api/Streams/54515eb8305eee6801c871e6/filters?filter=' + JSON.stringify(filterUsersBannedTwitter)}
+    ];
+
+    var parallel = new Parallel();
+
+    var configuration = {};
+    //configuration.usersBannedTwitter = []
+
+    urls.forEach(function (url) {
+      parallel.timeout(10000).add(function (done) {
+        request.get({url: url.uri, json: true}, function(err, res) {
+          configuration.usersBannedTwitter = res.body;
+          //console.log(configuration.usersBannedTwitter);
+          done(err, configuration);
+        })
+      })
+    });
+
+    parallel.done(function (err, configuration) {
+      res.render('configuracoes', { route: req.route, title: 'Configurações - App ENEM | Inep', configuration: configuration  }); 
+    });
+  });
+  
+  // =====================================
   // LOGIN ===============================
   // =====================================
   // show the login form
