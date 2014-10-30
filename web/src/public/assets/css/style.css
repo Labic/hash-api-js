@@ -5661,6 +5661,8 @@ form legend,
 }
 .tiles.grey {
   background-color: #e9ecee;
+  text-align: center;
+  color: #265371;
 }
 .tiles.gradient-grey {
   background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(131, 131, 131, 0.65) 100%);
