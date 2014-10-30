@@ -5660,9 +5660,9 @@ form legend,
   background-color: #f96773;
 }
 .tiles.grey {
-  background-color: #e9ecee;
+  background-color: #fff;
   text-align: center;
-  color: #265371;
+  border-bottom: 1px solid #E5E9EC;
 }
 .tiles.gradient-grey {
   background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(131, 131, 131, 0.65) 100%);
@@ -8135,9 +8135,20 @@ body.rtl .footer-widget {
 
 #top-tweets,
 #top-mencoes,
-#top-urls {
+#top-urls,
+#dicas-orientacoes,
+#infraestrutura-logistica,
+#rumores,
+#sentimentos,
+#humor,
+#noticias-populares,
+#canais-especializados,
+#personalidades,
+#educacional,
+#institucional,
+#midia {
   background: #fff;
   border-radius: 6px;
-  box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1), 2px 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1), 2px 2px 6px rgba(0, 0, 0, 0.1);
   margin: 5px 4px;
 }
