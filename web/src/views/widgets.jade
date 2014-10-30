@@ -153,7 +153,7 @@ mixin widgetFacebookPosts(options, facebookSections)
 												p.readmore
 													| #{facebookSection.Message.replace(/\n/g, '<br />')}
 											span.muted.small-text
-												|  a #{moment.unix(facebookSection.CreatedTime).fromNow()} | #{facebookSection.LikesCount} Likes | #{facebookSection.CommentsCount} Coment&aacute;rios | #{facebookSection.SharesCount} Compartilhamentos
+												|   #{moment.unix(facebookSection.CreatedTime).fromNow()} | #{facebookSection.LikesCount} Likes | #{facebookSection.CommentsCount} Coment&aacute;rios | #{facebookSection.SharesCount} Compartilhamentos
 											//-a(href='#')
 												i.fa.fa-star-o.pull-right
 									//-	.clearfix
