@@ -351,7 +351,7 @@ module.exports = function(app, passport) {
       bannedUsersResp.body.forEach(function (bannedUser) {
         bannedUsersFilter.push(bannedUser.element);
       });
-      
+
       // Sul
       var filterPR = {
         "where": {
@@ -697,6 +697,14 @@ app.get('/twitter/estados/norte', function(req, res) {
   });
 
   app.get('/facebook/secoes', function(req, res) {
+    var filterTopPosts = {
+      "where": {
+        "Section": {"inq": ["TopFace"]}
+      }, 
+      "order": ["LikesCount DESC", "CommentsCount DESC"], 
+      "limit": DOCUMENTS_LIMIT
+    };
+
     var filterHumor = {
       "where": {
         "Section": {"inq": ["PERFIS DE HUMOR - Perfis"]}
@@ -730,6 +738,7 @@ app.get('/twitter/estados/norte', function(req, res) {
     };
 
     var urls = [
+      { id: "top", title: "Top Posts", uri: facebookApiUrl + JSON.stringify(filterTopPosts) },
       { id: "humor", title: "Humor", uri: facebookApiUrl + JSON.stringify(filterHumor) },
       { id: "educacional", title: "Educacional", uri: facebookApiUrl + JSON.stringify(filterEducacional) },
       { id: "institucional", title: "Institucional", uri: facebookApiUrl + JSON.stringify(filterInstitucional) },
