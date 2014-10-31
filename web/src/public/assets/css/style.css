@@ -8130,17 +8130,6 @@ body.rtl .footer-widget {
   margin-bottom: 30px;
 }
 
-#top-tweets, #top-mencoes, #top-urls,
-#dicas-orientacoes, #infraestrutura-logistica, #rumores, #sentimentos, #humor,
-#noticias-populares, #canais-especializados, #personalidades,
-#am, #ac, #rr, #pa, #to, #ma, #pi, #ce, #rn, #pb, #pe, #ba, #sp, #rj, #es, #mg, #brasilia, #mt, #rs, #go, #pr, #sc,
-#educacional, #institucional, #midia {
-  background: #fff;
-  border-radius: 6px;
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1), 2px 2px 6px rgba(0, 0, 0, 0.1);
-  margin: 5px 4px;
-}
-
 .fancybox img {
   padding: 10px;
   border-radius: 6px;
@@ -8148,7 +8137,7 @@ body.rtl .footer-widget {
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1), 2px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.tw-analytics {
+.page-content.tw-analytics h3 {
   text-align: center;
   font-weight: bold;
   color: #265371;
