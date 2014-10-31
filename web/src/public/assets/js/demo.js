@@ -46,12 +46,7 @@ $(document).ready(function () {
                             }
 
                             $.tmpl('facebookUpdateTemplate', updates).appendTo(updatesToLoad);
-                        }                     
-
-                        //$('.info p').each(function () {
-                        //    $(this).html(autolinker.link($(this).text()));
-                        //    $(this).html($(this).html().replace(/\n/g, '<br />'));
-                        //});
+                        }
 
                         $(updatesToLoad).find('.post').slice(-updates.length).find('.info p').each(function () {
                             $(this).html(autolinker.link($(this).text()));
@@ -84,6 +79,7 @@ $(document).ready(function () {
         e.preventDefault();
         var form = this;
         var data = $(this).serializeArray();
+        data[3].value = data[3].value.trim();
 
         if (data[3].value.trim() === '') {
             $(form).addClass('has-error');
