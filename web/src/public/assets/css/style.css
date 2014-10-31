@@ -24,7 +24,7 @@ html {
 }
 body {
   direction: ltr;
-  background-color: #1b1e24;
+  background-color: #dbe4e8;
   color: #6f7b8a;
   font-family: 'Arial';
   font-size: 13px;
@@ -155,7 +155,7 @@ body.modal-open .chat-window-wrapper {
   position: relative;
 }
 .header-seperation {
-  background-color: #22262e;
+  background-color: #1f3543;
 }
 .header {
   -webkit-transition: -webkit-transform 0.3s ease, left 0.3s ease, right 0.3s ease;
@@ -240,7 +240,7 @@ body.modal-open .chat-window-wrapper {
   color: #ffffff;
 }
 .header .nav > li.dropdown .active {
-  background-color: #0d0f12;
+  background-color: #27475a;
 }
 .header .nav > li.dropdown.user .dropdown-toggle {
   padding: 8px 4px 7px 9px;
@@ -448,7 +448,7 @@ body.modal-open .chat-window-wrapper {
   font-weight: normal;
 }
 .page-sidebar {
-  background-color: #1b1e24 !important;
+  background-color: #1f3543 !important;
   height: 100%;
   font-family: 'Open Sans';
   -webkit-backface-visibility: hidden;
@@ -550,7 +550,7 @@ body.modal-open .chat-window-wrapper {
   list-style: none;
   clear: both;
   margin: 0px;
-  background-color: #22262e;
+  background-color: #27475a;
   padding: 8px 0px 10px 0px;
 }
 .page-sidebar .page-sidebar-wrapper > ul > li > ul.sub-menu > li {
@@ -800,6 +800,7 @@ body.modal-open .chat-window-wrapper {
 .header .nav > li.dropdown,
 .header .nav > li.dropdown > a {
   text-align: center;
+  border-radius: 2px;
 }
 .header .nav .open > a,
 .nav .open > a:hover,
@@ -1820,6 +1821,9 @@ h3 {
 h4 {
   line-height: 22px;
 }
+
+
+
 h3 small,
 h4 small,
 h5 small {
@@ -2372,7 +2376,7 @@ span.iconset {
   padding-right: 25px;
 }
 .p-l-25 {
-  padding-left: 25px;
+  padding-left: 0px;
 }
 .p-b-25 {
   padding-bottom: 25px;
@@ -5659,7 +5663,9 @@ form legend,
   background-color: #f96773;
 }
 .tiles.grey {
-  background-color: #e9ecee;
+  background-color: #fff;
+  text-align: center;
+  border-bottom: 1px solid #E5E9EC;
 }
 .tiles.gradient-grey {
   background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(131, 131, 131, 0.65) 100%);
@@ -7382,6 +7388,7 @@ input[type="checkbox"] {
 }
 .post {
   display: block;
+  padding: 0 10px 10px 10px;
 }
 .post .info-wrapper {
   display: inline-block;
@@ -8123,8 +8130,27 @@ body.rtl .footer-widget {
   margin-bottom: 30px;
 }
 
+#top-tweets, #top-mencoes, #top-urls,
+#dicas-orientacoes, #infraestrutura-logistica, #rumores, #sentimentos, #humor,
+#noticias-populares, #canais-especializados, #personalidades,
+#am, #ac, #rr, #pa, #to, #ma, #pi, #ce, #rn, #pb, #pe, #ba, #sp, #rj, #es, #mg, #brasilia, #mt, #rs, #go, #pr, #sc,
+#educacional, #institucional, #midia {
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1), 2px 2px 6px rgba(0, 0, 0, 0.1);
+  margin: 5px 4px;
+}
+
 .fancybox img {
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   background: #fff;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1), 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tw-analytics {
+  text-align: center;
+  font-weight: bold;
+  color: #265371;
+  margin-top: 30px;
 }
