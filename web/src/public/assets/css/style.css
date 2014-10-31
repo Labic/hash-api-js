@@ -1821,6 +1821,9 @@ h3 {
 h4 {
   line-height: 22px;
 }
+
+
+
 h3 small,
 h4 small,
 h5 small {
@@ -2373,7 +2376,7 @@ span.iconset {
   padding-right: 25px;
 }
 .p-l-25 {
-  padding-left: 25px;
+  padding-left: 0px;
 }
 .p-b-25 {
   padding-bottom: 25px;
@@ -8127,12 +8130,6 @@ body.rtl .footer-widget {
   margin-bottom: 30px;
 }
 
-.fancybox img {
-  padding: 10px;
-  border-radius: 4px;
-  background: #fff;
-}
-
 #top-tweets, #top-mencoes, #top-urls,
 #dicas-orientacoes, #infraestrutura-logistica, #rumores, #sentimentos, #humor,
 #noticias-populares, #canais-especializados, #personalidades,
@@ -8142,4 +8139,18 @@ body.rtl .footer-widget {
   border-radius: 6px;
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1), 2px 2px 6px rgba(0, 0, 0, 0.1);
   margin: 5px 4px;
+}
+
+.fancybox img {
+  padding: 10px;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1), 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tw-analytics {
+  text-align: center;
+  font-weight: bold;
+  color: #265371;
+  margin-top: 30px;
 }
