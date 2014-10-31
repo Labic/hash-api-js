@@ -2,25 +2,33 @@
 
 // set up ======================================================================
 // get all the tools we need
-var express  = require('express');
-var app      = express();
-var port     = process.env.PORT || 8080;
+var https = require('https');
+var express = require('express');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var app = express();
+var port = process.env.PORT || 8080;
+var helmet = require('helmet');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var flash 	 = require('connect-flash');
+var flash = require('connect-flash');
 var autolinker = require('autolinker');
 
 var util = require('util');
 
-var morgan       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
-
-var configDB = require('./config/database.js');
+var morgan = require('morgan');
 
 // configuration ===============================================================
-//'mongoose'.connect(configDB.url); // connect to our database
+var sslConfig = require('./ssl-config');
+var dbConfig = require('./config/database.js');
+var httpsOptions = {
+	key: sslConfig.privateKey,
+	cert: sslConfig.certificate,
+    requestCert: false,
+    rejectUnauthorized: false
+};
+//'mongoose'.connect(dbConfig.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 
@@ -39,6 +47,7 @@ app.locals.util = util;
 
 // Security
 app.disable('x-powered-by');
+app.use(helmet());
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -58,6 +67,14 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-// launch ======================================================================
+// launch =====================================================================
 app.listen(port);
 console.log('The magic happens on port ' + port);
+
+//return https.createServer(httpsOptions, app).listen(app.get('port'), function() {
+//return https.createServer(httpsOptions, app).listen(port, function() {
+//	//var baseUrl = 'https://' + app.get('host') + ':' + app.get('port');
+//	var baseUrl = 'https://' + 'localhost' + ':' + port;
+//	app.emit('started', baseUrl);
+//	console.log('The magic happens on %s%s', baseUrl, '/');
+//});
