@@ -7,7 +7,7 @@
   },
   "User": {
     "dataSource": "mongodb-dev",
-    "public": true
+    "public": false
   },
   "AccessToken": {
     "dataSource": "mongodb-dev",
