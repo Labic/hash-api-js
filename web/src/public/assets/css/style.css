@@ -26,7 +26,7 @@ body {
   direction: ltr;
   background-color: #dbe4e8;
   color: #6f7b8a;
-  font-family: 'Arial';
+  font-family: 'Opens Sans','Arial';
   font-size: 13px;
   padding: 0px !important;
   margin: 0px !important;
@@ -1422,6 +1422,19 @@ body.modal-open .chat-window-wrapper {
   color: #ffffff;
   display: inline-block;
 }
+.user-info {
+  font-size: 15px;
+  line-height: 16px;
+  font-family: 'Open Sans';
+  font-weight: bold;
+}
+
+.url-info{
+  font-size: 13px;
+  font-family: 'Open Sans';
+  font-weight: bold;
+}
+
 .user-info-wrapper .user-info .status {
   color: #929fa5;
   font-size: 13px;
@@ -1470,6 +1483,13 @@ body.modal-open .chat-window-wrapper {
 }
 .user-info-wrapper .user-info .collapse:hover {
   background-color: #000000;
+}
+.user-followers,
+.user-mentions,
+.url-ranking {
+  color: #8B91A0;
+  font-size: 12px;
+  font-family: 'Open Sans';    
 }
 .side-panel {
   border-width: 0;
