@@ -49,9 +49,8 @@ mixin widgetTweetsUpdates(options, tweets)
 										strong.user-info
 											a(href='https://twitter.com/#{tweet.status.user.screen_name}', target='_blank')
 												| @#{tweet.status.user.screen_name} 
-										| &#8226; 
 										span.user-followers
-											| #{tweet.status.user.followers_count} Seguidores
+											| &#8226; #{tweet.status.user.followers_count} seguidores
 										p.text
 											| !{autolinker.link(tweet.status.text.replace(/\n/g, '<br />'))}
 										a.muted.small-text(href="https://twitter.com/#{tweet.status.user.screen_name}/status/#{tweet.status.id_str}", target="_blank")
@@ -86,9 +85,10 @@ mixin widgetMentionList(options, mentions)
 							.post
 								.info-wrapper.inline
 									.info.text-black
-											a(href='https://twitter.com/#{mention.key}', title='#{mention.key}', target="_blank")
-												| @#{mention.key} 
-											| &#8226; #{mention.value}
+											a.user-info(href='https://twitter.com/#{mention.key}', title='#{mention.key}', target="_blank")
+												| @#{mention.key}
+											span.user-mentions
+												|  &#8226; #{mention.value}
 								.clearfix
 				else
 					//- TODO: Fazer tradução
@@ -112,13 +112,15 @@ mixin widgetUrlsList(options, urls)
 								.info-wrapper.inline
 									.info.text-black
 											a(href='#{url.key}', title='#{url.key}', target="_blank")
+											span.url-info
 												| !{autolinker.link(url.key, {truncate: 35})} 
-											| &#8226; #{url.value}
+											span.url-ranking
+												| &#8226; #{url.value}
 								.clearfix
 				else
 					//- TODO: Fazer tradução
 					.p-t-10.p-b-5.b-b.b-grey.bg-danger
-							| Sem mennções a serem exibidas. :-(
+							| Sem menções a serem exibidas. :-(
 
 //- ========================================================================================
 //- Facebook Posts =========================================================================
