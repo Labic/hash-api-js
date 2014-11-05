@@ -41,15 +41,15 @@ module.exports = function(app, passport) {
   // =====================================
   // HOME PAGE (with login links) ========
   // =====================================
-  app.get('/app', function(req, res) {
+  app.get('/', function(req, res) {
     //res.render('index', {title: 'App ENEM | Inep'});
-    res.redirect('/app/twitter/secoes/hits');
+    res.redirect('/twitter/secoes/hits');
   });
   
   // =====================================
   // Twitter =============================
   // =====================================
-  app.get('/app/twitter/secoes/hits', function(req, res) {
+  app.get('/twitter/secoes/hits', function(req, res) {
     request.get({url: tweetBannedUsersUrl, json: true}, function(err, bannedUsersResp) {
       var bannedUsersFilter = [];
 
@@ -103,7 +103,7 @@ module.exports = function(app, passport) {
   // =====================================
   // Twitter =============================
   // =====================================
-  app.get('/app/twitter/secoes/publico-geral', function(req, res) {
+  app.get('/twitter/secoes/publico-geral', function(req, res) {
     request.get({url: tweetBannedUsersUrl, json: true}, function(err, bannedUsersResp) {
       var bannedUsersFilter = [];
 
@@ -196,7 +196,7 @@ module.exports = function(app, passport) {
   // =====================================
   // Twitter =============================
   // =====================================
-  app.get('/app/twitter/secoes/repercussao-midiatica', function(req, res) {
+  app.get('/twitter/secoes/repercussao-midiatica', function(req, res) {
     request.get({url: tweetBannedUsersUrl, json: true}, function(err, bannedUsersResp) {
       var bannedUsersFilter = [];
 
@@ -277,7 +277,7 @@ module.exports = function(app, passport) {
   });
 
 
-  app.get('/app/twitter/estados/sudeste', function(req, res) {
+  app.get('/twitter/estados/sudeste', function(req, res) {
     request.get({url: tweetBannedUsersUrl, json: true}, function(err, bannedUsersResp) {
       var bannedUsersFilter = [];
 
@@ -344,7 +344,7 @@ module.exports = function(app, passport) {
   });
   
 
-  app.get('/app/twitter/estados/sul', function(req, res) {
+  app.get('/twitter/estados/sul', function(req, res) {
     request.get({url: tweetBannedUsersUrl, json: true}, function(err, bannedUsersResp) {
       var bannedUsersFilter = [];
 
@@ -405,7 +405,7 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.get('/app/twitter/estados/centro-oeste', function(req, res) {
+  app.get('/twitter/estados/centro-oeste', function(req, res) {
     request.get({url: tweetBannedUsersUrl, json: true}, function(err, bannedUsersResp) {
       var bannedUsersFilter = [];
 
@@ -476,7 +476,7 @@ module.exports = function(app, passport) {
   });
   
 
-  app.get('/app/twitter/estados/nordeste', function(req, res) {
+  app.get('/twitter/estados/nordeste', function(req, res) {
     request.get({url: tweetBannedUsersUrl, json: true}, function(err, bannedUsersResp) {
       var bannedUsersFilter = [];
 
@@ -596,7 +596,7 @@ module.exports = function(app, passport) {
   });
 
 
-app.get('/app/twitter/estados/norte', function(req, res) {
+app.get('/twitter/estados/norte', function(req, res) {
     request.get({url: tweetBannedUsersUrl, json: true}, function(err, bannedUsersResp) {
       var bannedUsersFilter = [];
 
@@ -696,7 +696,7 @@ app.get('/app/twitter/estados/norte', function(req, res) {
     });
   });
 
-  app.get('/app/facebook/secoes', function(req, res) {
+  app.get('/facebook/secoes', function(req, res) {
     var filterTopPosts = {
       "where": {
         "Section": {"inq": ["TopFace"]}
@@ -767,16 +767,16 @@ app.get('/app/twitter/estados/norte', function(req, res) {
   // Twitter Gráficos ====================
   // =====================================
   // show the login form
-  app.get('/app/twitter/analytics', function (req, res) {
+  app.get('/twitter/analytics', function (req, res) {
     // render the page and pass in any flash data if it exists
-    res.render('twitter-analytics', { route: req.route, title: 'Gráficos do Twitter - App ENEM | Inep' }); 
+    res.render('twitter-estatisticas', { route: req.route, title: 'Gráficos do Twitter - App ENEM | Inep' }); 
   });
   
   // =====================================
   // Facebook Gráficos ===================
   // =====================================
   // show the login form
-  app.get('/app/facebook/analytics', function (req, res) {
+  app.get('/facebook/analytics', function (req, res) {
     // render the page and pass in any flash data if it exists
     res.render('facebook-estatisticas', { route: req.route, title: 'Gráficos do Facebook - App ENEM | Inep' }); 
   });
@@ -785,7 +785,7 @@ app.get('/app/twitter/estados/norte', function(req, res) {
   // Configurações =======================
   // =====================================
   // show the login form
-  app.get('/app/configuracoes', function (req, res) {
+  app.get('/configuracoes', function (req, res) {
     var filterUsersBannedTwitter = {
       "where": {
         "operator": "!="
@@ -820,7 +820,7 @@ app.get('/app/twitter/estados/norte', function(req, res) {
   // LOGIN ===============================
   // =====================================
   // show the login form
-  app.get('/app/login', function (req, res) {
+  app.get('/login', function (req, res) {
     // render the page and pass in any flash data if it exists
     res.render('login', { route: req.route, message: req.flash('loginMessage') }); 
   });
@@ -829,14 +829,14 @@ app.get('/app/twitter/estados/norte', function(req, res) {
   // SIGNUP ==============================
   // =====================================
   // show the signup form
-  app.get('/app/signup', function (req, res) {
+  app.get('/signup', function (req, res) {
     
     // render the page and pass in any flash data if it exists
     res.render('signup', { route: req.route, message: req.flash('signupMessage') });
   });
 
   // process the signup form
-  app.post('/app/signup', passport.authenticate('local-signup', {
+  app.post('/signup', passport.authenticate('local-signup', {
     successRedirect : '/profile', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
@@ -846,10 +846,10 @@ app.get('/app/twitter/estados/norte', function(req, res) {
   // FACEBOOK ROUTES =====================
   // =====================================
   // route for facebook authentication and login
-  app.get('/app/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+  app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
   // handle the callback after facebook has authenticated the user
-  app.get('/app/auth/facebook/callback',
+  app.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
       successRedirect : '/profile',
       failureRedirect : '/'
@@ -859,10 +859,10 @@ app.get('/app/twitter/estados/norte', function(req, res) {
   // TWITTER ROUTES ======================
   // =====================================
   // route for twitter authentication and login
-  app.get('/app/auth/twitter', passport.authenticate('twitter'));
+  app.get('/auth/twitter', passport.authenticate('twitter'));
 
   // handle the callback after twitter has authenticated the user
-  app.get('/app/auth/twitter/callback',
+  app.get('/auth/twitter/callback',
     passport.authenticate('twitter', {
       successRedirect : '/profile',
       failureRedirect : '/'
@@ -873,7 +873,7 @@ app.get('/app/twitter/estados/norte', function(req, res) {
   // =====================================
   // we will want this protected so you have to be logged in to visit
   // we will use route middleware to verify this (the isLoggedIn function)
-  app.get('/app/profile', isLoggedIn, function(req, res) {
+  app.get('/profile', isLoggedIn, function(req, res) {
     res.render('profile', {
       route: req.route, 
       user : req.user // get the user out of session and pass to template
@@ -883,7 +883,7 @@ app.get('/app/twitter/estados/norte', function(req, res) {
   // =====================================
   // LOGOUT ==============================
   // =====================================
-  app.get('/app/logout', function(req, res) {
+  app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
   });
