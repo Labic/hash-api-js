@@ -3,7 +3,7 @@
 	#main-menu-wrapper.page-sidebar-wrapper.scrollbar-dynamic
 		// BEGIN SIDEBAR MENU
 		ul
-			if (route.path.indexOf('/twitter/') > -1)
+			if (route.path.indexOf('/app/twitter/') > -1)
 				li.start.active
 					a(href="#")
 						i.fa.fa-twitter
@@ -11,83 +11,83 @@
 							| Twitter
 						span.arrow
 					ul.sub-menu
-						if (route.path === '/twitter/secoes/hits')
+						if (route.path === '/app/twitter/secoes/hits')
 							li.active
-								a(href="/twitter/secoes/hits")
+								a(href="/app/twitter/secoes/hits")
 									| Hits
 						else
 							li
-								a(href="/twitter/secoes/hits")
+								a(href="/app/twitter/secoes/hits")
 									| Hits
 
-						if (route.path === '/twitter/secoes/publico-geral')
+						if (route.path === '/app/twitter/secoes/publico-geral')
 							li.active
-								a(href="/twitter/secoes/publico-geral")
+								a(href="/app/twitter/secoes/publico-geral")
 									| Público Geral
 						else
 							li
-								a(href="/twitter/secoes/publico-geral")
+								a(href="/app/twitter/secoes/publico-geral")
 									| Público Geral
 
-						if (route.path === '/twitter/secoes/repercussao-midiatica')
+						if (route.path === '/app/twitter/secoes/repercussao-midiatica')
 							li.active
-								a(href="/twitter/secoes/repercussao-midiatica")
+								a(href="/app/twitter/secoes/repercussao-midiatica")
 									| Repercussão Midiática
 						else
 							li
-								a(href="/twitter/secoes/repercussao-midiatica")
+								a(href="/app/twitter/secoes/repercussao-midiatica")
 									| Repercussão Midiática
 
-						if (route.path.indexOf('/twitter/estados') > -1)
+						if (route.path.indexOf('/app/twitter/estados') > -1)
 							li.open
-								a(href="/twitter/estados")
+								a(href="/app/twitter/estados")
 									span.title
 										| Estados
 									span.arrow.open
 								ul.sub-menu
-									if (route.path === '/twitter/estados/norte')
+									if (route.path === '/app/twitter/estados/norte')
 										li.active
-											a(href="/twitter/estados/norte")
+											a(href="/app/twitter/estados/norte")
 												| Norte
 									else
 										li
-											a(href="/twitter/estados/norte")
+											a(href="/app/twitter/estados/norte")
 												| Norte
 
-									if (route.path === '/twitter/estados/nordeste')
+									if (route.path === '/app/twitter/estados/nordeste')
 										li.active
-											a(href="/twitter/estados/nordeste")
+											a(href="/app/twitter/estados/nordeste")
 												| Nordeste
 									else
 										li
-											a(href="/twitter/estados/nordeste")
+											a(href="/app/twitter/estados/nordeste")
 												| Nordeste
 
-									if (route.path === '/twitter/estados/sudeste')
+									if (route.path === '/app/twitter/estados/sudeste')
 										li.active
-											a(href="/twitter/estados/sudeste")
+											a(href="/app/twitter/estados/sudeste")
 												| Sudeste
 									else
 										li
-											a(href="/twitter/estados/sudeste")
+											a(href="/app/twitter/estados/sudeste")
 												| Sudeste
 
-									if (route.path === '/twitter/estados/centro-oeste')
+									if (route.path === '/app/twitter/estados/centro-oeste')
 										li.active
-											a(href="/twitter/estados/centro-oeste")
+											a(href="/app/twitter/estados/centro-oeste")
 												| Centro-Oeste
 									else
 										li
-											a(href="/twitter/estados/centro-oeste")
+											a(href="/app/twitter/estados/centro-oeste")
 												| Centro-Oeste
 
-									if (route.path === '/twitter/estados/sul')
+									if (route.path === '/app/twitter/estados/sul')
 										li.active
-											a(href="/twitter/estados/sul")
+											a(href="/app/twitter/estados/sul")
 												| Sul
 									else
 										li
-											a(href="/twitter/estados/sul")
+											a(href="/app/twitter/estados/sul")
 												| Sul
 						else
 							li
@@ -97,28 +97,28 @@
 									span.arrow
 								ul.sub-menu
 									li
-										a(href="/twitter/estados/norte")
+										a(href="/app/twitter/estados/norte")
 											| Norte
 									li
-										a(href="/twitter/estados/nordeste")
+										a(href="/app/twitter/estados/nordeste")
 											| Nordeste
 									li
-										a(href="/twitter/estados/sudeste")
+										a(href="/app/twitter/estados/sudeste")
 											| Sudeste
 									li
-										a(href="/twitter/estados/centro-oeste")
+										a(href="/app/twitter/estados/centro-oeste")
 											| Centro-Oeste
 									li
-										a(href="/twitter/estados/sul")
+										a(href="/app/twitter/estados/sul")
 											| Sul
 
-						if (route.path === '/twitter/analytics')
+						if (route.path === '/app/twitter/analytics')
 							li.active
-								a(href="/twitter/analytics")
+								a(href="/app/twitter/analytics")
 									| Analytics
 						else
 							li
-								a(href="/twitter/analytics")
+								a(href="/app/twitter/analytics")
 									| Analytics
 			else
 				li
@@ -129,13 +129,13 @@
 						span.arrow
 					ul.sub-menu
 						li
-							a(href="/twitter/secoes/hits")
+							a(href="/app/twitter/secoes/hits")
 								| Hits
 						li
-							a(href="/twitter/secoes/publico-geral")
+							a(href="/app/twitter/secoes/publico-geral")
 								| Público Geral
 						li
-							a(href="/twitter/secoes/repercussao-midiatica")
+							a(href="/app/twitter/secoes/repercussao-midiatica")
 								| Repercussão Midiática
 						li
 							a(href="#")
@@ -144,25 +144,25 @@
 								span.arrow
 							ul.sub-menu
 								li
-									a(href="/twitter/estados/norte")
+									a(href="/app/twitter/estados/norte")
 										| Norte
 								li
-									a(href="/twitter/estados/nordeste")
+									a(href="/app/twitter/estados/nordeste")
 										| Nordeste
 								li
-									a(href="/twitter/estados/sudeste")
+									a(href="/app/twitter/estados/sudeste")
 										| Sudeste
 								li
-									a(href="/twitter/estados/centro-oeste")
+									a(href="/app/twitter/estados/centro-oeste")
 										| Centro-Oeste
 								li
-									a(href="/twitter/estados/sul")
+									a(href="/app/twitter/estados/sul")
 										| Sul
 						li
-							a(href="/twitter/analytics")
+							a(href="/app/twitter/analytics")
 								| Analytics
 
-			if (route.path == '/facebook/secoes' || route.path == '/facebook/analytics')
+			if (route.path == '/app/facebook/secoes' || route.path == '/app/facebook/analytics')
 				li.start.active
 					a(href="#")
 						i.fa.fa-facebook
@@ -170,22 +170,22 @@
 							| Facebook
 						span.arrow
 					ul.sub-menu
-						if (route.path === '/facebook/secoes')
+						if (route.path === '/app/facebook/secoes')
 							li.active
-								a(href="/facebook/secoes")
+								a(href="/app/facebook/secoes")
 									| Seções
 						else
 							li
-								a(href="/facebook/secoes")
+								a(href="/app/facebook/secoes")
 									| Seções
 
-						//-if (route.path === '/facebook/analytics')
+						//-if (route.path === '/app/facebook/analytics')
 							li.active
-								a(href="/facebook/analytics")
+								a(href="/app/facebook/analytics")
 									| Analytics
 						//-else
 							li
-								a(href="/facebook/analytics")
+								a(href="/app/facebook/analytics")
 									| Analytics
 			else
 				li
@@ -196,20 +196,20 @@
 						span.arrow
 					ul.sub-menu
 						li
-							a(href="/facebook/secoes")
+							a(href="/app/facebook/secoes")
 								| Seções
 						//-li
-							a(href="/facebook/analytics")
+							a(href="/app/facebook/analytics")
 								| Analytics
-			//-if (route.path == '/configuracoes')
+			//-if (route.path == '/app/configuracoes')
 				li.start.active
-					a(href="/configuracoes")
+					a(href="/app/configuracoes")
 						i.fa.fa-gears
 						span.title
 							| Configurações
 			//-else
 				li
-					a(href="/configuracoes")
+					a(href="/app/configuracoes")
 						i.fa.fa-gears
 						span.title
 							| Configurações
