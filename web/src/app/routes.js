@@ -769,7 +769,7 @@ app.get('/twitter/estados/norte', function(req, res) {
   // show the login form
   app.get('/twitter/analytics', function (req, res) {
     // render the page and pass in any flash data if it exists
-    res.render('twitter-estatisticas', { route: req.route, title: 'Gráficos do Twitter - App ENEM | Inep' }); 
+    res.render('twitter-analytics', { route: req.route, title: 'Gráficos do Twitter - App ENEM | Inep' }); 
   });
   
   // =====================================

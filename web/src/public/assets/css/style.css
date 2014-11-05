@@ -8143,3 +8143,18 @@ body.rtl .footer-widget {
   color: #265371;
   margin-top: 30px;
 }
+
+.tw-analytics .axis path,
+.tw-analytics .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.tw-analytics .bar {
+  fill: steelblue;
+}
+
+.tw-analytics .x.axis path {
+  display: none;
+}

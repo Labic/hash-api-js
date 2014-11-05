@@ -17,7 +17,8 @@ html
 			.page-content.tw-analytics
 				.content.sm-gutter
 					include widgets.jade
-					.row
+					#charts
+					//-.row
 						.col-md-6
 							h3
 								| Frequência de Usuários e Tweets
@@ -63,7 +64,7 @@ html
 								| Região: Sul
 							a.fancybox(href='http://104.131.228.31/teste/secao_4_sul.jpeg?timestamp={moment().format("X")}')
 								img(src='http://104.131.228.31/teste/secao_4_sul.jpeg?timestamp={moment().format("X")}', width='100%')
-					.row
+					//-.row
 						.col-md-6
 							h3
 								| Nuvem de palavras Twitter
@@ -86,3 +87,6 @@ html
 			script(src='/assets/plugins/moment/moment-with-locales.min.js')
 			script(src='/assets/plugins/jquery-tmpl/jquery.tmpl.min.js')
 			script(src='/assets/plugins/autolinker/autolinker.min.js')
+			script(src='http://d3js.org/d3.v3.min.js')
+			script(src='/assets/plugins/d3/d3.layout.cloud.js')
+			script(src='/assets/js/twitter-analytics.js')
