@@ -39,7 +39,7 @@ plotWordCloud();
 plotTagCloud();
 
 function plotGraphic(index,dia){	
-dsv('/dados/' + fileName[index], function(error, data) {
+dsv('http://104.131.228.31/dados/' + fileName[index], function(error, data) {
   d3.select(insertPoint).append("h3").text(title[index]);
 
   var svg = d3.select(insertPoint).append("svg")
@@ -156,7 +156,7 @@ if(index + 1 < fileName.length){
 }
 
 function plotWordCloud(){
-  d3.text("/dados/nuvem_twitter.dat", function(text) {
+  d3.text("http://104.131.228.31/dados/nuvem_twitter.dat", function(text) {
   d3.select(insertPoint).append("h3").text("WordCloud");  
     
   var data = d3.csv.parseRows(text);
@@ -182,7 +182,7 @@ function plotWordCloud(){
 }
 
 function plotTagCloud(){
-  d3.text("/dados/nuvem_twitter_hash.dat", function(text) {
+  d3.text("http://104.131.228.31/dados/nuvem_twitter_hash.dat", function(text) {
   d3.select(insertPoint).append("h3").text("TagCloud");  
   
   var data = d3.csv.parseRows(text);
