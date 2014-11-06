@@ -76,8 +76,8 @@ module.exports = function(app, passport) {
 
       var urls = [
         { id: "top-tweets", title: "Top Tweets", uri: tweetApiUrl + JSON.stringify(filterTopTweets) },
-        { id: "top-mencoes", title: "Usuários Mais Mencionados", uri: tweetTopDiaryApiUrl + filterTopDiaryMentions },
-        { id: "top-urls", title: "Top URLS", uri: tweetTopDiaryApiUrl + filterTopDiaryURL }
+        { id: "top-mencoes", title: "Usuários Mais Mencionados", uri: tweetTopsApiUrl + filterTopDiaryMentions },
+        { id: "top-urls", title: "Top URLS", uri: tweetTopsApiUrl + filterTopDiaryURL }
       ];
 
       var parallel = new Parallel();
