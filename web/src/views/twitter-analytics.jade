@@ -2,7 +2,7 @@ doctype html
 html
 	include head.jade
 		block append pluginCSS
-			link(rel="stylesheet", type="text/css", href="/app/assets/plugins/fancybox/jquery.fancybox.min.css")
+			link(rel="stylesheet", type="text/css", href="/assets/plugins/fancybox/jquery.fancybox.min.css")
 	
 	// BEGIN BODY
 	body.no-top.hide-top-content-header
@@ -82,11 +82,11 @@ html
 			
 		include footer.jade
 		block append pageScripts
-			script(src='/app/assets/plugins/fancybox/jquery.fancybox.pack.min.js')
+			script(src='/assets/plugins/fancybox/jquery.fancybox.pack.min.js')
 			//- TODO: Remover arquivos desnecessários
-			script(src='/app/assets/plugins/moment/moment-with-locales.min.js')
-			script(src='/app/assets/plugins/jquery-tmpl/jquery.tmpl.min.js')
-			script(src='/app/assets/plugins/autolinker/autolinker.min.js')
+			script(src='/assets/plugins/moment/moment-with-locales.min.js')
+			script(src='/assets/plugins/jquery-tmpl/jquery.tmpl.min.js')
+			script(src='/assets/plugins/autolinker/autolinker.min.js')
 			script(src='http://d3js.org/d3.v3.min.js')
-			script(src='/app/assets/plugins/d3/d3.layout.cloud.js')
-			script(src='/app/assets/js/twitter-analytics.js')
+			script(src='/assets/plugins/d3/d3.layout.cloud.js')
+			script(src='/assets/js/twitter-analytics.js')

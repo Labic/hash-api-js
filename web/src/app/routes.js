@@ -43,7 +43,7 @@ module.exports = function(app, passport) {
   // =====================================
   app.get('/', function(req, res) {
     //res.render('index', {title: 'App ENEM | Inep'});
-    res.redirect('/app/twitter/secoes/hits');
+    res.redirect('/twitter/secoes/hits');
   });
   
   // =====================================
