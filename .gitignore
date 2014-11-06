@@ -7,11 +7,4 @@
 *.project
 *.settings
 *.editorconfig
-/web/src/node_modules
-/resources/webarch/barebone
-/resources/webarch/psd
-/resources/webarch/frontend
-/resources/webarch/webarch/HAML
-/resources/webarch/webarch/SLIM
-/api/src/node_modules
-/web/src/public/dados
+/node_modules
