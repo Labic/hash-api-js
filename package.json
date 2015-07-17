@@ -1,7 +1,9 @@
 {
-  "name": "app-enem-api",
-  "version": "0.0.0",
+  "name": "hash-api",
+  "description": "Hash API endpoint",
+  "version": "1.0.0",
   "main": "server/server.js",
+  "repository" : { "type" : "git", "url" : "git@bitbucket.org:labic/hash-api.git" },
   "scripts": {
     "pretest": "jshint ."
   },
