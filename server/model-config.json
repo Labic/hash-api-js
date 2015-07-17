@@ -6,63 +6,63 @@
     ]
   },
   "User": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": false
   },
   "AccessToken": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": false
   },
   "ACL": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": false
   },
   "Role": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": false
   },
   "Tweet": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": true
   },
   "TweetUser": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": false
   },
   "TweetEntities": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": false
   },
   "TweetStatus": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": false
   },
   "FacebookPost": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": true
   },
   "Top": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": true
   },
   "TopDiary": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": true
   },
   "KeyValue": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": false
   },
   "Stream": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": true
   },
   "StreamFilter": {
-    "dataSource": "mongodb-dev",
+    "dataSource": "mongodb",
     "public": false
   }
 }
