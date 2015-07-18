@@ -1,3 +1,3 @@
-module.exports = function(Stream) {
+module.exports = function(Top) {
 	
 };

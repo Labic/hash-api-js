@@ -1,10 +1,8 @@
-var p = require('../package.json');
-var version = p.version.split('.').shift();
-
-var isDevEnv = (process.env.NODE_ENV === 'development');
+var p = require('../package.json'),
+    version = p.version.split('.').shift();
 
 module.exports = {
-  isDevEnv: isDevEnv,
+  isDevEnv: (process.env.NODE_ENV === 'development'),
   restApiRoot: '/v' + version,
   host: '0.0.0.0',
   port: 3000,
@@ -14,7 +12,16 @@ module.exports = {
     },
     rest: {
       normalizeHttpPath: false,
-      xml: false
+      xml: false,
+      supportedTypes: [
+        'application/json', 
+        'application/javascript', 
+        'application/xml', 
+        'text/javascript', 
+        'text/xml', 
+        'json', 
+        'xml'
+      ]
     },
     json: {
       strict: false,
@@ -24,10 +31,14 @@ module.exports = {
       extended: true,
       limit: '100kb'
     },
-    cors: false,
+    cors: {
+      origin: true,
+      credentials: true
+    },
     errorHandler: {
       disableStackTrace: false
     }
   },
-  legacyExplorer: false
+  livereload: process.env.LIVE_RELOAD || false,
+  legacyExplorer: process.env.LEGACY_EXPLORER || false
 };

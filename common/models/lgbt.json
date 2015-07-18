@@ -2,12 +2,12 @@
   "name": "LGBT",
   "plural": "LGBT",
   "base": "Tweet",
+  "properties": {},
   "options": {
     "mongodb": {
       "collection": "lgbt"
     }
   },
-  "properties": {},
   "validations": [],
   "relations": {},
   "acls": [],

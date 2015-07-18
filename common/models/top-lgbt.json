@@ -1,0 +1,18 @@
+{
+  "name": "TopLGBT",
+  "plural": "TopLGBT",
+  "base": "Top",
+  "properties": {
+    "MENTIONS": ["KeyValue"],
+    "URL": ["KeyValue"]
+  },
+  "options": {
+    "mongodb": {
+      "collection": "Top_lgbt"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

@@ -1,0 +1,18 @@
+{
+  "name": "TopGenero",
+  "plural": "TopGenero",
+  "base": "Top",
+  "properties": {
+    "MENTIONS": ["KeyValue"],
+    "URL": ["KeyValue"]
+  },
+  "options": {
+    "mongodb": {
+      "collection": "Top_genero"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

@@ -30,7 +30,15 @@
     "dataSource": "mongodb",
     "public": true
   },
+  "TopGenero": {
+    "dataSource": "mongodb",
+    "public": true
+  },
   "Homofobia": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "TopHomofobia": {
     "dataSource": "mongodb",
     "public": true
   },
@@ -38,11 +46,23 @@
     "dataSource": "mongodb",
     "public": true
   },
+  "TopIndigena": {
+    "dataSource": "mongodb",
+    "public": true
+  },
   "LGBT": {
     "dataSource": "mongodb",
     "public": true
   },
+  "TopLGBT": {
+    "dataSource": "mongodb",
+    "public": true
+  },
   "Racismo": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "TopRacismo": {
     "dataSource": "mongodb",
     "public": true
   },
