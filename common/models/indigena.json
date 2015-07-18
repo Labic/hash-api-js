@@ -1,10 +1,10 @@
 {
-  "name": "Homofobia",
-  "plural": "Homofobia",
+  "name": "Indigena",
+  "plural": "Indigenas",
   "base": "Tweet",
   "options": {
     "mongodb": {
-      "collection": "homofobia"
+      "collection": "indigena"
     }
   },
   "properties": {},
