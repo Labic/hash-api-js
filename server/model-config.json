@@ -24,6 +24,10 @@
   },
   "Tweet": {
     "dataSource": "mongodb",
+    "public": false
+  },
+  "Genero": {
+    "dataSource": "mongodb",
     "public": true
   },
   "TweetUser": {
@@ -40,15 +44,15 @@
   },
   "FacebookPost": {
     "dataSource": "mongodb",
-    "public": true
+    "public": false
   },
   "Top": {
     "dataSource": "mongodb",
-    "public": true
+    "public": false
   },
   "TopDiary": {
     "dataSource": "mongodb",
-    "public": true
+    "public": false
   },
   "KeyValue": {
     "dataSource": "mongodb",
@@ -56,7 +60,7 @@
   },
   "Stream": {
     "dataSource": "mongodb",
-    "public": true
+    "public": false
   },
   "StreamFilter": {
     "dataSource": "mongodb",

@@ -1,7 +1,7 @@
 var url = require('url');
 
 var isDevEnv = (process.env.NODE_ENV || 'development') === 'development';
-console.log(process.env.PORT);
+
 var conf = {
   hostname: process.env.HOST || 'localhost',
   port: process.env.PORT || 3000,

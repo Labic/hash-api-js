@@ -3,17 +3,17 @@
   "plural": "Tweets",
   "base": "PersistedModel",
   "properties": {
-    "time": {
-      "type": ["number"]
-    },
     "status": {
       "type": "TweetStatus"
     },
-    "rts": {
+    "query": {
+      "type": "string"
+    },
+    "utc_timestamp": {
       "type": "number"
     },
-    "categories": {
-      "type": ["string"]
+    "language": {
+      "type": "string"
     }
   },
   "validations": [],
