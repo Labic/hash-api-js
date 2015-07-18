@@ -9,3 +9,4 @@
 *.editorconfig
 /node_modules
 /nodemon.json
+/*.log
