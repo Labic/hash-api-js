@@ -1,1 +1,1 @@
-web: node server/server.js
+web: slc run --cluster 1
