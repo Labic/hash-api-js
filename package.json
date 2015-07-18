@@ -3,7 +3,10 @@
   "description": "Hash API endpoint",
   "version": "1.0.0",
   "main": "server/server.js",
-  "repository" : { "type" : "git", "url" : "git@bitbucket.org:labic/hash-api.git" },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:labic/hash-api.git"
+  },
   "scripts": {
     "pretest": "jshint ."
   },
@@ -18,5 +21,8 @@
   },
   "optionalDependencies": {
     "loopback-explorer": "^1.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.3.7"
   }
 }
