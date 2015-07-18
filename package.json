@@ -3,9 +3,9 @@
   "description": "Hash API endpoint",
   "version": "1.0.0",
   "main": "server/server.js",
-  "repository": "git@bitbucket.org:labic/hash-api.git",
   "scripts": {
-    "prepublish": "npm install"
+    "prepublish": "npm install",
+    "start": "node server/server.js"
   },
   "dependencies": {
     "compression": "^1.0.3",
@@ -23,6 +23,17 @@
     "nodemon": "^1.3.7"
   },
   "engines": {
-    "node": "0.12.x"
-  }
+    "node": "0.10.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:labic/hash-api.git"
+  },
+  "keywords": [
+    "twitter",
+    "facebook",
+    "api",
+    "social-network"
+  ],
+  "license": "MIT"
 }
