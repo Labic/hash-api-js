@@ -8,9 +8,6 @@
     }
   },
   "properties": {},
-  "scope": {
-    "limit": 25
-  },
   "validations": [],
   "relations": {},
   "acls": [],

@@ -16,6 +16,9 @@
       "type": "string"
     }
   },
+  "scope": {
+    "limit": 25
+  },
   "validations": [],
   "relations": {},
   "acls": [{

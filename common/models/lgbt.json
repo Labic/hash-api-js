@@ -1,13 +1,16 @@
 {
-  "name": "Genero",
-  "plural": "Generos",
+  "name": "LGBT",
+  "plural": "LGBT",
   "base": "Tweet",
   "options": {
     "mongodb": {
-      "collection": "genero"
+      "collection": "lgbt"
     }
   },
   "properties": {},
+  "scope": {
+    "limit": 25
+  },
   "validations": [],
   "relations": {},
   "acls": [],
