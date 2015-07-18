@@ -1,32 +1,33 @@
-var url = require('url');
+var p = require('../package.json');
+var version = p.version.split('.').shift();
 
-var isDevEnv = (process.env.NODE_ENV || 'development') === 'development';
-
-var conf = {
-  hostname: process.env.HOST || 'localhost',
-  port: process.env.PORT || 3000,
-  restApiRoot: process.env.REST_API_ROOT || '/api', // The path where to mount the REST API app
-  legacyExplorer: process.env.LEGACY_EXPLORER || false
-};
-
-// The URL where the browser client can access the REST API is available.
-// Replace with a full url (including hostname) if your client is being
-// served from a different server than your REST API.
-conf.restApiUrl = url.format({
-  protocol: 'https',
-  slashes: true,
-  hostname: conf.hostname,
-  port: conf.port,
-  pathname: conf.restApiRoot
-});
+var isDevEnv = (process.env.NODE_ENV === 'development');
 
 module.exports = {
-  hostname: conf.hostname,
-  restApiRoot: conf.restApiRoot,
-  livereload: process.env.LIVE_RELOAD || false,
   isDevEnv: isDevEnv,
-  // indexFile: require.resolve(isDevEnv ? '../client/ngapp/index.html' : '../client/dist/index.html'),
-  port: conf.port,
-  legacyExplorer: conf.legacyExplorer,
-  remote: conf.restApiRoot
+  restApiRoot: '/v' + version,
+  host: '0.0.0.0',
+  port: 3000,
+  remoting: {
+    context: {
+      enableHttpContext: false
+    },
+    rest: {
+      normalizeHttpPath: false,
+      xml: false
+    },
+    json: {
+      strict: false,
+      limit: '100kb'
+    },
+    urlencoded: {
+      extended: true,
+      limit: '100kb'
+    },
+    cors: false,
+    errorHandler: {
+      disableStackTrace: false
+    }
+  },
+  legacyExplorer: false
 };
