@@ -1,10 +1,10 @@
 {
-  "name": "LGBT",
-  "plural": "LGBT",
+  "name": "Racismo",
+  "plural": "Racismo",
   "base": "Tweet",
   "options": {
     "mongodb": {
-      "collection": "lgbt"
+      "collection": "racismo"
     }
   },
   "properties": {},
