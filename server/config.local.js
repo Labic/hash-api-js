@@ -1,9 +1,9 @@
 var url = require('url');
 
 var isDevEnv = (process.env.NODE_ENV || 'development') === 'development';
-
+console.log(process.env.PORT);
 var conf = {
-    hostname: process.env.HOSTNAME || 'localhost',
+  hostname: process.env.HOST || 'localhost',
   port: process.env.PORT || 3000,
   restApiRoot: process.env.REST_API_ROOT || '/api', // The path where to mount the REST API app
   legacyExplorer: process.env.LEGACY_EXPLORER || false
