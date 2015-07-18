@@ -8,3 +8,4 @@
 *.settings
 *.editorconfig
 /node_modules
+/nodemon.json
