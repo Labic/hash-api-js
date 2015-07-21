@@ -1,14 +1,26 @@
 {
   "_meta": {
-    "sources": ["../common/models"]
+    "sources": [
+      "../common/models",
+      "./models",
+      "../node_modules/loopback-component-passport/lib/models"
+    ]
   },
   "User": {
     "dataSource": "mongodb",
     "public": false
   },
-  "AccessToken": {
+  "accessToken": {
     "dataSource": "mongodb",
-    "public": false
+    "public": true
+  },
+  "userCredential": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "userIdentity": {
+    "dataSource": "mongodb",
+    "public": true
   },
   "ACL": {
     "dataSource": "mongodb",
@@ -16,9 +28,13 @@
   },
   "RoleMapping": {
     "dataSource": "mongodb",
-    "public": false
+    "public": true
   },
   "Role": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "AppModel": {
     "dataSource": "mongodb",
     "public": false
   },
@@ -78,27 +94,11 @@
     "dataSource": "mongodb",
     "public": false
   },
-  "FacebookPost": {
-    "dataSource": "mongodb",
-    "public": false
-  },
   "Top": {
     "dataSource": "mongodb",
     "public": false
   },
-  "TopDiary": {
-    "dataSource": "mongodb",
-    "public": false
-  },
   "KeyValue": {
-    "dataSource": "mongodb",
-    "public": false
-  },
-  "Stream": {
-    "dataSource": "mongodb",
-    "public": false
-  },
-  "StreamFilter": {
     "dataSource": "mongodb",
     "public": false
   }
