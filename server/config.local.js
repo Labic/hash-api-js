@@ -6,6 +6,7 @@ module.exports = {
   restApiRoot: '/v' + version,
   host: '0.0.0.0',
   port: 3000,
+  cookieSecret: 'F1FEE670-3C72-11E4-916C-0800200C9A66',
   remoting: {
     context: {
       enableHttpContext: false

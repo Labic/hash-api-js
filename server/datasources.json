@@ -1,5 +1,5 @@
 {
-  "mongodb": {
+  "db": {
     "connector": "mongodb"
   }
 }

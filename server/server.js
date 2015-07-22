@@ -1,6 +1,7 @@
+'use strict';
+
 var loopback = require('loopback');
 var boot = require('loopback-boot');
-
 var app = module.exports = loopback();
 
 // Set up the /favicon.ico
@@ -9,6 +10,8 @@ app.use(loopback.favicon());
 // request pre-processing middleware
 app.use(loopback.compress());
 
+// Security
+// TODO: Replace by a fake x-powered-by?
 app.disable('x-powered-by');
 
 // -- Add your pre-processing middleware here --

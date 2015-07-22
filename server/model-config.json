@@ -6,100 +6,108 @@
       "../node_modules/loopback-component-passport/lib/models"
     ]
   },
-  "User": {
-    "dataSource": "mongodb",
-    "public": false
+  "user": {
+    "dataSource": "db",
+    "public": true
   },
   "accessToken": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
+    "public": true
+  },
+  "AuthProvider": {
+    "dataSource": "db",
     "public": true
   },
   "userCredential": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "userIdentity": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "ACL": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "Role": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "AppModel": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": false
   },
+  "Setting": {
+    "dataSource": "db",
+    "public": true
+  },
   "Tweet": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": false
   },
   "Genero": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "TopGenero": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "Homofobia": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "TopHomofobia": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "Indigena": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "TopIndigena": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "LGBT": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "TopLGBT": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "Racismo": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "TopRacismo": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": true
   },
   "TweetUser": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": false
   },
   "TweetEntities": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": false
   },
   "TweetStatus": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": false
   },
   "Top": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": false
   },
   "KeyValue": {
-    "dataSource": "mongodb",
+    "dataSource": "db",
     "public": false
   }
 }

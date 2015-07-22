@@ -1,5 +1,5 @@
 module.exports = {
-  mongodb: {
+  db: {
     connector: 'mongodb',
     url: process.env.MONGODB_URI || 'mongodb://localhost/hash'
   }
