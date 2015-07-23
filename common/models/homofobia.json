@@ -1,6 +1,6 @@
 {
   "name": "Homofobia",
-  "plural": "Homofobia",
+  "plural": "homofobia",
   "base": "Tweet",
   "options": {
     "mongodb": {

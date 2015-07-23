@@ -1,6 +1,6 @@
 {
   "name": "TopGenero",
-  "plural": "TopGenero",
+  "plural": "top_genero",
   "base": "Top",
   "properties": {
     "MENTIONS": ["KeyValue"],

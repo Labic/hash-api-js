@@ -1,6 +1,6 @@
 {
   "name": "Genero",
-  "plural": "Genero",
+  "plural": "genero",
   "base": "Tweet",
   "options": {
     "mongodb": {

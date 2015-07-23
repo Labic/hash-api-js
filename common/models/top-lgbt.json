@@ -1,6 +1,6 @@
 {
   "name": "TopLGBT",
-  "plural": "TopLGBT",
+  "plural": "top_lgbt",
   "base": "Top",
   "properties": {
     "MENTIONS": ["KeyValue"],

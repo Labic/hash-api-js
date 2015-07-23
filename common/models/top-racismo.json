@@ -1,6 +1,6 @@
 {
   "name": "TopRacismo",
-  "plural": "TopRacismo",
+  "plural": "top_racismo",
   "base": "Top",
   "properties": {
     "MENTIONS": ["KeyValue"],

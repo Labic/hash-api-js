@@ -1,6 +1,6 @@
 {
   "name": "Racismo",
-  "plural": "Racismo",
+  "plural": "racismo",
   "base": "Tweet",
   "options": {
     "mongodb": {

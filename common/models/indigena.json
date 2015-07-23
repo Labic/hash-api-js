@@ -1,6 +1,6 @@
 {
   "name": "Indigena",
-  "plural": "Indigenas",
+  "plural": "indigena",
   "base": "Tweet",
   "options": {
     "mongodb": {

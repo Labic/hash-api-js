@@ -17,7 +17,8 @@
     }
   },
   "scope": {
-    "limit": 25
+    "limit": 25,
+    "order": ["utc_timestamp DESC", "status.retweet_count DESC"]
   },
   "validations": [],
   "relations": {},

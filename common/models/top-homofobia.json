@@ -1,6 +1,6 @@
 {
   "name": "TopHomofobia",
-  "plural": "TopHomofobia",
+  "plural": "top_homofobia",
   "base": "Top",
   "properties": {
     "MENTIONS": ["KeyValue"],

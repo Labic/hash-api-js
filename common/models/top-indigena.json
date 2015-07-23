@@ -1,6 +1,6 @@
 {
   "name": "TopIndigena",
-  "plural": "TopIndigena",
+  "plural": "top_indigena",
   "base": "Top",
   "properties": {
     "MENTIONS": ["KeyValue"],
