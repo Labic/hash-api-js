@@ -48,7 +48,7 @@
   },
   "Tweet": {
     "dataSource": "db",
-    "public": false
+    "public": true
   },
   "Genero": {
     "dataSource": "db",

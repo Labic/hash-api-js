@@ -1,27 +1,26 @@
 {
   "name": "Tweet",
-  "plural": "Tweets",
+  "plural": "tweets",
   "base": "PersistedModel",
+  "options": {
+    "mongodb": {
+      "collection": "tweets"
+    }
+  },
   "properties": {
     "status": {
       "type": "TweetStatus"
     },
-    "query": {
+    "theme": {
       "type": "string"
     },
-    "utc_timestamp": {
-      "type": "number"
-    },
-    "language": {
+    "categories": {
       "type": "string"
     }
   },
   "scope": {
-    "limit": 25,
-    "order": ["utc_timestamp DESC", "status.retweet_count DESC"]
+    "limit": 25
   },
-  "validations": [],
-  "relations": {},
   "acls": [{
       "accessType": "WRITE",
       "principalType": "ROLE",
@@ -34,6 +33,5 @@
       "principalId": "$everyone",
       "permission": "ALLOW"
     }
-  ],
-  "methods": []
+  ]
 }

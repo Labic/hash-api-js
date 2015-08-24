@@ -28,7 +28,8 @@
     "passport-local": "1.0.0",
     "passport-oauth2": "1.1.2",
     "passport-twitter": "~1.0.2",
-    "serve-favicon": "2.2.0"
+    "serve-favicon": "2.2.0",
+    "underscore": "^1.8.3"
   },
   "optionalDependencies": {
     "loopback-explorer": "^1.1.0"
