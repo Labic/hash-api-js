@@ -69,10 +69,7 @@ module.exports = function(Tweet) {
             _id: '$status.id_str',
             status: '$status',
             count: '$count'
-          } },
-          { $out: 'collecton',
-            type: 'merge'
-           }
+          } }
         ];
         
         break;
