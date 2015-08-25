@@ -10,7 +10,7 @@ TIPS:
 module.exports = function(Tweet) {
 
   Tweet.top = function(topType, filter, responseCallback) {
-    var topType = (topType || 'retweet');
+    filter.limit = (filter.limit || 25);
     filter.skip = (filter.skip || 0);
     
     var errors = [];
@@ -153,6 +153,11 @@ module.exports = function(Tweet) {
         ];
       
         break;
+
+      default:
+        return responseCallback(new Error(
+          'Invalid type, select one of this: retweet, mention, url, image or hashtag'
+        ));
     }
 
     aggregate[0].$match['status.timestamp_ms'] = {
@@ -169,7 +174,7 @@ module.exports = function(Tweet) {
       };
 
     aggregate.push(
-      { $limit: 25 + filter.skip },
+      { $limit: filter.limit },
       { $skip : filter.skip }
     );
 

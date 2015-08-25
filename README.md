@@ -12,7 +12,8 @@ MongoDB
 
     API_URL/v1/tweets?filter=FILTER
 
-    // FILTER
+_FILTER_
+
     {
       "where": { 
         "status.entities.hashtags.text": { 
@@ -20,6 +21,8 @@ MongoDB
         } 
       } 
     }
+
+For more information about filter see [Loopback documentation about Querying data](https://docs.strongloop.com/display/public/LB/Querying+data)
 
 ### Count
 
@@ -48,6 +51,7 @@ MongoDB
     }
 
 or
+
     // WHERE NOT WORK
     {
       "and": [
@@ -69,16 +73,18 @@ or
 
     API_URL/v1/tweets/top?type=TYPE&filter=FILTER
 
-#### type
+_TYPE_
+
  - retweet
  - mention
  - url
  - image
  - hashtag
- - user (not implement)
- - word (not implement)
+ - user (not implemented)
+ - word (not implemented)
 
-    // FILTER
+_FILTER_
+
     { 
       "where": { 
         "status.created_at": { 
@@ -89,6 +95,30 @@ or
         "categories": { 
           "inq": ["perfil", "conteudo"] 
         } 
-      }
+      },
+      "limit": 25,
+      "skip": 0
     }
 
+_where['status.created_at'].gte_ and _where['status.created_at'].lte_ is required.
+_limit_ and _skip_ is for pagination but is't required, default values is _limit: 25_ and _skip: 0_
+
+**Example: Top Retweets by Date Range**
+
+    API_URL/v1/tweets/top?type=retweet&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" } }, "limit": 25, "skip": 0 }
+
+**Example: Top Retweets by Theme and Date Range**
+
+    API_URL/v1/tweets/top?type=retweet&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "theme": "negros" }, "limit": 25, "skip": 0 }
+
+**Example: Top Retweets by Categories and Date Range**
+
+    API_URL/v1/tweets/top?type=retweet&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "categories": { "inq": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
+
+**Example: Top Retweets by Theme, Categories and Date Range**
+
+    API_URL/v1/tweets/top?type=retweet&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "theme": "negros", "categories": { "inq": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
+
+**Pagination**
+  
+To make pagination just change _limit_ and _skip_ properties. Ex.: first page is _limit: 25, skip: 0_, next page is _limit: 50, skip: 25_, and so on.
