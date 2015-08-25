@@ -54,15 +54,7 @@
     "dataSource": "db",
     "public": true
   },
-  "TopGenero": {
-    "dataSource": "db",
-    "public": true
-  },
   "Homofobia": {
-    "dataSource": "db",
-    "public": true
-  },
-  "TopHomofobia": {
     "dataSource": "db",
     "public": true
   },
@@ -70,23 +62,11 @@
     "dataSource": "db",
     "public": true
   },
-  "TopIndigena": {
-    "dataSource": "db",
-    "public": true
-  },
   "LGBT": {
     "dataSource": "db",
     "public": true
   },
-  "TopLGBT": {
-    "dataSource": "db",
-    "public": true
-  },
   "Racismo": {
-    "dataSource": "db",
-    "public": true
-  },
-  "TopRacismo": {
     "dataSource": "db",
     "public": true
   },
@@ -99,10 +79,6 @@
     "public": false
   },
   "TweetStatus": {
-    "dataSource": "db",
-    "public": false
-  },
-  "Top": {
     "dataSource": "db",
     "public": false
   },
