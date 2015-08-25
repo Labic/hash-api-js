@@ -142,7 +142,7 @@ module.exports = function(Tweet) {
           { $unwind: '$status.entities.hashtags' },
           { $group: {
             _id: '$status.entities.hashtags.text',
-            count: { $sum: NumberInt(1) }
+            count: { $sum: 1 }
           } },
           { $sort: { count: -1 } },
           { $project: {
