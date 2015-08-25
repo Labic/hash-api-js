@@ -134,6 +134,25 @@ module.exports = function(Tweet) {
       
         break;
 
+      case 'user':
+        aggregate = [ 
+          { $match: {
+            'status.user.screen_name': { $exists: true }
+          } },
+          { $group: {
+            _id: '$status.user.screen_name',
+            count: { $sum: 1 }
+          } },
+          { $sort: { count: -1 } },
+          { $project: {
+            _id: 0,
+            screen_name: '$_id',
+            count: '$count'
+          } }
+        ];
+
+        break;
+
       case 'hashtag':
         aggregate = [
           { $match: {
@@ -156,7 +175,7 @@ module.exports = function(Tweet) {
 
       default:
         return responseCallback(new Error(
-          'Invalid type, select one of this: retweet, mention, url, image or hashtag'
+          'Invalid type, select one of this: retweet, mention, url, image, user or hashtag'
         ));
     }
 
@@ -178,6 +197,7 @@ module.exports = function(Tweet) {
       { $skip : filter.skip }
     );
 
+    console.log(topType);
     console.log(filter);
     console.log('%j', aggregate);
     
