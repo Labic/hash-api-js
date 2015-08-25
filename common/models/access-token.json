@@ -1,6 +1,6 @@
 {
   "name": "accessToken",
-  "plural": "accessTokens",
+  "plural": "access_tokens",
   "base": "AccessToken",
   "properties": {},
   "validations": [],

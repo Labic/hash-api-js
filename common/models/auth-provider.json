@@ -1,6 +1,6 @@
 {
   "name": "AuthProvider",
-  "plural": "AuthProviders",
+  "plural": "auth_providers",
   "base": "PersistedModel",
   "strict": false,
   "properties": {},

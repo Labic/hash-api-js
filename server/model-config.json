@@ -38,10 +38,6 @@
     "dataSource": "db",
     "public": true
   },
-  "AppModel": {
-    "dataSource": "db",
-    "public": false
-  },
   "Setting": {
     "dataSource": "db",
     "public": true
@@ -79,10 +75,6 @@
     "public": false
   },
   "TweetStatus": {
-    "dataSource": "db",
-    "public": false
-  },
-  "KeyValue": {
     "dataSource": "db",
     "public": false
   }
