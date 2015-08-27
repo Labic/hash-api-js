@@ -3,52 +3,52 @@
   "base": "PersistedModel",
   "properties": {
     "contributors": {
-      "type": "array"
+      "type": ["Object"]
     },
     "truncated": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "text": {
-      "type": "string"
+      "type": "String"
     },
     "in_reply_to_status_id": {
-      "type": "number"
+      "type": "Number"
     },
     "id": {
-      "type": "number"
+      "type": "Number"
     },
     "favorite_count": {
-      "type": "number"
+      "type": "Number"
     },
     "source": {
-      "type": "string"
+      "type": "String"
     },
     "retweeted": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "coordinates": {
-      "type": "object"
+      "type": "TweetCoordinatesPoint"
     },
     "timestamp_ms": {
-      "type": "string"
+      "type": "Number"
     },
     "entities": {
       "type": "TweetEntities"
     },
     "in_reply_to_screen_name": {
-      "type": "boolean"
+      "type": "String"
     },
     "id_str": {
-      "type": "string"
+      "type": "String"
     },
     "retweet_count": {
-      "type": "number"
+      "type": "Number"
     },
     "in_reply_to_user_id": {
-      "type": "number"
+      "type": "Number"
     },
     "favorited": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "retweeted_status": {
       "type": "TweetStatus"
@@ -57,35 +57,31 @@
       "type": "TweetUser"
     },
     "geo": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "in_reply_to_user_id_str": {
-      "type": "string"
+      "type": "String"
     },
     "possibly_sensitive": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "lang": {
-      "type": "string"
+      "type": "String"
     },
     "created_at": {
-      "type": "date"
+      "type": "Date"
     },
     "filter_level": {
-      "type": "string"
+      "type": "String"
     },
     "in_reply_to_status_id_str": {
-      "type": "string"
+      "type": "String"
     },
     "place": {
-      "type": "string"
+      "type": "TweetPlace"
     },
     "extended_entities": {
-      "type": "object"
+      "type": "Object"
     }
-  },
-  "validations": [],
-  "relations": {},
-  "acls": [],
-  "methods": []
+  }
 }

@@ -46,6 +46,42 @@
     "dataSource": "db",
     "public": true
   },
+  "TweetStatus": {
+    "dataSource": "db",
+    "public": false
+  },
+  "TweetUser": {
+    "dataSource": "db",
+    "public": false
+  },
+  "TweetCoordinatesPoint": {
+    "dataSource": "db",
+    "public": false
+  },
+  "TweetEntities": {
+    "dataSource": "db",
+    "public": false
+  },
+  "TweetEntitiesMedia": {
+    "dataSource": "db",
+    "public": false
+  },
+  "TweetEntitiesMediaSizes": {
+    "dataSource": "db",
+    "public": false
+  },
+  "TweetEntitiesMediaSizesSize": {
+    "dataSource": "db",
+    "public": false
+  },
+  "TweetPlace": {
+    "dataSource": "db",
+    "public": false
+  },
+  "TweetCoordinatesPolygon": {
+    "dataSource": "db",
+    "public": false
+  },
   "Genero": {
     "dataSource": "db",
     "public": true
@@ -65,17 +101,5 @@
   "Racismo": {
     "dataSource": "db",
     "public": true
-  },
-  "TweetUser": {
-    "dataSource": "db",
-    "public": false
-  },
-  "TweetEntities": {
-    "dataSource": "db",
-    "public": false
-  },
-  "TweetStatus": {
-    "dataSource": "db",
-    "public": false
   }
 }

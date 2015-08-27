@@ -1,0 +1,54 @@
+{
+  "name": "TweetEntitiesMedia",
+  "base": "PersistedModel",
+  "properties": {
+    "source_status_id_str": {
+      "type": "String",
+      "required": true
+    },
+    "expanded_url": {
+      "type": "String",
+      "required": true
+    },
+    "display_url": {
+      "type": "String",
+      "required": true
+    },
+    "url": {
+      "type": "String",
+      "required": true
+    },
+    "media_url_https": {
+      "type": "String",
+      "required": true
+    },
+    "source_status_id": {
+      "type": "Number",
+      "required": true
+    },
+    "id_str": {
+      "type": "String",
+      "required": true
+    },
+    "sizes": {
+      "type": "TweetEntitiesMediaSizes",
+      "required": true
+    },
+    "indices": {
+      "type": ["Number"],
+      "required": true
+    },
+    "type": {
+      "type": "String",
+      "required": true
+    },
+    "id": {
+      "type": "Number",
+      "required": true
+    },
+    "media_url": {
+      "type": "String",
+      "required": true
+    }
+  }
+}

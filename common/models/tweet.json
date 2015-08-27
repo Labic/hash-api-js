@@ -12,10 +12,10 @@
       "type": "TweetStatus"
     },
     "theme": {
-      "type": "string"
+      "type": "String"
     },
     "categories": {
-      "type": "string"
+      "type": ["String"]
     }
   },
   "scope": {

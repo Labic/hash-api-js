@@ -3,19 +3,19 @@
   "base": "PersistedModel",
   "properties": {
     "trends": {
-      "type": ["object"]
+      "type": ["Object"]
     },
     "symbols": {
-      "type": ["object"]
+      "type": ["Object"]
     },
     "urls": {
-      "type": ["object"]
+      "type": ["Object"]
     },
     "hashtags": {
-      "type": ["object"]
+      "type": ["Ibject"]
     },
     "user_mentions": {
-      "type": ["object"]
+      "type": ["Object"]
     }
   },
   "validations": [],

@@ -1,0 +1,14 @@
+{
+  "name": "TweetCoordinatesPolygon",
+  "base": "PersistedModel",
+  "properties": {
+    "type": {
+      "type": "String",
+      "required": true
+    },
+    "coordinates": {
+      "type": [["Number", "Number"]],
+      "required": true
+    }
+  }
+}

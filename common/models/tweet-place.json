@@ -1,0 +1,39 @@
+{
+  "name": "TweetPlace",
+  "base": "PersistedModel",
+  "properties": {
+    "full_name": {
+      "type": "String",
+      "required": true
+    },
+    "url": {
+      "type": "String",
+      "required": true
+    },
+    "country": {
+      "type": "String",
+      "required": true
+    },
+    "place_type": {
+      "type": "String",
+      "required": true
+    },
+    "bounding_box": {
+      "type": "TweetCoordinatesPolygon",
+      "required": true
+    },
+    "country_code": {
+      "type": "TweetCoordinatesPolygon",
+      "required": true
+    },
+    "attributes": {
+      "type": "Object"
+    },
+    "id": {
+      "type": "String"
+    },
+    "id": {
+      "type": "name"
+    }
+  }
+}

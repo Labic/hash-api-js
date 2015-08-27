@@ -3,119 +3,115 @@
   "base": "PersistedModel",
   "properties": {
     "location": {
-      "type": "string"
+      "type": "String"
     },
     "default_profile": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "statuses_count": {
-      "type": "number"
+      "type": "Number"
     },
     "profile_background_tile": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "lang": {
-      "type": "string"
+      "type": "String"
     },
     "profile_link_color": {
-      "type": "string"
+      "type": "String"
     },
     "id": {
-      "type": "number"
+      "type": "Number"
     },
     "following": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "favourites_count": {
-      "type": "number"
+      "type": "Number"
     },
     "protected": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "profile_text_color": {
-      "type": "string"
+      "type": "String"
     },
     "contributors_enabled": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "verified": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "description": {
-      "type": "string"
+      "type": "String"
     },
     "name": {
-      "type": "string"
+      "type": "String"
     },
     "profile_sidebar_border_color": {
-      "type": "string"
+      "type": "String"
     },
     "profile_background_color": {
-      "type": "string"
+      "type": "String"
     },
     "created_at": {
-      "type": "string"
+      "type": "Date"
     },
     "default_profile_image": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "followers_count": {
-      "type": "number"
+      "type": "Number"
     },
     "profile_image_url_https": {
-      "type": "string"
+      "type": "String"
     },
     "geo_enabled": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "profile_background_image_url": {
-      "type": "string"
+      "type": "String"
     },
     "profile_background_image_url_https": {
-      "type": "string"
+      "type": "String"
     },
     "follow_request_sent": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "url": {
-      "type": "string"
+      "type": "String"
     },
     "utc_offset": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "time_zone": {
-      "type": "string"
+      "type": "String"
     },
     "notifications": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "friends_count": {
-      "type": "number"
+      "type": "Number"
     },
     "profile_use_background_image": {
-      "type": "boolean"
+      "type": "Boolean"
     },
     "profile_sidebar_fill_color": {
-      "type": "string"
+      "type": "String"
     },
     "screen_name": {
-      "type": "string"
+      "type": "String"
     },
     "id_str": {
-      "type": "string"
+      "type": "String"
     },
     "profile_image_url": {
-      "type": "string"
+      "type": "String"
     },
     "listed_count": {
-      "type": "number"
+      "type": "Number"
     },
     "is_translator": {
-      "type": "boolean"
+      "type": "Boolean"
     }
-  },
-  "validations": [],
-  "relations": {},
-  "acls": [],
-  "methods": []
+  }
 }

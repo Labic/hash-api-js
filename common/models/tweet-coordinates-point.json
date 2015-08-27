@@ -1,0 +1,14 @@
+{
+  "name": "TweetCoordinatesPoint",
+  "base": "PersistedModel",
+  "properties": {
+    "type": {
+      "type": "String",
+      "required": true
+    },
+    "coordinates": {
+      "type": ["Number"],
+      "required": true
+    }
+  }
+}
