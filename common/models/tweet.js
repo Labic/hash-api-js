@@ -9,9 +9,12 @@ TIPS:
 
 module.exports = function(Tweet) {
 
-  Tweet.top = function(topType, filter, responseCallback) {
+  Tweet.metrics = function(metric, filter, responseCallback) {
     filter.limit = (filter.limit || 25);
     filter.skip = (filter.skip || 0);
+    
+    console.log(metric);
+    console.log(filter);
     
     var errors = [];
 
@@ -53,8 +56,8 @@ module.exports = function(Tweet) {
 
     var aggregate = null;
 
-    switch (topType) {
-      case 'retweet':
+    switch (metric) {
+      case 'top-retweets':
         aggregate = [
           { $match: {
             'status.retweeted_status': { $exists: true}
@@ -74,7 +77,7 @@ module.exports = function(Tweet) {
         
         break;
 
-      case 'mention': 
+      case 'top-mentions': 
         aggregate = [
           { $match: {
             'status.entities.user_mentions.0': { $exists: true } 
@@ -94,7 +97,7 @@ module.exports = function(Tweet) {
 
         break;
 
-      case 'url':
+      case 'top-urls':
         aggregate = [
           { $match: {
             'status.entities.urls.0': { $exists: true }
@@ -114,7 +117,7 @@ module.exports = function(Tweet) {
       
         break;
 
-      case 'image':
+      case 'top-images':
         aggregate = [
           { $match: {
             'status.entities.media.0': { $exists: true }
@@ -134,7 +137,7 @@ module.exports = function(Tweet) {
       
         break;
 
-      case 'user':
+      case 'top-users':
         aggregate = [ 
           { $match: {
             'status.user.screen_name': { $exists: true }
@@ -153,7 +156,7 @@ module.exports = function(Tweet) {
 
         break;
 
-      case 'hashtag':
+      case 'top-hashtags':
         aggregate = [
           { $match: {
             'status.entities.hashtags.0': { $exists: true }
@@ -171,6 +174,29 @@ module.exports = function(Tweet) {
           } }
         ];
       
+        break;
+
+      case 'retweet-count':
+        var aggregate = [ 
+          { $match: { 
+            'status.retweeted_status': { $exists: true}
+          } }, 
+          { $group: { 
+              _id: '$status.retweeted_status.id_str', 
+              retweets_count: { $sum: 1 } 
+          } }, 
+          { $group : { 
+              _id : '$retweets_count',
+              count: { $sum: 1 } 
+          } }, 
+          { $project: { 
+              _id: 0, 
+              retweets_count:'$_id', 
+              count: '$count' 
+          } }, 
+          { $sort: { retweets_count: -1 } } 
+        ];
+        
         break;
 
       default:
@@ -197,28 +223,31 @@ module.exports = function(Tweet) {
       { $skip : filter.skip }
     );
 
-    console.log(topType);
-    console.log(filter);
     console.log('%j', aggregate);
-    
-    Tweet.getDataSource().connector.connect(function(err, db) {
-      var collection = db.collection(Tweet.settings.mongodb.collection);
-      // TODO: Review [MongoDB security tips](http://blog.websecurify.com/2014/08/hacking-nodejs-and-mongodb.html)
-      collection.aggregate(aggregate, function(e0rr, result) {
-        // ISSUE: Implement next page
-        // ISSUE: Implement mongodb "verbose" output
-        if (err) return responseCallback(err);
-        responseCallback(null, result);
-      });
-    });
+
+    _aggregate(aggregate, responseCallback);
   }
 
-  Tweet.remoteMethod('top', {
+  Tweet.remoteMethod('metrics', {
     accepts: [
-      {arg: 'type', type: 'string', required: true },
+      {arg: 'metric', type: 'string', required: true },
       {arg: 'filter', type: 'object', http: { source: 'query' }, required: true}
     ],
     returns: {type: 'object', root: true},
-    http: {path: '/top', verb: 'get'}
-  });
+    http: {path: '/metrics', verb: 'get'}
+  });  
+
+  function _aggregate(aggregate, callback) {
+    Tweet.getDataSource().connector.connect(function(err, db) {
+      var collection = db.collection(Tweet.settings.mongodb.collection);
+      // TODO: Review [MongoDB security tips](http://blog.websecurify.com/2014/08/hacking-nodejs-and-mongodb.html)
+      collection.aggregate(aggregate, function(err, result) {
+        // ISSUE: Implement next page
+        // ISSUE: Implement mongodb "verbose" output
+        if (err) return callback(err);
+        callback(null, result);
+      });
+    });
+
+  }
 };
