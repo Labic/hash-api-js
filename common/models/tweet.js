@@ -13,8 +13,8 @@ module.exports = function(Tweet) {
     filter.limit = (filter.limit || 25);
     filter.skip = (filter.skip || 0);
     
-    console.log(metric);
-    console.log(filter);
+    console.log('metric: %s', metric);
+    console.log('filter: %j', filter);
     
     var errors = [];
 
@@ -199,6 +199,30 @@ module.exports = function(Tweet) {
         
         break;
 
+      case 'categories-count':
+        var aggregate = [
+          { $match: { } },
+          { $unwind: '$categories' },
+          { $match: { } },
+          { $group: {
+            _id: '$categories',
+            categorie_count: { $sum: 1 }
+          } },
+          { $project: { 
+              _id: 0,
+              categorie: '$_id',
+              count: '$categorie_count'
+          } }, 
+          { $sort: { count: -1 } } 
+        ];
+
+        if (!_.isEmpty(filter.where.categories)) {
+          aggregate[2].$match['categories'] = 
+            new RegExp(filter.where.categories.inq.join('|'), 'i');
+        }
+
+        break;
+
       default:
         return responseCallback(new Error(
           'Invalid type, select one of this: retweet, mention, url, image, user or hashtag'
@@ -213,17 +237,20 @@ module.exports = function(Tweet) {
     if (!_.isEmpty(filter.where.theme)) 
       aggregate[0].$match['theme'] = filter.where.theme;
 
-    if (!_.isEmpty(filter.where.categories))
-      aggregate[0].$match['categories'] = { 
-        $in: filter.where.categories.inq
-      };
+    if (!_.isEmpty(filter.where.categories)) {
+      aggregate[0].$match['categories'] = {};
+      aggregate[0].$match['categories'].$in = [];
+      _.each(filter.where.categories.inq, function(categorie) {
+        aggregate[0].$match['categories'].$in.push(new RegExp(categorie));
+      });
+    }
 
     aggregate.push(
       { $limit: filter.limit },
       { $skip : filter.skip }
     );
-
-    console.log('%j', aggregate);
+    
+    console.log(require('util').inspect(aggregate, false, null));
 
     _aggregate(aggregate, responseCallback);
   }
