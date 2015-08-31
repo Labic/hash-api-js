@@ -82,24 +82,12 @@
     "dataSource": "db",
     "public": false
   },
-  "Genero": {
+  "Categorie": {
     "dataSource": "db",
     "public": true
   },
-  "Homofobia": {
+  "CategorieFilter": {
     "dataSource": "db",
-    "public": true
-  },
-  "Indigena": {
-    "dataSource": "db",
-    "public": true
-  },
-  "LGBT": {
-    "dataSource": "db",
-    "public": true
-  },
-  "Racismo": {
-    "dataSource": "db",
-    "public": true
+    "public": false
   }
 }

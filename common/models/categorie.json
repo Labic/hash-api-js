@@ -1,0 +1,39 @@
+{
+  "name": "Categorie",
+  "plural": "categories",
+  "base": "PersistedModel",
+  "options": {
+    "mongodb": {
+      "collection": "categories"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "String",
+      "id": true
+    },
+    "name": {
+      "type": "String",
+      "required": true
+    },
+    "theme": {
+      "type": "String",
+      "required": true
+    },
+    "sources": {
+      "type": ["String"],
+      "required": true
+    },
+    "filters": {
+      "type": ["CategorieFilter"],
+      "required": true
+    },
+    "projectId": {
+      "type": "String",
+      "required": true
+    }
+  },
+  "scope": {
+    "limit": 25
+  }
+}

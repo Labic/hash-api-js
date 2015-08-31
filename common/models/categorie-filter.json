@@ -1,0 +1,15 @@
+{
+  "name": "CategorieFilter",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "properties": {
+    "field": {
+      "type": "String",
+      "required": true
+    },
+    "values": {
+      "type": ["String"],
+      "required": true
+    }
+  }
+}
