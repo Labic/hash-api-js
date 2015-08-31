@@ -9,11 +9,11 @@ TIPS:
 
 module.exports = function(Tweet) {
 
-  Tweet.metrics = function(metric, filter, responseCallback) {
+  Tweet.analytics = function(type, filter, responseCallback) {
     filter.limit = (filter.limit || 25);
     filter.skip = (filter.skip || 0);
     
-    console.log('metric: %s', metric);
+    console.log('type: %s', type);
     console.log('filter: %j', filter);
     
     var errors = [];
@@ -255,13 +255,13 @@ module.exports = function(Tweet) {
     _aggregate(aggregate, responseCallback);
   }
 
-  Tweet.remoteMethod('metrics', {
+  Tweet.remoteMethod('analytics', {
     accepts: [
-      {arg: 'metric', type: 'string', required: true },
+      {arg: 'type', type: 'string', required: true },
       {arg: 'filter', type: 'object', http: { source: 'query' }, required: true}
     ],
     returns: {type: 'object', root: true},
-    http: {path: '/metrics', verb: 'get'}
+    http: {path: '/analytics', verb: 'get'}
   });  
 
   function _aggregate(aggregate, callback) {
