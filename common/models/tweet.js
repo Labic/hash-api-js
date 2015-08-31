@@ -9,7 +9,7 @@ TIPS:
 
 module.exports = function(Tweet) {
 
-  Tweet.analytics = function(analyticType, filter, responseCallback) {
+  Tweet.analytics = function(type, filter, responseCallback) {
     filter.limit = (filter.limit || 25);
     filter.skip = (filter.skip || 0);
     
@@ -56,7 +56,7 @@ module.exports = function(Tweet) {
 
     var aggregate = null;
 
-    switch (analyticType) {
+    switch (type) {
       case 'top-retweets':
         aggregate = [
           { $match: {
