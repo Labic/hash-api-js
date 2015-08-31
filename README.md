@@ -71,9 +71,9 @@ or
 
 ### Metrics
 
-    API_URL/v1/tweets/metrics?type=TYPE&filter=FILTER
+    API_URL/v1/tweets/metrics?metric=METRIC&filter=FILTER
 
-_TYPE_
+_METRIC_
 
  - top-retweets
  - top-mentions
@@ -81,7 +81,8 @@ _TYPE_
  - top-images
  - top-hashtags
  - top-users
- - retweet-count
+ - retweets-count
+ - categories-count
  - word (not implemented)
 
 _FILTER_
@@ -106,19 +107,19 @@ _limit_ and _skip_ is for pagination but is't required, default values is _limit
 
 **Example: Top Retweets by Date Range**
 
-    API_URL/v1/tweets/metrics?type=retweet&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" } }, "limit": 25, "skip": 0 }
+    API_URL/v1/tweets/metrics?metrics=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" } }, "limit": 25, "skip": 0 }
 
 **Example: Top Retweets by Theme and Date Range**
 
-    API_URL/v1/tweets/metrics?type=retweet&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "theme": "negros" }, "limit": 25, "skip": 0 }
+    API_URL/v1/tweets/metrics?metrics=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "theme": "negros" }, "limit": 25, "skip": 0 }
 
 **Example: Top Retweets by Categories and Date Range**
 
-    API_URL/v1/tweets/metrics?type=retweet&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "categories": { "inq": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
+    API_URL/v1/tweets/metrics?metrics=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "categories": { "inq": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
 
 **Example: Top Retweets by Theme, Categories and Date Range**
 
-    API_URL/v1/tweets/metrics?type=retweet&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "theme": "negros", "categories": { "inq": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
+    API_URL/v1/tweets/metrics?metrics=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "theme": "negros", "categories": { "inq": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
 
 **Pagination**
   
