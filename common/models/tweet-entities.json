@@ -8,11 +8,14 @@
     "symbols": {
       "type": ["Object"]
     },
+    "media": {
+      "type": ["TweetEntitiesMedia"]
+    },
     "urls": {
       "type": ["Object"]
     },
     "hashtags": {
-      "type": ["Ibject"]
+      "type": ["Object"]
     },
     "user_mentions": {
       "type": ["Object"]
