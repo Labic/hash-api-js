@@ -220,7 +220,7 @@ module.exports = function(Tweet) {
           } },
           { $project: { 
               _id: 0,
-              categorie: '$_id',
+              slug: '$_id',
               count: '$categorie_count'
           } }, 
           { $sort: { count: -1 } } 
