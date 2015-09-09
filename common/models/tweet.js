@@ -124,13 +124,23 @@ module.exports = function(Tweet) {
           } },
           { $unwind: '$status.entities.media' },
           { $group: {
-            _id: '$status.entities.media',
+            _id: '$status.entities.media.media_url_https',
+            status_text: { $last: '$status.text' },
+            user_id_str: { $last: '$status.user.id_str' },
+            user_screen_name: { $last: '$status.user.screen_name' },
+            user_profile_image_url_https: { $last: '$status.user.profile_image_url_https' },
             count: { $sum: 1 }
           } },
           { $sort: { count: -1 } },
           { $project: {
             _id: 0,
-            media_url_https: '$_id.media_url_https',
+            media_url_https: '$_id',
+            text: '$status_text',
+            user: {
+                id_str: '$user_id_str',
+                screen_name: '$user_screen_name',
+                profile_image_url_https: '$user_profile_image_url_https'
+            },
             count: '$count'
           } }
         ];
