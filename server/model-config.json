@@ -82,6 +82,10 @@
     "dataSource": "db",
     "public": false
   },
+  "FacebookPost": {
+    "dataSource": "db",
+    "public": true
+  },
   "Categorie": {
     "dataSource": "db",
     "public": true

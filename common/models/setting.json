@@ -2,6 +2,11 @@
   "name": "Setting",
   "plural": "settings",
   "base": "PersistedModel",
+  "options": {
+    "mongodb": {
+      "collection": "settings"
+    }
+  },
   "properties": {
     "key": {
       "type": "string",

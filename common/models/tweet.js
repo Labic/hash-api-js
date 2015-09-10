@@ -49,8 +49,9 @@ module.exports = function(Tweet) {
         errors.push(new Error('filter.where.theme must be a string'));
 
     if (!_.isEmpty(filter.where.categories))
-      if (!_.isArray(filter.where.categories.inq))
-        errors.push(new Error('filter.where.categories must be a array'));
+      if (!_.isArray(filter.where.categories.inq) && !_.isArray(filter.where.categories.all)) {
+        errors.push(new Error('filter.where.categories.inq or filter.where.categories.all must be a array'));
+      }
 
     if (errors.length > 0) return responseCallback(errors[0]);
 
@@ -248,11 +249,19 @@ module.exports = function(Tweet) {
       aggregate[0].$match['theme'] = filter.where.theme;
 
     if (!_.isEmpty(filter.where.categories)) {
-      aggregate[0].$match['categories'] = {};
-      aggregate[0].$match['categories'].$in = [];
-      _.each(filter.where.categories.inq, function(categorie) {
-        aggregate[0].$match['categories'].$in.push(new RegExp(categorie));
-      });
+      if (filter.where.categories.all) {
+        aggregate[0].$match['categories'] = {};
+        aggregate[0].$match['categories'].$all = [];
+        _.each(filter.where.categories.all, function(categorie) {
+          aggregate[0].$match['categories'].$all.push(new RegExp(categorie));
+        });
+      } else if (filter.where.categories.inq) {
+        aggregate[0].$match['categories'] = {};
+        aggregate[0].$match['categories'].$in = [];
+        _.each(filter.where.categories.inq, function(categorie) {
+          aggregate[0].$match['categories'].$in.push(new RegExp(categorie));
+        });
+      }
     }
 
     aggregate.push(
