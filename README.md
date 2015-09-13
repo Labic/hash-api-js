@@ -17,7 +17,7 @@ _FILTER_
     {
       "where": { 
         "status.entities.hashtags.text": { 
-          "inq": ["G1", "G2"] 
+          "all": ["G1", "G2"] 
         } 
       } 
     }
@@ -33,7 +33,7 @@ For more information about filter see [Loopback documentation about Querying dat
     // WHERE
     {
       "categories": {
-        "inq": ["conteudo-estupro"]
+        "all": ["conteudo-estupro"]
       }
     }
 
@@ -42,7 +42,7 @@ For more information about filter see [Loopback documentation about Querying dat
     // WHERE NOT WORK
     {
       "categories": {
-        "inq": ["conteudo-estupro"]
+        "all": ["conteudo-estupro"]
       },
       "status.created_at": { 
         "gte": "2015-08-12T00:00:00.000Z",
@@ -57,7 +57,7 @@ or
       "and": [
         {
           "categories": {
-            "inq": ["conteudo-estupro"]
+            "all": ["conteudo-estupro"]
           }
         },
         {
@@ -95,7 +95,7 @@ _FILTER_
         }, 
         "theme": "negros", 
         "categories": { 
-          "inq": ["perfil", "conteudo"] 
+          "all": ["perfil", "conteudo"] 
         } 
       },
       "limit": 25,
@@ -115,11 +115,11 @@ _limit_ and _skip_ is for pagination but is't required, default values is _limit
 
 **Example: Top Retweets by Categories and Date Range**
 
-    API_URL/v1/tweets/analytics?type=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "categories": { "inq": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
+    API_URL/v1/tweets/analytics?type=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "categories": { "all": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
 
 **Example: Top Retweets by Theme, Categories and Date Range**
 
-    API_URL/v1/tweets/analytics?type=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "theme": "negros", "categories": { "inq": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
+    API_URL/v1/tweets/analytics?type=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "theme": "negros", "categories": { "all": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
 
 **Pagination**
   
