@@ -19,11 +19,11 @@
       "required": true
     },
     "bounding_box": {
-      "type": "TweetCoordinatesPolygon",
+      "type": "Object",
       "required": true
     },
     "country_code": {
-      "type": "TweetCoordinatesPolygon",
+      "type": "Object",
       "required": true
     },
     "attributes": {

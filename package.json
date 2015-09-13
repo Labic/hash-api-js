@@ -16,18 +16,11 @@
     "errorhandler": "^1.1.1",
     "eventemitter3": "0.1.6",
     "express-session": "1.10.2",
-    "loopback": "2.12.1",
-    "loopback-boot": "2.6.4",
-    "loopback-component-passport": "1.1.2",
-    "loopback-component-storage": "1.2.0",
-    "loopback-connector-mongodb": "1.7.0",
-    "loopback-datasource-juggler": "2.16.0",
-    "passport": "0.2.1",
-    "passport-facebook": "1.0.3",
-    "passport-google-oauth": "~0.1.5",
-    "passport-local": "1.0.0",
-    "passport-oauth2": "1.1.2",
-    "passport-twitter": "~1.0.2",
+    "loopback": "^2.12.1",
+    "loopback-boot": "^2.12.2",
+    "loopback-component-storage": "^1.5.1",
+    "loopback-connector-mongodb": "^1.13.0",
+    "loopback-datasource-juggler": "^2.40.1",
     "serve-favicon": "2.2.0",
     "underscore": "^1.8.3"
   },
@@ -45,10 +38,11 @@
     "url": "git@bitbucket.org:labic/hash-api.git"
   },
   "keywords": [
+    "api",
     "twitter",
     "facebook",
-    "api",
-    "social-network"
+    "social-network",
+    "analytics"
   ],
   "license": "MIT"
 }
