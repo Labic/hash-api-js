@@ -28,7 +28,7 @@
     "link": {
       "type": "String"
     },
-    "scraper": {
+    "source": {
       "type": "Object"
     },
     "url": {
