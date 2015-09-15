@@ -227,7 +227,7 @@ module.exports = function(Tweet) {
           { $sort: { count: -1 } } 
         ];
 
-        if (!_.isEmpty(filter.where.categories)) {
+        if (!_.isEmpty(filter.where.categories.inq)) {
           aggregate[2].$match['categories'] = 
             new RegExp(filter.where.categories.inq.join('|'), 'i');
         }
@@ -247,6 +247,12 @@ module.exports = function(Tweet) {
 
     if (!_.isEmpty(filter.where.theme)) 
       aggregate[0].$match['theme'] = filter.where.theme;
+
+    if (!_.isEmpty(filter.where['status.entities.hashtags.text'])) 
+      if (!_.isEmpty(filter.where['status.entities.hashtags.text'].inq))
+        aggregate[0].$match['status.entities.hashtags.text'] = {
+          $in: filter.where['status.entities.hashtags.text'].inq
+        }
 
     if (!_.isEmpty(filter.where.categories)) {
       if (filter.where.categories.all) {
