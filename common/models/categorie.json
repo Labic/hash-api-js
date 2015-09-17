@@ -30,6 +30,9 @@
       "type": ["CategorieFilter"],
       "required": true
     },
+    "sub_categories": {
+      "type": ["Categorie"]
+    },
     "projectId": {
       "type": "String",
       "required": true
