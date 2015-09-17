@@ -16,7 +16,7 @@
     "errorhandler": "^1.1.1",
     "eventemitter3": "0.1.6",
     "express-session": "1.10.2",
-    "loopback": "^2.12.1",
+    "loopback": "^2.22.0",
     "loopback-boot": "^2.12.2",
     "loopback-component-passport": "^1.5.0",
     "loopback-component-storage": "^1.5.1",
