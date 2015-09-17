@@ -28,8 +28,8 @@
     "link": {
       "type": "String"
     },
-    "source": {
-      "type": "Object"
+    "sources": {
+      "type": ["Object"]
     },
     "url": {
       "type": "String"
