@@ -15,7 +15,7 @@ module.exports = function(app) {
 
     log('Creating roles and users');
 
-    var User = app.models.User;
+    var User = app.models.user;
     var Role = app.models.Role;
     var RoleMapping = app.models.RoleMapping;
 

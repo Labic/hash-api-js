@@ -5,6 +5,10 @@ var log = require('debug')('boot:01-load-settings');
 
 module.exports = function(app) {
 
+  if (app.dataSources.db.name !== 'Memory' && !process.env.INITDB) {
+    return;
+  }
+
   var Setting = app.models.Setting;
 
   function loadDefaultSettings() {
@@ -12,36 +16,8 @@ module.exports = function(app) {
 
     var settings = [{
       type: 'string',
-      key: 'appName',
-      value: 'Loopback Admin'
-    }, {
-      type: 'select',
-      key: 'appTheme',
-      value: 'skin-blue',
-      options: [
-        'skin-blue',
-        'skin-black'
-      ]
-    }, {
-      type: 'select',
-      key: 'appLayout',
-      value: 'fixed',
-      options: [
-        'skin-blue',
-        'not-fixed'
-      ]
-    }, {
-      type: 'string',
-      key: 'formLayout',
-      value: 'horizontal'
-    }, {
-      type: 'int',
-      key: 'formLabelSize',
-      value: 3
-    }, {
-      type: 'int',
-      key: 'formInputSize',
-      value: 9
+      key: 'app_name',
+      value: 'Hash Web'
     }, {
       type: 'boolean',
       key: 'com.module.users.enable_registration',
@@ -76,6 +52,5 @@ module.exports = function(app) {
       loadExistingSettings();
     }
   });
-
 
 };
