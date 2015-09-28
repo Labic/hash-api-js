@@ -45,6 +45,14 @@
     "dataSource": "db",
     "public": true
   },
+  "Categorie": {
+    "dataSource": "db",
+    "public": true
+  },
+  "CategorieFilter": {
+    "dataSource": false,
+    "public": false
+  },
   "Tweet": {
     "dataSource": "db",
     "public": true
@@ -54,47 +62,51 @@
     "public": false
   },
   "TweetUser": {
-    "dataSource": "db",
+    "dataSource": false,
     "public": false
   },
   "TweetCoordinatesPoint": {
-    "dataSource": "db",
+    "dataSource": false,
     "public": false
   },
   "TweetEntities": {
-    "dataSource": "db",
+    "dataSource": false,
     "public": false
   },
   "TweetEntitiesMedia": {
-    "dataSource": "db",
+    "dataSource": false,
     "public": false
   },
   "TweetEntitiesMediaSizes": {
-    "dataSource": "db",
+    "dataSource": false,
     "public": false
   },
   "TweetEntitiesMediaSizesSize": {
-    "dataSource": "db",
+    "dataSource": false,
     "public": false
   },
   "TweetPlace": {
-    "dataSource": "db",
+    "dataSource": false,
     "public": false
   },
   "TweetCoordinatesPolygon": {
-    "dataSource": "db",
+    "dataSource": false,
     "public": false
   },
   "FacebookPost": {
     "dataSource": "db",
     "public": true
   },
-  "Categorie": {
-    "dataSource": "db",
-    "public": true
+  "FacebookPostFrom": {
+    "dataSource": false,
+    "public": false
   },
-  "CategorieFilter": {
-    "dataSource": "db",
+  "FacebookPostSources": {
+    "dataSource": false,
+    "public": false
+  },
+  "FacebookPostHashSource": {
+    "dataSource": false,
     "public": false
   }
 }
