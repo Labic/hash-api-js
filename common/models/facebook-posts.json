@@ -2,6 +2,7 @@
   "name": "FacebookPost",
   "plural": "facebook_posts",
   "base": "PersistedModel",
+  "strict": true,
   "http": {"path": "facebook/posts"},
   "options": {
     "mongodb": {
@@ -14,22 +15,10 @@
       "id": true
     },
     "from": {
-      "type": "Object"
-    },
-    "created_time": {
-      "type": "Date"
-    },
-    "message": {
-      "type": "String"
-    },
-    "name": {
-      "type": "String"
-    },
-    "link": {
-      "type": "String"
+      "type": "FacebookPostFrom"
     },
     "sources": {
-      "type": ["Object"]
+      "type": "FacebookPostSources"
     },
     "url": {
       "type": "String"
