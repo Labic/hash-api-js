@@ -29,7 +29,7 @@
       "type": "Number"
     },
     "url": {
-      "type": "Number"
+      "type": "String"
     },
     "collect_at": {
       "type": "Number"
