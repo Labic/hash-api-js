@@ -123,7 +123,7 @@ module.exports = function(Metric) {
           },
           geometry: {
             type: {  $literal: 'Point' }, 
-            coordinates: { $cond: [ { $ne: [ '$status.coordinates', null ] }, '$status.geo.coordinates', '$city_geo' ] }
+            coordinates: { $cond: [ { $ne: [ '$status.geo', null ] }, '$status.geo.coordinates', '$city_geo' ] }
           }
         } }
       } },
