@@ -16,9 +16,9 @@ module.exports = function(Categorie) {
 
   Categorie.remoteMethod('dictionary', {
     accepts: [
-      {arg: 'filter', type: 'object', http: { source: 'query' }}
+      { arg: 'filter', type: 'object', http: { source: 'query' } }
     ],
-    returns: {type: 'object', root: true},
-    http: {path: '/dictionary', verb: 'get'}
+    returns: { type: 'object', root: true },
+    http: { path: '/dictionary', verb: 'get' }
   });
 };

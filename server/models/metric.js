@@ -9,7 +9,7 @@ module.exports = function(Metric) {
       { arg: 'hashtags', type: 'String' }
     ],
     returns: { type: 'object', root: true },
-    http: { path: '/tweets/:name', verb: 'get'}
+    http: { path: '/tweets/:name', verb: 'get' }
   });
 
   Metric.tweetsMetrics = function(name, since, until, tags, hashtags, cb) {

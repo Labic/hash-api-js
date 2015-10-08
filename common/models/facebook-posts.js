@@ -33,8 +33,8 @@ module.exports = function(FacebookPost) {
       // {arg: 'hashtags', type: 'string' },
       // {arg: 'tags', type: 'string' }
     ],
-    returns: {type: 'object', root: true},
-    http: {path: '/analytics/:type', verb: 'get'}
+    returns: { type: 'object', root: true },
+    http: { path: '/analytics/:type', verb: 'get' }
   });
 };
 
