@@ -18,6 +18,10 @@
       "type": ["String"]
     }
   },
+  "mixins": {
+      "TweetAnalytics": null,
+      "Mongodb": null
+  },
   "scope": {
     "limit": 25
   },
