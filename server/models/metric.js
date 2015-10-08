@@ -2,14 +2,14 @@ module.exports = function(Metric) {
 
   Metric.remoteMethod('tweetsMetrics', {
     accepts: [
-      {arg: 'name', type: 'String', required: true },
-      {arg: 'since', type: 'Date', required: true },
-      {arg: 'until', type: 'Date', required: true },
-      {arg: 'tags', type: 'String' }, // Categories alias
-      {arg: 'hashtags', type: 'String' }
+      { arg: 'name', type: 'String', required: true },
+      { arg: 'since', type: 'Date', required: true },
+      { arg: 'until', type: 'Date', required: true },
+      { arg: 'tags', type: 'String' }, // Categories alias
+      { arg: 'hashtags', type: 'String' }
     ],
-    returns: {type: 'object', root: true},
-    http: {path: '/tweets/:name', verb: 'get'}
+    returns: { type: 'object', root: true },
+    http: { path: '/tweets/:name', verb: 'get'}
   });
 
   Metric.tweetsMetrics = function(name, since, until, tags, hashtags, cb) {
@@ -108,7 +108,11 @@ module.exports = function(Metric) {
     var pipeline = [
       { $match: {
         $or: [ { 'status.geo': { $ne: null } }, 
-               { 'city_geo': { $exists: true } } ]
+               { 'city_geo': { $exists: true } } ],
+        'status.timestamp_ms': {
+          $gte: since.getTime(),
+          $lte: until.getTime()
+        }
       } }, 
       { $group: {
         _id: 0,
@@ -137,7 +141,7 @@ module.exports = function(Metric) {
     if (hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
 
-    console.log('/tweets/metrics/count_images \n %j', pipeline);
+    console.log('/tweets/metrics/geolocation \n %j', pipeline);
 
     var Tweet = Metric.app.models.Tweet;
     return Tweet.aggregate(pipeline, function(err, result) {
