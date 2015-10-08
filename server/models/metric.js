@@ -1,24 +1,20 @@
 module.exports = function(Metric) {
 
-  Metric.remoteMethod('tweetsMetrics', {
+  Metric.remoteMethod('twitterTweetsMetrics', {
     accepts: [
       { arg: 'name', type: 'String', required: true },
       { arg: 'since', type: 'Date', required: true },
       { arg: 'until', type: 'Date', required: true },
       { arg: 'tags', type: 'String' }, // Categories alias
-      { arg: 'hashtags', type: 'String' }
+      { arg: 'hashtags', type: 'String' },
+      { arg: 'page', type: 'Number' },
+      { arg: 'per_page', type: 'Number' }
     ],
     returns: { type: 'object', root: true },
-    http: { path: '/tweets/:name', verb: 'get' }
+    http: { path: '/twitter/tweets/:name', verb: 'get' }
   });
 
-  Metric.tweetsMetrics = function(name, since, until, tags, hashtags, cb) {
-    tweetsMetricsMethods[name](since, until, tags, hashtags, cb);
-  }
-
-  var tweetsMetricsMethods = {};
-  
-  tweetsMetricsMethods['count'] = function (since, until, tags, hashtags, cb) { 
+  Metric.twitterTweetsMetrics = function(name, since, until, tags, hashtags, page, perPage, cb) {
     if (isNaN(since.getTime()) || isNaN(until.getTime())) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
       err.statusCode = 400;
@@ -26,6 +22,16 @@ module.exports = function(Metric) {
       return cb(err);
     }
 
+    if (!page) page = 1;
+    if (!perPage) perPage = 25;
+
+    var Tweets = Metric.app.models.Tweet;
+    twitterTweetsMetricsMethods[name](since, until, tags, hashtags, page, perPage, Tweets, cb);
+  }
+
+  var twitterTweetsMetricsMethods = {};
+  
+  twitterTweetsMetricsMethods['count'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) {
     var query = {
       'status.timestamp_ms': {
         $gte: since.getTime(),
@@ -42,39 +48,67 @@ module.exports = function(Metric) {
 
     console.log('/tweets/metrics/count \n %j', query);
 
-    var Tweet = Metric.app.models.Tweet;
-    return Tweet.mongodb.count(query, function(err, result) {
+    return Tweets.mongodb.count(query, function(err, result) {
       if (err) 
         return cb(err, null);
       else 
-        return cb(err, result);
+        return cb(err, { count: result } );
     });
   };
 
-  tweetsMetricsMethods['count_images'] = function (since, until, tags, hashtags, cb) { 
-    if (isNaN(since.getTime()) || isNaN(until.getTime())) {
-      var err = new Error('Malformed request syntax. Check the query string arguments!');
-      err.statusCode = 400;
+  twitterTweetsMetricsMethods['count_images'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+    var query = {
+      'status.entities.media.0': { $exists: true },
+      'status.timestamp_ms': {
+        $gte: since.getTime(),
+        $lte: until.getTime()
+      }
+    };
 
-      return cb(err);
-    }
+    if (tags)
+      query['categories'] = { $all: tags.split(',') };
+      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
 
+    if (hashtags)
+      query['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
+
+    console.log('/tweets/metrics/count_images \n %j', query);
+
+    return Tweets.mongodb.count(query, function(err, result) {
+      console.log(result);
+
+      if (err) 
+        return cb(err, null);
+      else 
+        return cb(null, { count: result });
+    });
+  }
+
+  twitterTweetsMetricsMethods['count_retweets'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
-      { $match: {
-        'status.entities.media.0': { $exists: true },
+      { $match: { 
+        'status.retweeted_status': { $exists: true},
         'status.timestamp_ms': {
           $gte: since.getTime(),
           $lte: until.getTime()
         }
-      } },
-      { $group: {
-        _id: 0,
-        count: { $sum: 1 }
-      } },
-      { $project: {
-        _id: 0,
-        count: '$count'
-      } }
+      } }, 
+      { $group: { 
+          _id: '$status.retweeted_status.id_str', 
+          retweets_count: { $sum: 1 } 
+      } }, 
+      { $group : { 
+          _id : '$retweets_count',
+          count: { $sum: 1 } 
+      } }, 
+      { $project: { 
+          _id: 0, 
+          retweets_count:'$_id', 
+          count: '$count' 
+      } }, 
+      { $sort: { retweets_count: -1 } },
+      { $limit: perPage * page },
+      { $skip : (perPage * page) - perPage }
     ];
 
     if (tags)
@@ -84,27 +118,19 @@ module.exports = function(Metric) {
     if (hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
 
-    console.log('/tweets/metrics/count_images \n %j', pipeline);
+    console.log('/tweets/metrics/geolocation \n %j', pipeline);
 
-    var Tweet = Metric.app.models.Tweet;
-    return Tweet.aggregate(pipeline, function(err, result) {
+    return Tweets.aggregate(pipeline, function(err, result) {
       console.log(result);
 
       if (err) 
         return cb(err, null);
       else 
-        return cb(null, result[0]);
+        return cb(null, result);
     });
   }
 
-  tweetsMetricsMethods['geolocation'] = function (since, until, tags, hashtags, cb) { 
-    if (isNaN(since.getTime()) || isNaN(until.getTime())) {
-      var err = new Error('Malformed request syntax. Check the query string arguments!');
-      err.statusCode = 400;
-
-      return cb(err);
-    }
-
+  twitterTweetsMetricsMethods['geolocation'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
       { $match: {
         $or: [ { 'status.geo': { $ne: null } }, 
@@ -143,8 +169,7 @@ module.exports = function(Metric) {
 
     console.log('/tweets/metrics/geolocation \n %j', pipeline);
 
-    var Tweet = Metric.app.models.Tweet;
-    return Tweet.aggregate(pipeline, function(err, result) {
+    return Tweets.aggregate(pipeline, function(err, result) {
       console.log(result);
 
       if (err) 
