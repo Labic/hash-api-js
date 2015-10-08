@@ -1,0 +1,29 @@
+{
+  "name": "Metric",
+  "plural": "metrics",
+  "base": "PersistedModel",
+  "options": {
+    "mongodb": {
+      "collection": "metrics"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "String",
+      "id": true
+    },
+    "name": {
+      "type": "String",
+      "required": true
+    },
+    "slug": {
+      "type": "String"
+    },
+    "args": {
+      "type": "[Object]"
+    }
+  },
+  "scope": {
+    "limit": 25
+  }
+}

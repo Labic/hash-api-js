@@ -108,5 +108,9 @@
   "FacebookPostHashSource": {
     "dataSource": false,
     "public": false
+  },
+  "Metric": {
+    "dataSource": "db",
+    "public": true
   }
 }
