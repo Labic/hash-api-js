@@ -17,11 +17,8 @@ module.exports = {
       supportedTypes: [
         'application/json', 
         'application/javascript', 
-        'application/xml', 
         'text/javascript', 
-        'text/xml', 
-        'json', 
-        'xml'
+        'json' 
       ]
     },
     json: {
