@@ -116,14 +116,9 @@ module.exports = function(Metric) {
     if (hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
 
-    console.log('/tweets/metrics/geolocation \n %j', pipeline);
+    console.log('/tweets/metrics/count_retweets \n %j', pipeline);
 
-    return Tweets.aggregate(pipeline, function(err, result) {
-      if (err) 
-        return cb(err, null);
-      else 
-        return cb(null, result);
-    });
+    return Tweets.aggregate(pipeline, cb);
   }
 
   twitterTweetsMetricsMethods['top_retweets'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
@@ -157,14 +152,45 @@ module.exports = function(Metric) {
     if (hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
 
-    console.log('/tweets/metrics/geolocation \n %j', pipeline);
+    console.log('/tweets/metrics/top_retweets \n %j', pipeline);
 
-    return Tweets.aggregate(pipeline, function(err, result) {
-      if (err) 
-        return cb(err, null);
-      else 
-        return cb(null, result);
-    });
+    return Tweets.aggregate(pipeline, cb);
+  }
+
+  twitterTweetsMetricsMethods['top_mentions'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+    var pipeline = [
+      { $match: { 
+        'status.entities.user_mentions.0': { $exists: true }, 
+        'status.timestamp_ms': { 
+          $gte: since.getTime(), 
+          $lte: until.getTime() 
+        } 
+      } }, 
+      { $unwind: '$status.entities.user_mentions' }, 
+      { $group: {
+        _id: '$status.entities.user_mentions.screen_name', 
+        count: { $sum: 1 }
+      } }, 
+      { $sort: { count: -1 } }, 
+      { $project: { 
+        _id: 0, 
+        screen_name: '$_id', 
+        count: '$count' 
+      } }, 
+      { $limit: perPage * page }, 
+      { $skip : (perPage * page) - perPage } 
+    ];
+
+    if (tags)
+      pipeline[0].$match['categories'] = { $all: tags.split(',') };
+      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
+
+    if (hashtags)
+      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
+
+    console.log('/tweets/metrics/top_retweets \n %j', pipeline);
+
+    return Tweets.aggregate(pipeline, cb);
   }
 
   twitterTweetsMetricsMethods['geolocation'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
