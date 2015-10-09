@@ -75,8 +75,6 @@ module.exports = function(Metric) {
     console.log('/tweets/metrics/count_images \n %j', query);
 
     return Tweets.mongodb.count(query, function(err, result) {
-      console.log(result);
-
       if (err) 
         return cb(err, null);
       else 
@@ -106,9 +104,9 @@ module.exports = function(Metric) {
           retweets_count:'$_id', 
           count: '$count' 
       } }, 
-      { $sort: { retweets_count: -1 } },
-      { $limit: perPage * page },
-      { $skip : (perPage * page) - perPage }
+      { $sort: { retweets_count: -1 } }, 
+      { $limit: perPage * page }, 
+      { $skip : (perPage * page) - perPage } 
     ];
 
     if (tags)
@@ -121,8 +119,47 @@ module.exports = function(Metric) {
     console.log('/tweets/metrics/geolocation \n %j', pipeline);
 
     return Tweets.aggregate(pipeline, function(err, result) {
-      console.log(result);
+      if (err) 
+        return cb(err, null);
+      else 
+        return cb(null, result);
+    });
+  }
 
+  twitterTweetsMetricsMethods['top_retweets'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+    var pipeline = [
+      { $match: { 
+        'status.retweeted_status': { $exists: true},
+        'status.timestamp_ms': {
+          $gte: since.getTime(),
+          $lte: until.getTime()
+        }
+      } },
+      { $group: {
+        _id: '$status.retweeted_status.id_str',
+        status: { $last: '$status' },
+        count: { $sum: 1 }
+      } },
+      { $sort: { count: -1 } },
+      { $project: {
+        _id: 0,
+        status: '$status',
+        count: '$count'
+      } }, 
+      { $limit: perPage * page }, 
+      { $skip : (perPage * page) - perPage } 
+    ];
+
+    if (tags)
+      pipeline[0].$match['categories'] = { $all: tags.split(',') };
+      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
+
+    if (hashtags)
+      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
+
+    console.log('/tweets/metrics/geolocation \n %j', pipeline);
+
+    return Tweets.aggregate(pipeline, function(err, result) {
       if (err) 
         return cb(err, null);
       else 
@@ -170,8 +207,6 @@ module.exports = function(Metric) {
     console.log('/tweets/metrics/geolocation \n %j', pipeline);
 
     return Tweets.aggregate(pipeline, function(err, result) {
-      console.log(result);
-
       if (err) 
         return cb(err, null);
       else 
