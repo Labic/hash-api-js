@@ -270,7 +270,42 @@ module.exports = function(Metric) {
     if (hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
 
-    console.log('/tweets/metrics/top_urls \n %j', pipeline);
+    console.log('/tweets/metrics/top_images \n %j', pipeline);
+
+    return Tweets.aggregate(pipeline, cb);
+  }
+
+  twitterTweetsMetricsMethods['users_most_active'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+    var pipeline = [
+      { $match: { 
+        'status.user.screen_name': { $exists: true }, 
+        'status.timestamp_ms': { 
+          $gte: since.getTime(), 
+          $lte: until.getTime() 
+        } 
+      } }, 
+      { $group: { 
+        _id: '$status.user.screen_name', 
+        count: { $sum: 1 } 
+      } }, 
+      { $sort: { count: -1 } }, 
+      { $project: { 
+        _id: 0, 
+        screen_name: '$_id', 
+        count: '$count' 
+      } }, 
+      { $limit: perPage * page }, 
+      { $skip : (perPage * page) - perPage } 
+    ];
+
+    if (tags)
+      pipeline[0].$match['categories'] = { $all: tags.split(',') };
+      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
+
+    if (hashtags)
+      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
+
+    console.log('/tweets/metrics/top_images \n %j', pipeline);
 
     return Tweets.aggregate(pipeline, cb);
   }
