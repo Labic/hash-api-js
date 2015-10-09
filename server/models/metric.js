@@ -130,31 +130,26 @@ module.exports = function(Metric) {
         }
       } }, 
       { $unwind: '$categories' }, 
-      { $match: { } }, 
       { $group: { 
         _id: '$categories', 
-        categorie_count: { $sum: 1 } 
+        count: { $sum: 1 } 
       } }, 
       { $project: { 
           _id: 0, 
           tag: '$_id', 
-          count: '$categorie_count' 
+          count: '$count' 
       } }, 
       { $sort: { count: -1 } },
       { $limit: perPage * page }, 
       { $skip : (perPage * page) - perPage } 
     ];
 
-    if (tags) {
+    if (tags) 
       pipeline[0].$match['categories'] = { $all: tags.split(',') };
-      pipeline[2].$match['categories'] = { $all: tags.split(',') };
       // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-    }
 
-    if (hashtags) {
+    if (hashtags) 
       pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-      pipeline[2].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-    }
 
     console.log('/tweets/metrics/count_tags \n %j', pipeline);
 
