@@ -121,6 +121,46 @@ module.exports = function(Metric) {
     return Tweets.aggregate(pipeline, cb);
   }
 
+  twitterTweetsMetricsMethods['count_tags'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+    var pipeline = [
+      { $match: { 
+        'status.timestamp_ms': {
+          $gte: since.getTime(),
+          $lte: until.getTime()
+        }
+      } }, 
+      { $unwind: '$categories' }, 
+      { $match: { } }, 
+      { $group: { 
+        _id: '$categories', 
+        categorie_count: { $sum: 1 } 
+      } }, 
+      { $project: { 
+          _id: 0, 
+          tag: '$_id', 
+          count: '$categorie_count' 
+      } }, 
+      { $sort: { count: -1 } },
+      { $limit: perPage * page }, 
+      { $skip : (perPage * page) - perPage } 
+    ];
+
+    if (tags) {
+      pipeline[0].$match['categories'] = { $all: tags.split(',') };
+      pipeline[2].$match['categories'] = { $all: tags.split(',') };
+      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
+    }
+
+    if (hashtags) {
+      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
+      pipeline[2].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
+    }
+
+    console.log('/tweets/metrics/count_tags \n %j', pipeline);
+
+    return Tweets.aggregate(pipeline, cb);
+  }
+
   twitterTweetsMetricsMethods['top_retweets'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
       { $match: { 
