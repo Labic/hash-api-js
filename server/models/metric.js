@@ -1,8 +1,8 @@
 module.exports = function(Metric) {
 
-  Metric.remoteMethod('twitterTweetsMetrics', {
+  Metric.remoteMethod('twitterMetrics', {
     accepts: [
-      { arg: 'name', type: 'String', required: true },
+      { arg: 'method', type: 'String', required: true },
       { arg: 'since', type: 'Date', required: true },
       { arg: 'until', type: 'Date', required: true },
       { arg: 'tags', type: 'String' }, // Categories alias
@@ -11,10 +11,10 @@ module.exports = function(Metric) {
       { arg: 'per_page', type: 'Number' }
     ],
     returns: { type: 'object', root: true },
-    http: { path: '/twitter/tweets/:name', verb: 'get' }
+    http: { path: '/twitter/:method', verb: 'get' }
   });
 
-  Metric.twitterTweetsMetrics = function(name, since, until, tags, hashtags, page, perPage, cb) {
+  Metric.twitterMetrics = function(method, since, until, tags, hashtags, page, perPage, cb) {
     if (isNaN(since.getTime()) || isNaN(until.getTime())) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
       err.statusCode = 400;
@@ -26,12 +26,12 @@ module.exports = function(Metric) {
     if (!perPage) perPage = 25;
 
     var Tweets = Metric.app.models.Tweet;
-    twitterTweetsMetricsMethods[name](since, until, tags, hashtags, page, perPage, Tweets, cb);
+    twitterMetricsMethods[method](since, until, tags, hashtags, page, perPage, Tweets, cb);
   }
 
-  var twitterTweetsMetricsMethods = {};
+  var twitterMetricsMethods = {};
   
-  twitterTweetsMetricsMethods['count'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) {
+  twitterMetricsMethods['count'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) {
     var query = {
       'status.timestamp_ms': {
         $gte: since.getTime(),
@@ -56,7 +56,7 @@ module.exports = function(Metric) {
     });
   };
 
-  twitterTweetsMetricsMethods['count_images'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+  twitterMetricsMethods['count_images'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var query = {
       'status.entities.media.0': { $exists: true },
       'status.timestamp_ms': {
@@ -82,7 +82,7 @@ module.exports = function(Metric) {
     });
   }
 
-  twitterTweetsMetricsMethods['count_retweets'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+  twitterMetricsMethods['count_retweets'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
       { $match: { 
         'status.retweeted_status': { $exists: true},
@@ -121,7 +121,7 @@ module.exports = function(Metric) {
     return Tweets.aggregate(pipeline, cb);
   }
 
-  twitterTweetsMetricsMethods['count_tags'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+  twitterMetricsMethods['count_tags'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
       { $match: { 
         'status.timestamp_ms': {
@@ -156,7 +156,7 @@ module.exports = function(Metric) {
     return Tweets.aggregate(pipeline, cb);
   }
 
-  twitterTweetsMetricsMethods['top_retweets'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+  twitterMetricsMethods['top_retweets'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
       { $match: { 
         'status.retweeted_status': { $exists: true},
@@ -192,7 +192,7 @@ module.exports = function(Metric) {
     return Tweets.aggregate(pipeline, cb);
   }
 
-  twitterTweetsMetricsMethods['top_mentions'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+  twitterMetricsMethods['top_mentions'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
       { $match: { 
         'status.entities.user_mentions.0': { $exists: true }, 
@@ -228,7 +228,7 @@ module.exports = function(Metric) {
     return Tweets.aggregate(pipeline, cb);
   }
 
-  twitterTweetsMetricsMethods['top_urls'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+  twitterMetricsMethods['top_urls'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
       { $match: { 
         'status.entities.urls.0': { $exists: true }, 
@@ -264,7 +264,7 @@ module.exports = function(Metric) {
     return Tweets.aggregate(pipeline, cb);
   }
 
-  twitterTweetsMetricsMethods['top_images'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+  twitterMetricsMethods['top_images'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
       { $match: { 
         'status.entities.media.0': { $exists: true }, 
@@ -310,7 +310,7 @@ module.exports = function(Metric) {
     return Tweets.aggregate(pipeline, cb);
   }
 
-  twitterTweetsMetricsMethods['users_most_active'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+  twitterMetricsMethods['users_most_active'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
       { $match: { 
         'status.user.screen_name': { $exists: true }, 
@@ -345,7 +345,7 @@ module.exports = function(Metric) {
     return Tweets.aggregate(pipeline, cb);
   }
 
-  twitterTweetsMetricsMethods['geolocation'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+  twitterMetricsMethods['geolocation'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
     var pipeline = [
       { $match: {
         $or: [ { 'status.geo': { $ne: null } }, 
