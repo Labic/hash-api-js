@@ -169,13 +169,13 @@ module.exports = function(Metric) {
         _id: '$status.retweeted_status.id_str',
         status: { $last: '$status' },
         count: { $sum: 1 }
-      } },
-      { $sort: { count: -1 } },
+      } }, 
       { $project: {
         _id: 0,
         status: '$status',
         count: '$count'
       } }, 
+      { $sort: { count: -1 } }, 
       { $limit: perPage * page }, 
       { $skip : (perPage * page) - perPage } 
     ];
@@ -206,12 +206,12 @@ module.exports = function(Metric) {
         _id: '$status.entities.user_mentions.screen_name', 
         count: { $sum: 1 }
       } }, 
-      { $sort: { count: -1 } }, 
       { $project: { 
         _id: 0, 
         screen_name: '$_id', 
         count: '$count' 
       } }, 
+      { $sort: { count: -1 } }, 
       { $limit: perPage * page }, 
       { $skip : (perPage * page) - perPage } 
     ];
@@ -242,12 +242,12 @@ module.exports = function(Metric) {
         _id: '$status.entities.urls.expanded_url', 
         count: { $sum: 1 }
       } }, 
-      { $sort: { count: -1 } }, 
       { $project: { 
         _id: 0, 
         url: '$_id', 
         count: '$count' 
       } }, 
+      { $sort: { count: -1 } }, 
       { $limit: perPage * page }, 
       { $skip : (perPage * page) - perPage } 
     ];
@@ -278,12 +278,12 @@ module.exports = function(Metric) {
         _id: '$status.entities.hashtags.text',
         count: { $sum: 1 }
       } },
-      { $sort: { count: -1 } },
       { $project: {
         _id: 0,
         hashtag: '$_id',
         count: '$count'
       } }, 
+      { $sort: { count: -1 } }, 
       { $limit: perPage * page }, 
       { $skip : (perPage * page) - perPage } 
     ];
@@ -318,7 +318,6 @@ module.exports = function(Metric) {
         user_profile_image_url_https: { $last: '$status.user.profile_image_url_https' }, 
         count: { $sum: 1 } 
       } }, 
-      { $sort: { count: -1 } }, 
       { $project: { 
         _id: 0, 
         entities: { media: { media_url_https: '$_id' } }, 
@@ -330,6 +329,7 @@ module.exports = function(Metric) {
         }, 
         count: '$count' 
       } }, 
+      { $sort: { count: -1 } }, 
       { $limit: perPage * page }, 
       { $skip : (perPage * page) - perPage } 
     ];
@@ -359,12 +359,12 @@ module.exports = function(Metric) {
         _id: '$status.user.screen_name', 
         count: { $sum: 1 } 
       } }, 
-      { $sort: { count: -1 } }, 
       { $project: { 
         _id: 0, 
         screen_name: '$_id', 
         count: '$count' 
       } }, 
+      { $sort: { count: -1 } }, 
       { $limit: perPage * page }, 
       { $skip : (perPage * page) - perPage } 
     ];
@@ -394,19 +394,19 @@ module.exports = function(Metric) {
       { $group: {
         _id: 0,
         features: { $push: { 
-          type: {  $literal: 'Feature' },
+          // type: {  $literal: 'Feature' },
           properties: {
             id_str: '$status.id_str',
           },
           geometry: {
-            type: {  $literal: 'Point' }, 
+            // type: {  $literal: 'Point' }, 
             coordinates: { $cond: [ { $ne: [ '$status.geo', null ] }, '$status.geo.coordinates', '$city_geo' ] }
           }
         } }
       } },
       { $project: {
         _id: 0,
-        type: {  $literal: 'FeatureCollection' },
+        // type: {  $literal: 'FeatureCollection' },
         features: '$features'
       } }
     ];
