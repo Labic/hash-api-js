@@ -11,7 +11,7 @@ module.exports = function(Metric) {
       { arg: 'per_page', type: 'Number' }
     ],
     returns: { type: 'object', root: true },
-    http: { path: '/twitter/:method', verb: 'get' }
+    http: { path: '/twitter/:method', verb: 'GET' }
   });
 
   Metric.twitterMetrics = function(method, since, until, tags, hashtags, page, perPage, cb) {
@@ -260,6 +260,42 @@ module.exports = function(Metric) {
       pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
 
     console.log('/tweets/metrics/top_urls \n %j', pipeline);
+
+    return Tweets.aggregate(pipeline, cb);
+  }
+
+  twitterMetricsMethods['top_hashtags'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
+    var pipeline = [
+      { $match: {
+        'status.entities.hashtags.0': { $exists: true },
+        'status.timestamp_ms': { 
+          $gte: since.getTime(), 
+          $lte: until.getTime() 
+        } 
+      } },
+      { $unwind: '$status.entities.hashtags' },
+      { $group: {
+        _id: '$status.entities.hashtags.text',
+        count: { $sum: 1 }
+      } },
+      { $sort: { count: -1 } },
+      { $project: {
+        _id: 0,
+        hashtag: '$_id',
+        count: '$count'
+      } }, 
+      { $limit: perPage * page }, 
+      { $skip : (perPage * page) - perPage } 
+    ];
+
+    if (tags)
+      pipeline[0].$match['categories'] = { $all: tags.split(',') };
+      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
+
+    if (hashtags)
+      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
+
+    console.log('/tweets/metrics/top_hashtags \n %j', pipeline);
 
     return Tweets.aggregate(pipeline, cb);
   }
