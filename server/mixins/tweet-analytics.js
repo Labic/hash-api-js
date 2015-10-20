@@ -86,6 +86,9 @@ function extendPipeline(pipeline, filter) {
   if (!_.isEmpty(filter.where.theme)) 
     pipeline[0].$match['theme'] = filter.where.theme;
 
+  if (!_.isEmpty(filter.where.block)) 
+    pipeline[0].$match['block'] = filter.where.block;
+
   if (!_.isEmpty(filter.where['status.entities.hashtags.text'])) 
     if (!_.isEmpty(filter.where['status.entities.hashtags.text'].inq))
       pipeline[0].$match['status.entities.hashtags.text'] = {
