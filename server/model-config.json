@@ -112,5 +112,9 @@
   "Metric": {
     "dataSource": "db",
     "public": true
+  },
+  "Analytic": {
+    "dataSource": "db",
+    "public": true
   }
 }

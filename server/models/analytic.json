@@ -1,0 +1,26 @@
+{
+  "name": "Analytic",
+  "plural": "analytics",
+  "base": "PersistedModel",
+  "options": {
+    "mongodb": {
+      "collection": "analytics"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "String",
+      "id": true
+    },
+    "name": {
+      "type": "String",
+      "required": true
+    },
+    "args": {
+      "type": "[Object]"
+    }
+  },
+  "scope": {
+    "limit": 25
+  }
+}

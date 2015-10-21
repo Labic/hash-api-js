@@ -17,6 +17,9 @@
     "from": {
       "type": "FacebookPostFrom"
     },
+    "api_collector": {
+      "type": "FacebookPostApiCollector"
+    },
     "sources": {
       "type": "FacebookPostSources"
     },
