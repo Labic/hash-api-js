@@ -12,6 +12,18 @@ module.exports = function(Analytic) {
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
+  Analytic.remoteMethod('facebookPagePostsAnalytics', {
+    accepts: [
+      { arg: 'method', type: 'string', required: true },
+      { arg: 'period', type: 'string', required: true },
+      { arg: 'type', type: 'string' },
+      { arg: 'page', type: 'number' },
+      { arg: 'per_page', type: 'number' }
+    ],
+    returns: { type: 'object', root: true },
+    http: { path: '/facebook/pages/:method', verb: 'GET' }
+  });
+
   Analytic.facebookPostsAnalytics = function(method, period, type, page, perPage, cb) {
     if (!periodEnum[period]) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
@@ -136,4 +148,33 @@ module.exports = function(Analytic) {
         return cb(null, facebookPosts);
     });
   };
+
+  Analytic.facebookPagePostsAnalytics = function(method, period, type, page, perPage, cb) {
+    if (!periodEnum[period]) {
+      var err = new Error('Malformed request syntax. Check the query string arguments!');
+      err.fields = ['period'];
+      err.status = 400;
+
+      return cb(err);
+    }
+
+    if (!facebookPostAnalyticsMethods[method]) {
+      var err = new Error('Malformed request syntax. Check the query string arguments!');
+      err.fields = ['method'];
+      err.status = 400;
+
+      return cb(err);
+    }
+
+    var params = {
+      since: new Date(),
+      until: new Date(new Date() - periodEnum[period]),
+      type: type,
+      page: page === undefined ? 1 : page,
+      perPage: perPage === undefined ? 25 : perPage
+    }
+
+    var FacebookPost = Analytic.app.models.FacebookPost;
+    facebookPostAnalyticsMethods[method](params, FacebookPost, cb);
+  }
 };
