@@ -1,0 +1,12 @@
+{
+  "name": "FacebookPagePost",
+  "plural": "facebook_page_posts",
+  "base": "FacebookPost",
+  "strict": true,
+  "http": {"path": "facebook/page/posts"},
+  "options": {
+    "mongodb": {
+      "collection": "facebook_pages"
+    }
+  }
+}

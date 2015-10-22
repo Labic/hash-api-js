@@ -109,6 +109,10 @@
     "dataSource": false,
     "public": false
   },
+  "FacebookPagePost": {
+    "dataSource": "db",
+    "public": true
+  },
   "Metric": {
     "dataSource": "db",
     "public": true
