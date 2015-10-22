@@ -9,7 +9,7 @@ module.exports = function(Analytic) {
       { arg: 'per_page', type: 'number' }
     ],
     returns: { type: 'object', root: true },
-    http: { path: '/facebook/posts', verb: 'GET' }
+    http: { path: '/facebook', verb: 'GET' }
   });
 
   Analytic.facebookPostsAnalytics = function(method, period, type, page, perPage, cb) {
@@ -48,7 +48,7 @@ module.exports = function(Analytic) {
   periodEnum['15d'] = 15 * 24 * 60 * 60 * 1000;
 
   var facebookPostAnalyticsMethods = {};
-  facebookPostAnalyticsMethods['top_likes'] = function (params, model, cb) {
+  facebookPostAnalyticsMethods['most_liked_posts'] = function (params, model, cb) {
     var filter = {
       where: {
         'api_collector.created_time_ms': {
@@ -77,4 +77,32 @@ module.exports = function(Analytic) {
     });
   };
 
+  facebookPostAnalyticsMethods['most_shared_posts'] = function (params, model, cb) {
+    var filter = {
+      where: {
+        'api_collector.created_time_ms': {
+          between: [
+            params.since.getTime(),
+            params.until.getTime()
+          ]
+        }
+      },
+      fields: {
+        api_collector: true
+      },
+      order: 'api_collector.shares_count DESC',
+      limit: params.perPage * params.page,
+      skip: (params.perPage * params.page) - params.perPage
+    };
+
+    if (params.type)
+      filter.where['api_collector.type'] = params.type;
+
+    model.find(filter, function(err, facebookPosts) {
+      if (err)
+        return cb(err, null);
+      else
+        return cb(null, facebookPosts);
+    });
+  };
 };
