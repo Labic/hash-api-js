@@ -105,4 +105,33 @@ module.exports = function(Analytic) {
         return cb(null, facebookPosts);
     });
   };
+
+  facebookPostAnalyticsMethods['most_commented_posts'] = function (params, model, cb) {
+    var filter = {
+      where: {
+        'api_collector.created_time_ms': {
+          between: [
+            params.since.getTime(),
+            params.until.getTime()
+          ]
+        }
+      },
+      fields: {
+        api_collector: true
+      },
+      order: 'api_collector.nun_comment DESC',
+      limit: params.perPage * params.page,
+      skip: (params.perPage * params.page) - params.perPage
+    };
+
+    if (params.type)
+      filter.where['api_collector.type'] = params.type;
+
+    model.find(filter, function(err, facebookPosts) {
+      if (err)
+        return cb(err, null);
+      else
+        return cb(null, facebookPosts);
+    });
+  };
 };
