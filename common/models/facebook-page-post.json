@@ -1,12 +1,15 @@
 {
   "name": "FacebookPagePost",
   "plural": "facebook_page_posts",
-  "base": "FacebookPost",
+  "base": "FacebookPostApiCollector",
   "strict": true,
   "http": {"path": "facebook/page/posts"},
   "options": {
     "mongodb": {
       "collection": "facebook_pages"
     }
+  },
+  "mixins": {
+      "Mongodb": null
   }
 }

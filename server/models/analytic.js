@@ -53,6 +53,35 @@ module.exports = function(Analytic) {
     facebookPostAnalyticsMethods[method](params, FacebookPost, cb);
   }
 
+  Analytic.facebookPagePostsAnalytics = function(method, period, type, page, perPage, cb) {
+    if (!periodEnum[period]) {
+      var err = new Error('Malformed request syntax. Check the query string arguments!');
+      err.fields = ['period'];
+      err.status = 400;
+
+      return cb(err);
+    }
+
+    if (!facebookPostAnalyticsMethods[method]) {
+      var err = new Error('Malformed request syntax. Check the query string arguments!');
+      err.fields = ['method'];
+      err.status = 400;
+
+      return cb(err);
+    }
+
+    var params = {
+      since: new Date(),
+      until: new Date(new Date() - periodEnum[period]),
+      type: type,
+      page: page === undefined ? 1 : page,
+      perPage: perPage === undefined ? 25 : perPage
+    }
+
+    var FacebookPagePost = Analytic.app.models.FacebookPagePost;
+    facebookPostAnalyticsMethods[method](params, FacebookPagePost, cb);
+  }
+
   var periodEnum = {};
   periodEnum['15m']  = 15 * 60 * 1000;
   periodEnum['30m']  = 30 * 60 * 1000;
@@ -149,32 +178,33 @@ module.exports = function(Analytic) {
     });
   };
 
-  Analytic.facebookPagePostsAnalytics = function(method, period, type, page, perPage, cb) {
-    if (!periodEnum[period]) {
-      var err = new Error('Malformed request syntax. Check the query string arguments!');
-      err.fields = ['period'];
-      err.status = 400;
+  facebookPostAnalyticsMethods['most_active_profiles'] = function (params, model, cb) {
+    var pipeline = [
+      { $match: { 
+        created_time_ms: {
+          $lte: params.since.getTime(),
+          $gte: params.until.getTime()
+        }
+      } },
+      { $group: {
+        _id: '$from',
+        posts_count: { $sum: 1 }
+      } },
+      { $project: { 
+          _id: 0,
+          id: '$_id.id',
+          name: '$_id.name',
+          posts_count: '$posts_count'
+      } }, 
+      { $sort: { posts_count: -1 } },
+      { $limit: params.perPage * params.page },
+      { $skip : (params.perPage * params.page) - params.perPage }
+    ];
 
-      return cb(err);
-    }
+    if (params.type)
+      pipeline[0].$match.type = params.type;
 
-    if (!facebookPostAnalyticsMethods[method]) {
-      var err = new Error('Malformed request syntax. Check the query string arguments!');
-      err.fields = ['method'];
-      err.status = 400;
-
-      return cb(err);
-    }
-
-    var params = {
-      since: new Date(),
-      until: new Date(new Date() - periodEnum[period]),
-      type: type,
-      page: page === undefined ? 1 : page,
-      perPage: perPage === undefined ? 25 : perPage
-    }
-
-    var FacebookPost = Analytic.app.models.FacebookPost;
-    facebookPostAnalyticsMethods[method](params, FacebookPost, cb);
-  }
+    console.log('%j', pipeline);
+    model.aggregate(pipeline, cb);
+  };
 };
