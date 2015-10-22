@@ -9,7 +9,7 @@ module.exports = function(Analytic) {
       { arg: 'per_page', type: 'number' }
     ],
     returns: { type: 'object', root: true },
-    http: { path: '/facebook', verb: 'GET' }
+    http: { path: '/facebook/:method', verb: 'GET' }
   });
 
   Analytic.facebookPostsAnalytics = function(method, period, type, page, perPage, cb) {
@@ -61,7 +61,7 @@ module.exports = function(Analytic) {
       fields: {
         api_collector: true
       },
-      order: 'api_collector.num_likes DESC',
+      order: 'api_collector.likes_count DESC',
       limit: params.perPage * params.page,
       skip: (params.perPage * params.page) - params.perPage
     };
@@ -119,7 +119,7 @@ module.exports = function(Analytic) {
       fields: {
         api_collector: true
       },
-      order: 'api_collector.nun_comment DESC',
+      order: 'api_collector.comments_count DESC',
       limit: params.perPage * params.page,
       skip: (params.perPage * params.page) - params.perPage
     };
