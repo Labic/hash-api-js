@@ -42,10 +42,12 @@ module.exports = function(Analytic) {
   }
 
   var periodEnum = {};
-  periodEnum['1h']  = 60 * 60 * 1000;
-  periodEnum['1d']  = 24 * 60 * 60 * 1000;
-  periodEnum['7d']  = 7 * 24 * 60 * 60 * 1000;
-  periodEnum['15d'] = 15 * 24 * 60 * 60 * 1000;
+  periodEnum['15m']  = 15 * 60 * 1000;
+  periodEnum['30m']  = 30 * 60 * 1000;
+  periodEnum['1h']   = 60 * 60 * 1000;
+  periodEnum['1d']   = 24 * 60 * 60 * 1000;
+  periodEnum['7d']   = 7 * 24 * 60 * 60 * 1000;
+  periodEnum['15d']  = 15 * 24 * 60 * 60 * 1000;
 
   var facebookPostAnalyticsMethods = {};
   facebookPostAnalyticsMethods['most_liked_posts'] = function (params, model, cb) {
