@@ -4,7 +4,8 @@ module.exports = function(Analytic) {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string', required: true },
-      { arg: 'type', type: 'string' },
+      { arg: 'profile_type', type: 'string' },
+      { arg: 'post_type', type: 'string' },
       { arg: 'page', type: 'number' },
       { arg: 'per_page', type: 'number' }
     ],
@@ -12,19 +13,7 @@ module.exports = function(Analytic) {
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
-  Analytic.remoteMethod('facebookPagePostsAnalytics', {
-    accepts: [
-      { arg: 'method', type: 'string', required: true },
-      { arg: 'period', type: 'string', required: true },
-      { arg: 'type', type: 'string' },
-      { arg: 'page', type: 'number' },
-      { arg: 'per_page', type: 'number' }
-    ],
-    returns: { type: 'object', root: true },
-    http: { path: '/facebook/pages/:method', verb: 'GET' }
-  });
-
-  Analytic.facebookPostsAnalytics = function(method, period, type, page, perPage, cb) {
+  Analytic.facebookPostsAnalytics = function(method, period, profileType, postType, page, perPage, cb) {
     if (!periodEnum[period]) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
       err.fields = ['period'];
@@ -44,13 +33,28 @@ module.exports = function(Analytic) {
     var params = {
       since: new Date(),
       until: new Date(new Date() - periodEnum[period]),
-      type: type,
+      postType: postType,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage
     }
 
-    var FacebookPost = Analytic.app.models.FacebookPost;
-    facebookPostAnalyticsMethods[method](params, FacebookPost, cb);
+    switch (profileType) {
+      case 'user':
+        var model = Analytic.app.models.FacebookPost;
+        break;
+      case 'page':
+        var model = Analytic.app.models.FacebookPagePost;
+        break;
+      default:
+        var err = new Error('Malformed request syntax. Check the query string arguments!');
+        err.fields = ['profile_type'];
+        err.status = 400;
+
+        return cb(err);
+        break; 
+    }
+    
+    facebookPostAnalyticsMethods[method](params, model, cb);
   }
 
   Analytic.facebookPagePostsAnalytics = function(method, period, type, page, perPage, cb) {
@@ -78,7 +82,7 @@ module.exports = function(Analytic) {
       perPage: perPage === undefined ? 25 : perPage
     }
 
-    var FacebookPagePost = Analytic.app.models.FacebookPagePost;
+    
     facebookPostAnalyticsMethods[method](params, FacebookPagePost, cb);
   }
 
@@ -94,23 +98,20 @@ module.exports = function(Analytic) {
   facebookPostAnalyticsMethods['most_liked_posts'] = function (params, model, cb) {
     var filter = {
       where: {
-        'api_collector.created_time_ms': {
+        created_time_ms: {
           between: [
             params.since.getTime(),
             params.until.getTime()
           ]
         }
       },
-      fields: {
-        api_collector: true
-      },
-      order: 'api_collector.likes_count DESC',
+      order: 'likes_count DESC',
       limit: params.perPage * params.page,
       skip: (params.perPage * params.page) - params.perPage
     };
 
     if (params.type)
-      filter.where['api_collector.type'] = params.type;
+      filter.type = params.postType;
 
     model.find(filter, function(err, facebookPosts) {
       if (err)
@@ -123,23 +124,20 @@ module.exports = function(Analytic) {
   facebookPostAnalyticsMethods['most_shared_posts'] = function (params, model, cb) {
     var filter = {
       where: {
-        'api_collector.created_time_ms': {
+        created_time_ms: {
           between: [
             params.since.getTime(),
             params.until.getTime()
           ]
         }
       },
-      fields: {
-        api_collector: true
-      },
-      order: 'api_collector.shares_count DESC',
+      order: 'shares_count DESC',
       limit: params.perPage * params.page,
       skip: (params.perPage * params.page) - params.perPage
     };
 
     if (params.type)
-      filter.where['api_collector.type'] = params.type;
+      filter.type = params.postType;
 
     model.find(filter, function(err, facebookPosts) {
       if (err)
@@ -152,23 +150,20 @@ module.exports = function(Analytic) {
   facebookPostAnalyticsMethods['most_commented_posts'] = function (params, model, cb) {
     var filter = {
       where: {
-        'api_collector.created_time_ms': {
+        created_time_ms: {
           between: [
             params.since.getTime(),
             params.until.getTime()
           ]
         }
       },
-      fields: {
-        api_collector: true
-      },
-      order: 'api_collector.comments_count DESC',
+      order: 'comments_count DESC',
       limit: params.perPage * params.page,
       skip: (params.perPage * params.page) - params.perPage
     };
 
     if (params.type)
-      filter.where['api_collector.type'] = params.type;
+      filter.type = params.postType;
 
     model.find(filter, function(err, facebookPosts) {
       if (err)
@@ -202,7 +197,7 @@ module.exports = function(Analytic) {
     ];
 
     if (params.type)
-      pipeline[0].$match.type = params.type;
+      pipeline[0].$match.type = params.postType;
 
     console.log('%j', pipeline);
     model.aggregate(pipeline, cb);
