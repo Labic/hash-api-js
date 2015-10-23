@@ -13,6 +13,20 @@ module.exports = function(Analytic) {
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
+  Analytic.remoteMethod('twitterAnalytics', {
+    accepts: [
+      { arg: 'method', type: 'string', required: true },
+      { arg: 'period', type: 'string', required: true },
+      { arg: 'tags', type: 'string' },
+      { arg: 'hashtags', type: 'string' },
+      { arg: 'retrive_blocked', type: 'boolean' },
+      { arg: 'page', type: 'number' },
+      { arg: 'per_page', type: 'number' }
+    ],
+    returns: { type: 'object', root: true },
+    http: { path: '/twitter/:method', verb: 'GET' }
+  });
+
   Analytic.facebookPostsAnalytics = function(method, period, profileType, postType, page, perPage, cb) {
     if (!periodEnum[period]) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
@@ -57,7 +71,7 @@ module.exports = function(Analytic) {
     facebookPostAnalyticsMethods[method](params, model, cb);
   }
 
-  Analytic.facebookPagePostsAnalytics = function(method, period, type, page, perPage, cb) {
+  Analytic.twitterAnalytics = function(method, period, tags, hashtags, retriveBlocked, page, perPage, cb) {
     if (!periodEnum[period]) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
       err.fields = ['period'];
@@ -66,10 +80,9 @@ module.exports = function(Analytic) {
       return cb(err);
     }
 
-    if (!facebookPostAnalyticsMethods[method]) {
-      var err = new Error('Malformed request syntax. Check the query string arguments!');
-      err.fields = ['method'];
-      err.status = 400;
+    if (!twitterAnalyticsMethods[method]) {
+      var err = new Error('Endpoint not found!');
+      err.status = 404;
 
       return cb(err);
     }
@@ -77,13 +90,15 @@ module.exports = function(Analytic) {
     var params = {
       since: new Date(),
       until: new Date(new Date() - periodEnum[period]),
-      type: type,
+      tags: tags === undefined ? null : tags.trim().split(','),
+      hashtags: hashtags === undefined ? null : hashtags.trim().split(','),
+      retriveBlocked: retriveBlocked === undefined ? false : retriveBlocked,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage
     }
-
     
-    facebookPostAnalyticsMethods[method](params, FacebookPagePost, cb);
+    var model = Analytic.app.models.Tweet;
+    twitterAnalyticsMethods[method](params, model, cb);
   }
 
   var periodEnum = {};
@@ -200,6 +215,40 @@ module.exports = function(Analytic) {
       pipeline[0].$match.type = params.postType;
 
     console.log('%j', pipeline);
+    model.aggregate(pipeline, cb);
+  };
+
+  var twitterAnalyticsMethods = {};
+  twitterAnalyticsMethods['most_retweeted_tweets'] = function(params, model, cb) {
+    var pipeline = [
+      { $match: {
+        'status.retweeted_status': { $exists: true},
+        'status.timestamp_ms': {
+          $gte: params.until.getTime(),
+          $lte: params.since.getTime()
+        },
+        block: params.retriveBlocked
+      } },
+      { $group: {
+        _id: '$status.retweeted_status.id_str',
+        status: { $last: '$status' },
+        count: { $sum: 1 }
+      } },
+      { $sort: { count: -1 } },
+      { $project: {
+        _id: 0,
+        status: '$status',
+        count: '$count'
+      } },
+      { $limit: params.perPage * params.page },
+      { $skip : (params.perPage * params.page) - params.perPage }
+    ];
+
+    if(params.tags)
+      pipeline[0].$match.categories = { $all: params.tags };
+    if(params.hashtags)
+      pipeline[0].$match[''] = { $in: params.hashtags };
+    console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
 };
