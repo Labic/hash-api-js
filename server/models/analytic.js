@@ -399,4 +399,37 @@ module.exports = function(Analytic) {
     console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
+
+  twitterAnalyticsMethods['most_popular_hashtags'] = function(params, model, cb) {
+    var pipeline = [
+      { $match: {
+        'status.entities.hashtags.0': { $exists: true },
+        'status.timestamp_ms': {
+          $gte: params.until.getTime(),
+          $lte: params.since.getTime()
+        },
+        block: params.retriveBlocked 
+      } },
+      { $unwind: '$status.entities.hashtags' },
+      { $group: {
+        _id: '$status.entities.hashtags.text',
+        count: { $sum: 1 }
+      } },
+      { $sort: { count: -1 } },
+      { $project: {
+        _id: 0,
+        hashtag: '$_id',
+        count: '$count'
+      } }, 
+      { $limit: params.perPage * params.page }, 
+      { $skip : (params.perPage * params.page) - params.perPage } 
+    ];
+
+    if(params.tags)
+      pipeline[0].$match.categories = { $all: params.tags };
+    if(params.hashtags)
+      pipeline[0].$match[''] = { $in: params.hashtags };
+    console.log(JSON.stringify(pipeline));
+    model.aggregate(pipeline, cb);
+  };
 };
