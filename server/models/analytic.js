@@ -45,8 +45,8 @@ module.exports = function(Analytic) {
     }
 
     var params = {
-      since: new Date(),
-      until: new Date(new Date() - periodEnum[period]),
+      since: new Date(new Date() - periodEnum[period]),
+      until: new Date(),
       postType: postType,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage
@@ -88,8 +88,8 @@ module.exports = function(Analytic) {
     }
 
     var params = {
-      since: new Date(),
-      until: new Date(new Date() - periodEnum[period]),
+      since: new Date(new Date() - periodEnum[period]),
+      until: new Date(),
       tags: tags === undefined ? null : tags.trim().split(','),
       hashtags: hashtags === undefined ? null : hashtags.trim().split(','),
       retriveBlocked: retriveBlocked === undefined ? false : retriveBlocked,
@@ -192,8 +192,8 @@ module.exports = function(Analytic) {
     var pipeline = [
       { $match: { 
         created_time_ms: {
-          $lte: params.since.getTime(),
-          $gte: params.until.getTime()
+          $gte: params.since.getTime(),
+          $lte: params.until.getTime()
         }
       } },
       { $group: {
@@ -224,8 +224,8 @@ module.exports = function(Analytic) {
       { $match: {
         'status.retweeted_status': { $exists: true},
         'status.timestamp_ms': {
-          $gte: params.until.getTime(),
-          $lte: params.since.getTime()
+          $gte: params.since.getTime(),
+          $lte: params.until.getTime()
         },
         block: params.retriveBlocked
       } },
@@ -256,8 +256,8 @@ module.exports = function(Analytic) {
     var pipeline = [
       { $match: {
         'status.timestamp_ms': {
-          $gte: params.until.getTime(),
-          $lte: params.since.getTime()
+          $gte: params.since.getTime(),
+          $lte: params.until.getTime()
         },
         'status.entities.user_mentions.0': { $exists: true }, 
         block: params.retriveBlocked 
@@ -290,8 +290,8 @@ module.exports = function(Analytic) {
       { $match: {
         'status.entities.urls.0': { $exists: true },
         'status.timestamp_ms': {
-          $gte: params.until.getTime(),
-          $lte: params.since.getTime()
+          $gte: params.since.getTime(),
+          $lte: params.until.getTime()
         },
         block: params.retriveBlocked 
       } },
@@ -323,8 +323,8 @@ module.exports = function(Analytic) {
       { $match: {
         'status.entities.media.0': { $exists: true },
         'status.timestamp_ms': {
-          $gte: params.until.getTime(),
-          $lte: params.since.getTime()
+          $gte: params.since.getTime(),
+          $lte: params.until.getTime()
         },
         block: params.retriveBlocked 
       } },
@@ -373,8 +373,8 @@ module.exports = function(Analytic) {
       { $match: {
         'status.user.screen_name': { $exists: true },
         'status.timestamp_ms': {
-          $gte: params.until.getTime(),
-          $lte: params.since.getTime()
+          $gte: params.since.getTime(),
+          $lte: params.until.getTime()
         },
         block: params.retriveBlocked 
       } },
@@ -405,8 +405,8 @@ module.exports = function(Analytic) {
       { $match: {
         'status.entities.hashtags.0': { $exists: true },
         'status.timestamp_ms': {
-          $gte: params.until.getTime(),
-          $lte: params.since.getTime()
+          $gte: params.since.getTime(),
+          $lte: params.until.getTime()
         },
         block: params.retriveBlocked 
       } },
