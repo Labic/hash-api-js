@@ -2,430 +2,83 @@ module.exports = function(Metric) {
 
   Metric.remoteMethod('twitterMetrics', {
     accepts: [
-      { arg: 'method', type: 'String', required: true },
-      { arg: 'since', type: 'Date', required: true },
-      { arg: 'until', type: 'Date', required: true },
-      { arg: 'tags', type: 'String' }, // Categories alias
-      { arg: 'hashtags', type: 'String' },
-      { arg: 'page', type: 'Number' },
-      { arg: 'per_page', type: 'Number' }
+      { arg: 'method', type: 'string', required: true },
+      { arg: 'period', type: 'string', required: true },
+      { arg: 'tags', type: '[string]' },
+      { arg: 'hashtags', type: '[string]' },
+      { arg: 'has', type: '[string]' }, // Used for count method
+      { arg: 'retrive_blocked', type: 'boolean' },
+      { arg: 'page', type: 'number' },
+      { arg: 'per_page', type: 'mumber' }
     ],
     returns: { type: 'object', root: true },
     http: { path: '/twitter/:method', verb: 'GET' }
   });
 
-  Metric.twitterMetrics = function(method, since, until, tags, hashtags, page, perPage, cb) {
-    if (isNaN(since.getTime()) || isNaN(until.getTime())) {
+  Metric.twitterMetrics = function(method, period, tags, hashtags, has, retriveBlocked, page, perPage, cb) {
+    if (!periodEnum[period]) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
-      err.statusCode = 400;
+      err.fields = ['period'];
+      err.status = 400;
 
       return cb(err);
     }
 
-    if (!page) page = 1;
-    if (!perPage) perPage = 25;
+    if (!twitterMetricsMethods[method]) {
+      var err = new Error('Endpoint not found!');
+      err.status = 404;
 
-    var Tweets = Metric.app.models.Tweet;
-    twitterMetricsMethods[method](since, until, tags, hashtags, page, perPage, Tweets, cb);
+      return cb(err);
+    }
+
+    var params = {
+      since: new Date(new Date() - periodEnum[period]),
+      until: new Date(),
+      tags: tags,
+      hashtags: hashtags,
+      has: has, 
+      retriveBlocked: retriveBlocked === undefined ? 'false' : retriveBlocked,
+      page: page === undefined ? 1 : page,
+      perPage: perPage === undefined ? 25 : perPage
+    }
+    
+    var model = Metric.app.models.Tweet;
+    twitterMetricsMethods[method](params, model, cb);
   }
 
+  var periodEnum = {};
+  periodEnum['15m']  = 15 * 60 * 1000;
+  periodEnum['30m']  = 30 * 60 * 1000;
+  periodEnum['1h']   = 60 * 60 * 1000;
+  periodEnum['1d']   = 24 * 60 * 60 * 1000;
+  periodEnum['7d']   = 7 * 24 * 60 * 60 * 1000;
+  periodEnum['15d']  = 15 * 24 * 60 * 60 * 1000;
+
   var twitterMetricsMethods = {};
-  
-  twitterMetricsMethods['count'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) {
+  twitterMetricsMethods['count'] = function (params, model, cb) { 
     var query = {
       'status.timestamp_ms': {
-        $gte: since.getTime(),
-        $lte: until.getTime()
-      }
+        $gte: params.since.getTime(),
+        $lte: params.until.getTime()
+      },
+      block: params.retriveBlocked
     };
 
-    if (tags)
-      query.categories = { $all: tags.split(',') };
-      // query.categories = { $all: tags.replace(/ /g,'').split(',') };
+    if(params.has)
+      if(params.has.indexOf('media') > -1)
+        query['status.entities.media.0'] = { $exists: true };
 
-    if (hashtags)
-      query['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/count \n %j', query);
-
-    return Tweets.mongodb.count(query, function(err, result) {
+    if(params.tags)
+      query.categories = { $all: params.tags };
+    if(params.hashtags)
+      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
+    console.log(JSON.stringify(query));
+    return model.mongodb.count(query, function(err, result) {
       if (err) 
         return cb(err, null);
       else 
         return cb(err, { count: result } );
     });
   };
-
-  twitterMetricsMethods['count_images'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
-    var query = {
-      'status.entities.media.0': { $exists: true },
-      'status.timestamp_ms': {
-        $gte: since.getTime(),
-        $lte: until.getTime()
-      }
-    };
-
-    if (tags)
-      query['categories'] = { $all: tags.split(',') };
-      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-
-    if (hashtags)
-      query['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/count_images \n %j', query);
-
-    return Tweets.mongodb.count(query, function(err, result) {
-      if (err) 
-        return cb(err, null);
-      else 
-        return cb(null, { count: result });
-    });
-  }
-
-  twitterMetricsMethods['count_retweets'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
-    var pipeline = [
-      { $match: { 
-        'status.retweeted_status': { $exists: true},
-        'status.timestamp_ms': {
-          $gte: since.getTime(),
-          $lte: until.getTime()
-        }
-      } }, 
-      { $group: { 
-          _id: '$status.retweeted_status.id_str', 
-          retweets_count: { $sum: 1 } 
-      } }, 
-      { $group : { 
-          _id : '$retweets_count',
-          count: { $sum: 1 } 
-      } }, 
-      { $project: { 
-          _id: 0, 
-          retweets_count:'$_id', 
-          count: '$count' 
-      } }, 
-      { $sort: { retweets_count: -1 } }, 
-      { $limit: perPage * page }, 
-      { $skip : (perPage * page) - perPage } 
-    ];
-
-    if (tags)
-      pipeline[0].$match['categories'] = { $all: tags.split(',') };
-      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-
-    if (hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/count_retweets \n %j', pipeline);
-
-    return Tweets.aggregate(pipeline, cb);
-  }
-
-  twitterMetricsMethods['count_tags'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
-    var pipeline = [
-      { $match: { 
-        'status.timestamp_ms': {
-          $gte: since.getTime(),
-          $lte: until.getTime()
-        }
-      } }, 
-      { $unwind: '$categories' }, 
-      { $group: { 
-        _id: '$categories', 
-        count: { $sum: 1 } 
-      } }, 
-      { $project: { 
-          _id: 0, 
-          tag: '$_id', 
-          count: '$count' 
-      } }, 
-      { $sort: { count: -1 } },
-      { $limit: perPage * page }, 
-      { $skip : (perPage * page) - perPage } 
-    ];
-
-    if (tags) 
-      pipeline[0].$match['categories'] = { $all: tags.split(',') };
-      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-
-    if (hashtags) 
-      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/count_tags \n %j', pipeline);
-
-    return Tweets.aggregate(pipeline, cb);
-  }
-
-  twitterMetricsMethods['top_retweets'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
-    var pipeline = [
-      { $match: { 
-        'status.retweeted_status': { $exists: true},
-        'status.timestamp_ms': {
-          $gte: since.getTime(),
-          $lte: until.getTime()
-        }
-      } },
-      { $group: {
-        _id: '$status.retweeted_status.id_str',
-        status: { $last: '$status' },
-        count: { $sum: 1 }
-      } }, 
-      { $project: {
-        _id: 0,
-        status: '$status',
-        count: '$count'
-      } }, 
-      { $sort: { count: -1 } }, 
-      { $limit: perPage * page }, 
-      { $skip : (perPage * page) - perPage } 
-    ];
-
-    if (tags)
-      pipeline[0].$match['categories'] = { $all: tags.split(',') };
-      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-
-    if (hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/top_retweets \n %j', pipeline);
-
-    return Tweets.aggregate(pipeline, cb);
-  }
-
-  twitterMetricsMethods['top_mentions'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
-    var pipeline = [
-      { $match: { 
-        'status.entities.user_mentions.0': { $exists: true }, 
-        'status.timestamp_ms': { 
-          $gte: since.getTime(), 
-          $lte: until.getTime() 
-        } 
-      } }, 
-      { $unwind: '$status.entities.user_mentions' }, 
-      { $group: {
-        _id: '$status.entities.user_mentions.screen_name', 
-        count: { $sum: 1 }
-      } }, 
-      { $project: { 
-        _id: 0, 
-        screen_name: '$_id', 
-        count: '$count' 
-      } }, 
-      { $sort: { count: -1 } }, 
-      { $limit: perPage * page }, 
-      { $skip : (perPage * page) - perPage } 
-    ];
-
-    if (tags)
-      pipeline[0].$match['categories'] = { $all: tags.split(',') };
-      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-
-    if (hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/top_mentions \n %j', pipeline);
-
-    return Tweets.aggregate(pipeline, cb);
-  }
-
-  twitterMetricsMethods['top_urls'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
-    var pipeline = [
-      { $match: { 
-        'status.entities.urls.0': { $exists: true }, 
-        'status.timestamp_ms': { 
-          $gte: since.getTime(), 
-          $lte: until.getTime() 
-        } 
-      } }, 
-      { $unwind: '$status.entities.urls' }, 
-      { $group: { 
-        _id: '$status.entities.urls.expanded_url', 
-        count: { $sum: 1 }
-      } }, 
-      { $project: { 
-        _id: 0, 
-        url: '$_id', 
-        count: '$count' 
-      } }, 
-      { $sort: { count: -1 } }, 
-      { $limit: perPage * page }, 
-      { $skip : (perPage * page) - perPage } 
-    ];
-
-    if (tags)
-      pipeline[0].$match['categories'] = { $all: tags.split(',') };
-      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-
-    if (hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/top_urls \n %j', pipeline);
-
-    return Tweets.aggregate(pipeline, cb);
-  }
-
-  twitterMetricsMethods['top_hashtags'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
-    var pipeline = [
-      { $match: {
-        'status.entities.hashtags.0': { $exists: true },
-        'status.timestamp_ms': { 
-          $gte: since.getTime(), 
-          $lte: until.getTime() 
-        } 
-      } },
-      { $unwind: '$status.entities.hashtags' },
-      { $group: {
-        _id: '$status.entities.hashtags.text',
-        count: { $sum: 1 }
-      } },
-      { $project: {
-        _id: 0,
-        hashtag: '$_id',
-        count: '$count'
-      } }, 
-      { $sort: { count: -1 } }, 
-      { $limit: perPage * page }, 
-      { $skip : (perPage * page) - perPage } 
-    ];
-
-    if (tags)
-      pipeline[0].$match['categories'] = { $all: tags.split(',') };
-      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-
-    if (hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/top_hashtags \n %j', pipeline);
-
-    return Tweets.aggregate(pipeline, cb);
-  }
-
-  twitterMetricsMethods['top_images'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
-    var pipeline = [
-      { $match: { 
-        'status.entities.media.0': { $exists: true }, 
-        'status.timestamp_ms': { 
-          $gte: since.getTime(), 
-          $lte: until.getTime() 
-        } 
-      } }, 
-      { $unwind: '$status.entities.media' }, 
-      { $group: { 
-        _id: '$status.entities.media.media_url_https', 
-        status_text: { $last: '$status.text' }, 
-        user_id_str: { $last: '$status.user.id_str' }, 
-        user_screen_name: { $last: '$status.user.screen_name' }, 
-        user_profile_image_url_https: { $last: '$status.user.profile_image_url_https' }, 
-        count: { $sum: 1 } 
-      } }, 
-      { $project: { 
-        _id: 0, 
-        entities: { media: { media_url_https: '$_id' } }, 
-        text: '$status_text', 
-        user: { 
-            id_str: '$user_id_str', 
-            screen_name: '$user_screen_name', 
-            profile_image_url_https: '$user_profile_image_url_https' 
-        }, 
-        count: '$count' 
-      } }, 
-      { $sort: { count: -1 } }, 
-      { $limit: perPage * page }, 
-      { $skip : (perPage * page) - perPage } 
-    ];
-
-    if (tags)
-      pipeline[0].$match['categories'] = { $all: tags.split(',') };
-      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-
-    if (hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/top_images \n %j', pipeline);
-
-    return Tweets.aggregate(pipeline, cb);
-  }
-
-  twitterMetricsMethods['users_most_active'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
-    var pipeline = [
-      { $match: { 
-        'status.user.screen_name': { $exists: true }, 
-        'status.timestamp_ms': { 
-          $gte: since.getTime(), 
-          $lte: until.getTime() 
-        } 
-      } }, 
-      { $group: { 
-        _id: '$status.user.screen_name', 
-        count: { $sum: 1 } 
-      } }, 
-      { $project: { 
-        _id: 0, 
-        screen_name: '$_id', 
-        count: '$count' 
-      } }, 
-      { $sort: { count: -1 } }, 
-      { $limit: perPage * page }, 
-      { $skip : (perPage * page) - perPage } 
-    ];
-
-    if (tags)
-      pipeline[0].$match['categories'] = { $all: tags.split(',') };
-      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-
-    if (hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/top_images \n %j', pipeline);
-
-    return Tweets.aggregate(pipeline, cb);
-  }
-
-  twitterMetricsMethods['geolocation'] = function (since, until, tags, hashtags, page, perPage, Tweets, cb) { 
-    var pipeline = [
-      { $match: {
-        $or: [ { 'status.geo': { $ne: null } }, 
-               { 'city_geo': { $exists: true } } ],
-        'status.timestamp_ms': {
-          $gte: since.getTime(),
-          $lte: until.getTime()
-        }
-      } }, 
-      { $group: {
-        _id: 0,
-        features: { $push: { 
-          // type: {  $literal: 'Feature' },
-          properties: {
-            id_str: '$status.id_str',
-          },
-          geometry: {
-            // type: {  $literal: 'Point' }, 
-            coordinates: { $cond: [ { $ne: [ '$status.geo', null ] }, '$status.geo.coordinates', '$city_geo' ] }
-          }
-        } }
-      } },
-      { $project: {
-        _id: 0,
-        // type: {  $literal: 'FeatureCollection' },
-        features: '$features'
-      } }
-    ];
-
-    if (tags)
-      pipeline[0].$match['categories'] = { $all: tags.split(',') };
-      // pipeline[0].$match['categories'] = { $all: tags.replace(/ /g,'').split(',') };
-
-    if (hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $all: hashtags.replace(/ /g,'').split(',') };
-
-    console.log('/tweets/metrics/geolocation \n %j', pipeline);
-
-    return Tweets.aggregate(pipeline, function(err, result) {
-      if (err) 
-        return cb(err, null);
-      else 
-        return cb(null, result[0]);
-    });
-  }
 
 };

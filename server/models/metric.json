@@ -16,9 +16,6 @@
       "type": "String",
       "required": true
     },
-    "slug": {
-      "type": "String"
-    },
     "args": {
       "type": "[Object]"
     }
