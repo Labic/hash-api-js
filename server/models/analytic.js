@@ -4,7 +4,7 @@ module.exports = function(Analytic) {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string', required: true },
-      { arg: 'profile_type', type: 'string' },
+      { arg: 'profile_type', type: 'string', required: true },
       { arg: 'post_type', type: 'string' },
       { arg: 'page', type: 'number' },
       { arg: 'per_page', type: 'number' }
@@ -285,7 +285,7 @@ module.exports = function(Analytic) {
     model.aggregate(pipeline, cb);
   };
 
-  twitterAnalyticsMethods['most_shared_urls'] = function(params, model, cb) {
+  twitterAnalyticsMethods['most_retweeted_urls'] = function(params, model, cb) {
     var pipeline = [
       { $match: {
         'status.entities.urls.0': { $exists: true },
@@ -318,7 +318,7 @@ module.exports = function(Analytic) {
     model.aggregate(pipeline, cb);
   };
 
-  twitterAnalyticsMethods['most_shared_images'] = function(params, model, cb) {
+  twitterAnalyticsMethods['most_retweeted_images'] = function(params, model, cb) {
     var pipeline = [
       { $match: {
         'status.entities.media.0': { $exists: true },
