@@ -345,6 +345,7 @@ module.exports = function(Analytic) {
         //   id: '$status_id_str',
         //   text: '$status_text',
         //   created_at: '$status_created_at',
+        //   media_url_https: '$_id',
         // },
         media_url_https: '$_id',
         text: '$status_text',
