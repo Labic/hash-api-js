@@ -1,5 +1,18 @@
 module.exports = function(Metric) {
 
+  Metric.remoteMethod('facebookPostsMetrics', {
+    accepts: [
+      { arg: 'method', type: 'string', required: true },
+      { arg: 'period', type: 'string', required: true },
+      { arg: 'profile_type', type: 'string', required: true },
+      { arg: 'post_type', type: '[string]' },
+      { arg: 'page', type: 'number' },
+      { arg: 'per_page', type: 'number' }
+    ],
+    returns: { type: 'object', root: true },
+    http: { path: '/facebook/:method', verb: 'GET' }
+  });
+
   Metric.remoteMethod('twitterMetrics', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
@@ -14,6 +27,52 @@ module.exports = function(Metric) {
     returns: { type: 'object', root: true },
     http: { path: '/twitter/:method', verb: 'GET' }
   });
+
+  Metric.facebookPostsMetrics = function(method, period, profileType, postType, page, perPage, cb) {
+    if (!periodEnum[period]) {
+      var err = new Error('Malformed request syntax. Check the query string arguments!');
+      err.fields = ['period'];
+      err.status = 400;
+
+      return cb(err);
+    }
+
+    if (!facebookPostsMetricsMethods[method]) {
+      var err = new Error('Malformed request syntax. Check the query string arguments!');
+      err.fields = ['method'];
+      err.status = 400;
+
+      return cb(err);
+    }
+
+    var params = {
+      since: new Date(new Date() - periodEnum[period]),
+      until: new Date(),
+      postType: postType,
+      page: page === undefined ? 1 : page,
+      perPage: perPage === undefined ? 25 : perPage
+    }
+
+    switch (profileType) {
+      case 'user':
+        var model = Metric.app.models.FacebookPost;
+        break;
+      
+      case 'page':
+        var model = Metric.app.models.FacebookPagePost;
+        break;
+      
+      default:
+        var err = new Error('Malformed request syntax. Check the query string arguments!');
+        err.fields = ['profile_type'];
+        err.status = 400;
+
+        return cb(err);
+        break; 
+    }
+    
+    facebookPostsMetricsMethods[method](params, model, cb);
+  }
 
   Metric.twitterMetrics = function(method, period, tags, hashtags, has, retriveBlocked, page, perPage, cb) {
     if (!periodEnum[period]) {
@@ -72,6 +131,26 @@ module.exports = function(Metric) {
       query.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
+    console.log(JSON.stringify(query));
+    return model.mongodb.count(query, function(err, result) {
+      if (err) 
+        return cb(err, null);
+      else 
+        return cb(err, { count: result } );
+    });
+  };
+
+  var facebookPostsMetricsMethods = {};
+  facebookPostsMetricsMethods['count'] = function (params, model, cb) { 
+    var query = {
+      created_time_ms: {
+        $gte: params.since.getTime(),
+        $lte: params.until.getTime()
+      }
+    };
+
+    if (params.postType)
+      query.type = { $in: params.postType };
     console.log(JSON.stringify(query));
     return model.mongodb.count(query, function(err, result) {
       if (err) 
