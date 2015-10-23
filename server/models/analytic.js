@@ -246,8 +246,8 @@ module.exports = function(Analytic) {
 
     if(params.tags)
       pipeline[0].$match.categories = { $all: params.tags };
-    if(params.hashtags)
-      pipeline[0].$match[''] = { $in: params.hashtags };
+    if(params.hashtags) 
+      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
     console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
@@ -280,7 +280,7 @@ module.exports = function(Analytic) {
     if(params.tags)
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
-      pipeline[0].$match[''] = { $in: params.hashtags };
+      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
     console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
@@ -313,7 +313,7 @@ module.exports = function(Analytic) {
     if(params.tags)
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
-      pipeline[0].$match[''] = { $in: params.hashtags };
+      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
     console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
@@ -363,7 +363,7 @@ module.exports = function(Analytic) {
     if(params.tags)
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
-      pipeline[0].$match[''] = { $in: params.hashtags };
+      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
     console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
@@ -395,7 +395,7 @@ module.exports = function(Analytic) {
     if(params.tags)
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
-      pipeline[0].$match[''] = { $in: params.hashtags };
+      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
     console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
@@ -428,7 +428,7 @@ module.exports = function(Analytic) {
     if(params.tags)
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
-      pipeline[0].$match[''] = { $in: params.hashtags };
+      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
     console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
