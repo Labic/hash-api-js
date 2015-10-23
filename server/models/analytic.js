@@ -367,4 +367,36 @@ module.exports = function(Analytic) {
     console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
+
+  twitterAnalyticsMethods['most_active_users'] = function(params, model, cb) {
+    var pipeline = [ 
+      { $match: {
+        'status.user.screen_name': { $exists: true },
+        'status.timestamp_ms': {
+          $gte: params.until.getTime(),
+          $lte: params.since.getTime()
+        },
+        block: params.retriveBlocked 
+      } },
+      { $group: {
+        _id: '$status.user.screen_name',
+        count: { $sum: 1 }
+      } },
+      { $sort: { count: -1 } },
+      { $project: {
+        _id: 0,
+        screen_name: '$_id',
+        count: '$count'
+      } }, 
+      { $limit: params.perPage * params.page }, 
+      { $skip : (params.perPage * params.page) - params.perPage } 
+    ];
+
+    if(params.tags)
+      pipeline[0].$match.categories = { $all: params.tags };
+    if(params.hashtags)
+      pipeline[0].$match[''] = { $in: params.hashtags };
+    console.log(JSON.stringify(pipeline));
+    model.aggregate(pipeline, cb);
+  };
 };
