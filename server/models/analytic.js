@@ -432,4 +432,43 @@ module.exports = function(Analytic) {
     console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
+
+  twitterAnalyticsMethods['geolocation'] = function(params, model, cb) { 
+    var pipeline = [
+      { $match: {
+        $or: [ { 'status.geo': { $ne: null } }, 
+               { 'city_geo': { $exists: true } } ],
+        'status.timestamp_ms': {
+          $gte: params.since.getTime(),
+          $lte: params.until.getTime()
+        },
+        block: params.retriveBlocked 
+      } }, 
+      { $group: {
+        _id: 0,
+        features: { $push: { 
+          // type: {  $literal: 'Feature' },
+          properties: {
+            id_str: '$status.id_str',
+          },
+          geometry: {
+            // type: {  $literal: 'Point' }, 
+            coordinates: { $cond: [ { $ne: [ '$status.geo', null ] }, '$status.geo.coordinates', '$city_geo' ] }
+          }
+        } }
+      } },
+      { $project: {
+        _id: 0,
+        // type: {  $literal: 'FeatureCollection' },
+        features: '$features'
+      } }
+    ];
+
+    if(params.tags)
+      pipeline[0].$match.categories = { $all: params.tags };
+    if(params.hashtags)
+      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
+    console.log(JSON.stringify(pipeline));
+    model.aggregate(pipeline, cb);
+  };
 };
