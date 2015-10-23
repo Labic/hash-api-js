@@ -317,4 +317,53 @@ module.exports = function(Analytic) {
     console.log(JSON.stringify(pipeline));
     model.aggregate(pipeline, cb);
   };
+
+  twitterAnalyticsMethods['most_shared_images'] = function(params, model, cb) {
+    var pipeline = [
+      { $match: {
+        'status.entities.media.0': { $exists: true },
+        'status.timestamp_ms': {
+          $gte: params.until.getTime(),
+          $lte: params.since.getTime()
+        },
+        block: params.retriveBlocked 
+      } },
+      { $unwind: '$status.entities.media' },
+      { $group: {
+        _id: '$status.entities.media.media_url_https',
+        status_text: { $last: '$status.text' },
+        user_id_str: { $last: '$status.user.id_str' },
+        user_screen_name: { $last: '$status.user.screen_name' },
+        user_profile_image_url_https: { $last: '$status.user.profile_image_url_https' },
+        count: { $sum: 1 }
+      } },
+      { $sort: { count: -1 } },
+      { $project: {
+        _id: 0,
+        // TODO: Refactor data structure
+        // status: {
+        //   id: '$status_id_str',
+        //   text: '$status_text',
+        //   created_at: '$status_created_at',
+        // },
+        media_url_https: '$_id',
+        text: '$status_text',
+        user: {
+            id_str: '$user_id_str',
+            screen_name: '$user_screen_name',
+            profile_image_url_https: '$user_profile_image_url_https'
+        },
+        count: '$count'
+      } }, 
+      { $limit: params.perPage * params.page }, 
+      { $skip : (params.perPage * params.page) - params.perPage } 
+    ];
+
+    if(params.tags)
+      pipeline[0].$match.categories = { $all: params.tags };
+    if(params.hashtags)
+      pipeline[0].$match[''] = { $in: params.hashtags };
+    console.log(JSON.stringify(pipeline));
+    model.aggregate(pipeline, cb);
+  };
 };
