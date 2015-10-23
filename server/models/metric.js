@@ -9,7 +9,7 @@ module.exports = function(Metric) {
       { arg: 'has', type: '[string]' }, // Used for count method
       { arg: 'retrive_blocked', type: 'boolean' },
       { arg: 'page', type: 'number' },
-      { arg: 'per_page', type: 'mumber' }
+      { arg: 'per_page', type: 'number' }
     ],
     returns: { type: 'object', root: true },
     http: { path: '/twitter/:method', verb: 'GET' }
