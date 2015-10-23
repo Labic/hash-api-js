@@ -111,7 +111,7 @@ module.exports = function(Analytic) {
 
   var facebookPostAnalyticsMethods = {};
   facebookPostAnalyticsMethods['most_liked_posts'] = function (params, model, cb) {
-    var filter = {
+    var query = {
       where: {
         created_time_ms: {
           between: [
@@ -125,10 +125,10 @@ module.exports = function(Analytic) {
       skip: (params.perPage * params.page) - params.perPage
     };
 
-    if (params.type)
-      filter.type = { $in: params.postType };
+    if (params.postType)
+      query.type = { $in: params.postType };
 
-    model.find(filter, function(err, facebookPosts) {
+    model.find(query, function(err, facebookPosts) {
       if (err)
         return cb(err, null);
       else
@@ -137,7 +137,7 @@ module.exports = function(Analytic) {
   };
 
   facebookPostAnalyticsMethods['most_shared_posts'] = function (params, model, cb) {
-    var filter = {
+    var query = {
       where: {
         created_time_ms: {
           between: [
@@ -152,9 +152,9 @@ module.exports = function(Analytic) {
     };
 
     if (params.type)
-      filter.type = { $in: params.postType };
+      query.type = { $in: params.postType };
 
-    model.find(filter, function(err, facebookPosts) {
+    model.find(query, function(err, facebookPosts) {
       if (err)
         return cb(err, null);
       else
@@ -163,7 +163,7 @@ module.exports = function(Analytic) {
   };
 
   facebookPostAnalyticsMethods['most_commented_posts'] = function (params, model, cb) {
-    var filter = {
+    var query = {
       where: {
         created_time_ms: {
           between: [
@@ -178,9 +178,9 @@ module.exports = function(Analytic) {
     };
 
     if (params.type)
-      filter.type = { $in: params.postType };
+      query.type = { $in: params.postType };
 
-    model.find(filter, function(err, facebookPosts) {
+    model.find(query, function(err, facebookPosts) {
       if (err)
         return cb(err, null);
       else
@@ -212,7 +212,7 @@ module.exports = function(Analytic) {
     ];
 
     if (params.type)
-      filter.type = { $in: params.postType };
+      query.type = { $in: params.postType };
 
     console.log('%j', pipeline);
     model.aggregate(pipeline, cb);
