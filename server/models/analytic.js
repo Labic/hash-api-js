@@ -5,7 +5,7 @@ module.exports = function(Analytic) {
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string', required: true },
       { arg: 'profile_type', type: 'string', required: true },
-      { arg: 'post_type', type: 'string' },
+      { arg: 'post_type', type: '[string]' },
       { arg: 'page', type: 'number' },
       { arg: 'per_page', type: 'number' }
     ],
@@ -17,8 +17,8 @@ module.exports = function(Analytic) {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string', required: true },
-      { arg: 'tags', type: 'string' },
-      { arg: 'hashtags', type: 'string' },
+      { arg: 'tags', type: '[string]' },
+      { arg: 'hashtags', type: '[string]' },
       { arg: 'retrive_blocked', type: 'boolean' },
       { arg: 'page', type: 'number' },
       { arg: 'per_page', type: 'number' }
@@ -90,8 +90,8 @@ module.exports = function(Analytic) {
     var params = {
       since: new Date(new Date() - periodEnum[period]),
       until: new Date(),
-      tags: tags === undefined ? null : tags.trim().split(','),
-      hashtags: hashtags === undefined ? null : hashtags.trim().split(','),
+      tags: tags,
+      hashtags: hashtags,
       retriveBlocked: retriveBlocked === undefined ? false : retriveBlocked,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage
@@ -126,7 +126,7 @@ module.exports = function(Analytic) {
     };
 
     if (params.type)
-      filter.type = params.postType;
+      filter.type = { $in: params.postType };
 
     model.find(filter, function(err, facebookPosts) {
       if (err)
@@ -152,7 +152,7 @@ module.exports = function(Analytic) {
     };
 
     if (params.type)
-      filter.type = params.postType;
+      filter.type = { $in: params.postType };
 
     model.find(filter, function(err, facebookPosts) {
       if (err)
@@ -178,7 +178,7 @@ module.exports = function(Analytic) {
     };
 
     if (params.type)
-      filter.type = params.postType;
+      filter.type = { $in: params.postType };
 
     model.find(filter, function(err, facebookPosts) {
       if (err)
@@ -212,7 +212,7 @@ module.exports = function(Analytic) {
     ];
 
     if (params.type)
-      pipeline[0].$match.type = params.postType;
+      filter.type = { $in: params.postType };
 
     console.log('%j', pipeline);
     model.aggregate(pipeline, cb);
