@@ -15,7 +15,6 @@ module.exports = {
       normalizeHttpPath: false,
       xml: false,
       supportedTypes: [
-        'application/xml',
         'application/json', 
         'application/javascript', 
         'text/javascript', 
