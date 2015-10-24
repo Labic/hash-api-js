@@ -97,17 +97,9 @@ function extendPipeline(pipeline, filter) {
 
   if (!_.isEmpty(filter.where.categories)) {
     if (filter.where.categories.all) {
-      pipeline[0].$match['categories'] = {};
-      pipeline[0].$match['categories'].$all = [];
-      _.each(filter.where.categories.all, function(categorie) {
-        pipeline[0].$match['categories'].$all.push(new RegExp(categorie));
-      });
+      pipeline[0].$match['categories'] = { $all: filter.where.categories.all };
     } else if (filter.where.categories.inq) {
-      pipeline[0].$match['categories'] = {};
-      pipeline[0].$match['categories'].$in = [];
-      _.each(filter.where.categories.inq, function(categorie) {
-        pipeline[0].$match['categories'].$in.push(new RegExp(categorie));
-      });
+      pipeline[0].$match['categories'] = { $in: filter.where.categories.inq };
     }
   }
 
@@ -116,8 +108,7 @@ function extendPipeline(pipeline, filter) {
 }
 
 var pipelines = {};
-pipelines['top-retweets'] = 
-[
+pipelines['top-retweets'] = [
   { $match: {
     'status.retweeted_status': { $exists: true}
   } },
