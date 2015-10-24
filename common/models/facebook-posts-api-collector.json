@@ -42,6 +42,9 @@
     },
     "type": {
       "type": "string"
+    },
+    "categories": {
+      "type": "[string]"
     }
   }
 }
