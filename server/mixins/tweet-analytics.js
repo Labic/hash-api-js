@@ -95,7 +95,7 @@ function extendPipeline(pipeline, filter) {
         $in: filter.where['status.entities.hashtags.text'].inq
       }
 
-  if (!_.isEmpty(filter.where.categories)) {
+  if (!filter.where.categories) {
     if (filter.where.categories.all) {
       pipeline[0].$match['categories'] = { $all: filter.where.categories.all };
     } else if (filter.where.categories.inq) {
