@@ -1,8 +1,10 @@
 {
   "_meta": {
     "sources": [
-      "../common/models",
       "./models",
+      "./models/authentication",
+      "./models/twitter",
+      "./models/facebook",
       "../node_modules/loopback-component-passport/lib/models"
     ],
     "mixins": [

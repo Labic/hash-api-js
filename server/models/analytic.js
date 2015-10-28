@@ -3,9 +3,10 @@ module.exports = function(Analytic) {
   Analytic.remoteMethod('facebookPostsAnalytics', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
-      { arg: 'period', type: 'string', required: true },
+      { arg: 'period' },
       { arg: 'profile_type', type: 'string', required: true },
       { arg: 'post_type', type: '[string]' },
+      { arg: 'tags', type: '[string]' },
       { arg: 'page', type: 'number' },
       { arg: 'per_page', type: 'number' }
     ],
@@ -16,9 +17,10 @@ module.exports = function(Analytic) {
   Analytic.remoteMethod('twitterAnalytics', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
-      { arg: 'period', type: 'string', required: true },
+      { arg: 'period', type: 'string' },
       { arg: 'tags', type: '[string]' },
       { arg: 'hashtags', type: '[string]' },
+      { arg: 'last', type: 'number' },
       { arg: 'retrive_blocked', type: 'boolean' },
       { arg: 'page', type: 'number' },
       { arg: 'per_page', type: 'number' }
@@ -27,15 +29,7 @@ module.exports = function(Analytic) {
     http: { path: '/twitter/:method', verb: 'GET' }
   });
 
-  Analytic.facebookPostsAnalytics = function(method, period, profileType, postType, page, perPage, cb) {
-    if (!periodEnum[period]) {
-      var err = new Error('Malformed request syntax. Check the query string arguments!');
-      err.fields = ['period'];
-      err.status = 400;
-
-      return cb(err);
-    }
-
+  Analytic.facebookPostsAnalytics = function(method, period, profileType, postType, tags, page, perPage, cb) {
     if (!facebookPostAnalyticsMethods[method]) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
       err.fields = ['method'];
@@ -45,9 +39,12 @@ module.exports = function(Analytic) {
     }
 
     var params = {
-      since: new Date(new Date() - periodEnum[period]),
+      since: period === undefined 
+        ? new Date(new Date() - periodEnum['1h']) 
+        : new Date(new Date() - periodEnum[period]),
       until: new Date(),
       postType: postType,
+      tags: tags,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage
     }
@@ -71,15 +68,7 @@ module.exports = function(Analytic) {
     facebookPostAnalyticsMethods[method](params, model, cb);
   }
 
-  Analytic.twitterAnalytics = function(method, period, tags, hashtags, retriveBlocked, page, perPage, cb) {
-    if (!periodEnum[period]) {
-      var err = new Error('Malformed request syntax. Check the query string arguments!');
-      err.fields = ['period'];
-      err.status = 400;
-
-      return cb(err);
-    }
-
+  Analytic.twitterAnalytics = function(method, period, tags, hashtags, last, retriveBlocked, page, perPage, cb) {
     if (!twitterAnalyticsMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.status = 404;
@@ -88,10 +77,13 @@ module.exports = function(Analytic) {
     }
 
     var params = {
-      since: new Date(new Date() - periodEnum[period]),
+      since: period === undefined 
+        ? new Date(new Date() - periodEnum['1h']) 
+        : new Date(new Date() - periodEnum[period]),
       until: new Date(),
       tags: tags,
       hashtags: hashtags,
+      last: last === undefined ? 1000 : last,
       retriveBlocked: retriveBlocked === undefined ? false : retriveBlocked,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage
@@ -129,6 +121,10 @@ module.exports = function(Analytic) {
     if (params.postType)
       query.type = { $in: params.postType };
 
+    // TODO: Implement $all
+    if (params.tags)
+      query.categories = { $in: params.tags };
+
     model.find(query, function(err, facebookPosts) {
       if (err)
         return cb(err, null);
@@ -155,6 +151,10 @@ module.exports = function(Analytic) {
     if (params.type)
       query.type = { $in: params.postType };
 
+    // TODO: Implement $all
+    if (params.tags)
+      query.categories = { $in: params.tags };
+
     model.find(query, function(err, facebookPosts) {
       if (err)
         return cb(err, null);
@@ -180,6 +180,10 @@ module.exports = function(Analytic) {
 
     if (params.type)
       query.type = { $in: params.postType };
+
+    // TODO: Implement $all
+    if (params.tags)
+      query.categories = { $in: params.tags };
 
     model.find(query, function(err, facebookPosts) {
       if (err)
@@ -215,6 +219,10 @@ module.exports = function(Analytic) {
     if (params.type)
       query.type = { $in: params.postType };
 
+    // TODO: Implement $all
+    if (params.tags)
+      query.categories = { $in: params.tags };
+
     console.log('%j', pipeline);
     model.aggregate(pipeline, cb);
   };
@@ -230,6 +238,36 @@ module.exports = function(Analytic) {
         },
         block: params.retriveBlocked
       } },
+      { $group: {
+        _id: '$status.retweeted_status.id_str',
+        status: { $last: '$status' },
+        count: { $sum: 1 }
+      } },
+      { $sort: { count: -1 } },
+      { $project: {
+        _id: 0,
+        status: '$status',
+        count: '$count'
+      } },
+      { $limit: params.perPage * params.page },
+      { $skip : (params.perPage * params.page) - params.perPage }
+    ];
+
+    if(params.tags)
+      pipeline[0].$match.categories = { $all: params.tags };
+    if(params.hashtags) 
+      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
+    console.log(JSON.stringify(pipeline));
+    model.aggregate(pipeline, cb);
+  };
+
+  twitterAnalyticsMethods['most_recent_retweeted_tweets'] = function(params, model, cb) {
+    var pipeline = [
+      { $match: {
+        'status.retweeted_status': { $exists: true},
+        block: params.retriveBlocked
+      } },
+      { $limit: params.last },
       { $group: {
         _id: '$status.retweeted_status.id_str',
         status: { $last: '$status' },
