@@ -2,10 +2,7 @@
   "name": "hash-api",
   "description": "Hash API endpoint",
   "version": "1.0.0",
-  "main": "server/server.js",
-  "scripts": {
-    "start": "node --harmony server/server.js"
-  },
+  "main": "api/server.js",
   "dependencies": {
     "async": "0.9.0",
     "body-parser": "1.11.0",
