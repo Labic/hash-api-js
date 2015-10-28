@@ -6,7 +6,7 @@
   ],
   "verbose": true,
   "execMap": {
-    "js": "node --harmony server/server.js"
+    "node": "npm start"
   },
   "events": {
     "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
@@ -16,6 +16,7 @@
   ],
   "env": {
     "NODE_ENV": "development",
+    "HTTP": false,
     "HOST": "localhost",
     "PORT": 3000,
     "REST_API_ROOT": "/api",
