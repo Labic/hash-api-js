@@ -10,55 +10,47 @@
     ]
   },
   "user": {
-    "dataSource": "db",
-    "public": true
+    "dataSource": "documentDB",
+    "public": false
   },
   "accessToken": {
-    "dataSource": "db",
-    "public": true
+    "dataSource": "documentDB",
+    "public": false
   },
   "AuthProvider": {
-    "dataSource": "db",
-    "public": true
+    "dataSource": "documentDB",
+    "public": false
   },
   "userCredential": {
-    "dataSource": "db",
-    "public": true
+    "dataSource": "documentDB",
+    "public": false
   },
   "userIdentity": {
-    "dataSource": "db",
-    "public": true
+    "dataSource": "documentDB",
+    "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "documentDB",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
-    "public": true
-  },
-  "Role": {
-    "dataSource": "db",
-    "public": true
-  },
-  "Setting": {
-    "dataSource": "db",
-    "public": true
-  },
-  "Categorie": {
-    "dataSource": "db",
-    "public": true
-  },
-  "CategorieFilter": {
-    "dataSource": false,
+    "dataSource": "documentDB",
     "public": false
   },
+  "Role": {
+    "dataSource": "documentDB",
+    "public": false
+  },
+  "Setting": {
+    "dataSource": "documentDB",
+    "public": true
+  },
   "Tweet": {
-    "dataSource": "db",
+    "dataSource": "documentDB",
     "public": true
   },
   "TweetStatus": {
-    "dataSource": "db",
+    "dataSource": "documentDB",
     "public": false
   },
   "TweetUser": {
@@ -94,7 +86,7 @@
     "public": false
   },
   "FacebookPost": {
-    "dataSource": "db",
+    "dataSource": "documentDB",
     "public": true
   },
   "FacebookPostFrom": {
@@ -110,15 +102,15 @@
     "public": false
   },
   "FacebookPagePost": {
-    "dataSource": "db",
+    "dataSource": "documentDB",
     "public": true
   },
   "Metric": {
-    "dataSource": "db",
+    "dataSource": "documentDB",
     "public": true
   },
   "Analytic": {
-    "dataSource": "db",
+    "dataSource": "documentDB",
     "public": true
   }
 }
