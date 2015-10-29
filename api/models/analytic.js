@@ -3,7 +3,7 @@ module.exports = function(Analytic) {
   Analytic.remoteMethod('facebookPostsAnalytics', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
-      { arg: 'period' },
+      { arg: 'period', type: 'string' },
       { arg: 'profile_type', type: 'string', required: true },
       { arg: 'post_type', type: '[string]' },
       { arg: 'tags', type: '[string]' },
