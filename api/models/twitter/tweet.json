@@ -12,15 +12,15 @@
       "type": "TweetStatus"
     },
     "theme": {
-      "type": "String"
+      "type": "string"
     },
     "categories": {
-      "type": ["String"]
+      "type": "[string]"
     }
   },
   "mixins": {
-      "TweetAnalytics": null,
-      "Mongodb": null
+    "TweetAnalytics": null,
+    "Mongodb": null
   },
   "scope": {
     "limit": 25
