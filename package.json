@@ -19,6 +19,7 @@
     "loopback-component-storage": "^1.5.1",
     "loopback-connector-mongodb": "^1.13.0",
     "loopback-datasource-juggler": "^2.40.1",
+    "memory-cache": "^0.1.4",
     "serve-favicon": "2.2.0",
     "underscore": "^1.8.3"
   },

@@ -39,17 +39,24 @@ module.exports = function(Analytic) {
     }
 
     var params = {
-      since: period === undefined 
-        ? new Date(new Date() - periodEnum['1h']) 
-        : new Date(new Date() - periodEnum[period]),
-      until: new Date(),
-      postType: postType,
-      tags: tags,
+      endpoint: '/analytics/facebook',
+      method: method,
+      period: period === undefined ? '1h' : period,
+      profileType: profileType,
+      postType: postType === undefined ? null : postType.sort(),
+      tags: tags === undefined ? null : tags.sort(),
       page: page === undefined ? 1 : page,
-      perPage: perPage === undefined ? 25 : perPage
+      perPage: perPage === undefined ? 25 : perPage,
     }
 
-    switch (profileType) {
+    var options = {
+      cache: {
+        key: JSON.stringify(params),
+        ttl: cacheTTLenum[params.period]
+      }
+    };
+
+    switch (params.profileType) {
       case 'user':
         var model = Analytic.app.models.FacebookPost;
         break;
@@ -65,7 +72,7 @@ module.exports = function(Analytic) {
         break; 
     }
     
-    facebookPostAnalyticsMethods[method](params, model, cb);
+    facebookPostAnalyticsMethods[method](params, model, options, cb);
   }
 
   Analytic.twitterAnalytics = function(method, period, tags, hashtags, last, retriveBlocked, page, perPage, cb) {
@@ -77,39 +84,60 @@ module.exports = function(Analytic) {
     }
 
     var params = {
-      since: period === undefined 
-        ? new Date(new Date() - periodEnum['1h']) 
-        : new Date(new Date() - periodEnum[period]),
-      until: new Date(),
-      tags: tags,
-      hashtags: hashtags,
+      endpoint: '/analytics/twitter',
+      method: method,
+      period: period === undefined ? '1h' : period,
+      tags: tags === undefined ? null : tags.sort(),
+      hashtags: hashtags === undefined ? null : hashtags.sort(),
       last: last === undefined ? 1000 : last,
       retriveBlocked: retriveBlocked === undefined ? false : retriveBlocked,
       page: page === undefined ? 1 : page,
-      perPage: perPage === undefined ? 25 : perPage
-    }
+      perPage: perPage === undefined ? 25 : perPage,
+    };
+
+    var options = {
+      cache: {
+        key: JSON.stringify(params),
+        ttl: cacheTTLenum[params.period]
+      }
+    };
     
     var model = Analytic.app.models.Tweet;
-    twitterAnalyticsMethods[method](params, model, cb);
+    twitterAnalyticsMethods[method](params, model, options, cb);
   }
 
   var periodEnum = {};
-  periodEnum['15m']  = 15 * 60 * 1000;
-  periodEnum['30m']  = 30 * 60 * 1000;
-  periodEnum['1h']   = 60 * 60 * 1000;
-  periodEnum['12h']  = 12 * 60 * 60 * 1000;
-  periodEnum['1d']   = 24 * 60 * 60 * 1000;
-  periodEnum['7d']   = 7 * 24 * 60 * 60 * 1000;
-  periodEnum['15d']  = 15 * 24 * 60 * 60 * 1000;
+  periodEnum['15m'] = 15 * 60 * 1000;
+  periodEnum['30m'] = 30 * 60 * 1000;
+  periodEnum['1h']  = 60 * 60 * 1000;
+  periodEnum['12h'] = 12 * 60 * 60 * 1000;
+  periodEnum['1d']  = 24 * 60 * 60 * 1000;
+  periodEnum['7d']  = 7 * 24 * 60 * 60 * 1000;
+  periodEnum['15d'] = 15 * 24 * 60 * 60 * 1000;
+
+  var cacheTTLenum = {};
+  cacheTTLenum['15m']  = 15 * 60 * 1000;
+  cacheTTLenum['30m']  = 30 * 60 * 1000;
+  cacheTTLenum['1h']   = 60 * 60 * 1000;
+  cacheTTLenum['6h']   = 6 * 60 * 60 * 1000;
+  cacheTTLenum['12h'] = 6 * 60 * 60 * 1000;
+  cacheTTLenum['1d']  = 6 * 60 * 60 * 1000;
+  cacheTTLenum['7d']  = 6 * 60 * 60 * 1000;
+  cacheTTLenum['15d'] = 6 * 60 * 60 * 1000;
+
 
   var facebookPostAnalyticsMethods = {};
-  facebookPostAnalyticsMethods['most_liked_posts'] = function (params, model, cb) {
+  facebookPostAnalyticsMethods['most_liked_posts'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var query = {
       where: {
         created_time_ms: {
           between: [
-            params.since.getTime(),
-            params.until.getTime()
+            new Date(new Date() - periodEnum[params.period]).getTime(),
+            new Date().getTime()
           ]
         }
       },
@@ -119,27 +147,30 @@ module.exports = function(Analytic) {
     };
 
     if (params.postType)
-      query.type = { $in: params.postType };
+      query.type = { $all: params.postType };
 
-    // TODO: Implement $all
     if (params.tags)
-      query.categories = { $in: params.tags };
+      query.categories = { $all: params.tags };
 
     model.find(query, function(err, facebookPosts) {
-      if (err)
-        return cb(err, null);
-      else
-        return cb(null, facebookPosts);
+      if (err) return cb(err, null);
+      
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(null, facebookPosts);
     });
   };
 
-  facebookPostAnalyticsMethods['most_shared_posts'] = function (params, model, cb) {
+  facebookPostAnalyticsMethods['most_shared_posts'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var query = {
       where: {
         created_time_ms: {
           between: [
-            params.since.getTime(),
-            params.until.getTime()
+            new Date(new Date() - periodEnum[params.period]).getTime(),
+            new Date().getTime()
           ]
         }
       },
@@ -149,27 +180,30 @@ module.exports = function(Analytic) {
     };
 
     if (params.type)
-      query.type = { $in: params.postType };
+      query.type = { $all: params.postType };
 
-    // TODO: Implement $all
     if (params.tags)
-      query.categories = { $in: params.tags };
+      query.categories = { $all: params.tags };
 
     model.find(query, function(err, facebookPosts) {
-      if (err)
-        return cb(err, null);
-      else
-        return cb(null, facebookPosts);
+      if (err) return cb(err, null);
+      
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(null, facebookPosts);
     });
   };
 
-  facebookPostAnalyticsMethods['most_commented_posts'] = function (params, model, cb) {
+  facebookPostAnalyticsMethods['most_commented_posts'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var query = {
       where: {
         created_time_ms: {
           between: [
-            params.since.getTime(),
-            params.until.getTime()
+            new Date(new Date() - periodEnum[params.period]).getTime(),
+            new Date().getTime()
           ]
         }
       },
@@ -179,26 +213,29 @@ module.exports = function(Analytic) {
     };
 
     if (params.type)
-      query.type = { $in: params.postType };
+      query.type = { $all: params.postType };
 
-    // TODO: Implement $all
     if (params.tags)
-      query.categories = { $in: params.tags };
+      query.categories = { $all: params.tags };
 
     model.find(query, function(err, facebookPosts) {
-      if (err)
-        return cb(err, null);
-      else
-        return cb(null, facebookPosts);
+      if (err) return cb(err, null);
+      
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(null, facebookPosts);
     });
   };
 
-  facebookPostAnalyticsMethods['most_active_profiles'] = function (params, model, cb) {
+  facebookPostAnalyticsMethods['most_active_profiles'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var pipeline = [
       { $match: { 
         created_time_ms: {
-          $gte: params.since.getTime(),
-          $lte: params.until.getTime()
+          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
+          $lte: new Date().getTime()
         }
       } },
       { $group: {
@@ -217,24 +254,31 @@ module.exports = function(Analytic) {
     ];
 
     if (params.type)
-      query.type = { $in: params.postType };
+      pipeline[0].$match.type = { $all: params.postType };
 
-    // TODO: Implement $all
     if (params.tags)
-      query.categories = { $in: params.tags };
+      pipeline[0].$match.categories = { $all: params.tags };
 
-    console.log('%j', pipeline);
-    model.aggregate(pipeline, cb);
+    model.aggregate(pipeline, function(err, result) {
+      if (err) return cb(err, null);
+
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(err, result);
+    });
   };
 
   var twitterAnalyticsMethods = {};
-  twitterAnalyticsMethods['most_retweeted_tweets'] = function(params, model, cb) {
+  twitterAnalyticsMethods['most_retweeted_tweets'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var pipeline = [
       { $match: {
         'status.retweeted_status': { $exists: true},
         'status.timestamp_ms': {
-          $gte: params.since.getTime(),
-          $lte: params.until.getTime()
+          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
+          $lte: new Date().getTime()
         },
         block: params.retriveBlocked
       } },
@@ -257,11 +301,18 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags) 
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    console.log(JSON.stringify(pipeline));
-    model.aggregate(pipeline, cb);
+    console.log('%j', pipeline);
+    console.log('%s', cacheKey);
+
+    model.aggregate(pipeline, function(err, result) {
+      if (err) return cb(err, null);
+
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(err, result);
+    });
   };
 
-  twitterAnalyticsMethods['most_recent_retweeted_tweets'] = function(params, model, cb) {
+  twitterAnalyticsMethods['most_recent_retweeted_tweets'] = function(params, model, options, cb) { 
     var pipeline = [
       { $match: {
         'status.retweeted_status': { $exists: true},
@@ -287,16 +338,20 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags) 
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    console.log(JSON.stringify(pipeline));
+    
     model.aggregate(pipeline, cb);
   };
 
-  twitterAnalyticsMethods['most_mentioned_users'] = function(params, model, cb) {
+  twitterAnalyticsMethods['most_mentioned_users'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var pipeline = [
       { $match: {
         'status.timestamp_ms': {
-          $gte: params.since.getTime(),
-          $lte: params.until.getTime()
+          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
+          $lte: new Date().getTime()
         },
         'status.entities.user_mentions.0': { $exists: true }, 
         block: params.retriveBlocked 
@@ -320,17 +375,26 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    console.log(JSON.stringify(pipeline));
-    model.aggregate(pipeline, cb);
+
+    model.aggregate(pipeline, function(err, result) {
+      if (err) return cb(err, null);
+
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(err, result);
+    });
   };
 
-  twitterAnalyticsMethods['most_retweeted_urls'] = function(params, model, cb) {
+  twitterAnalyticsMethods['most_retweeted_urls'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var pipeline = [
       { $match: {
         'status.entities.urls.0': { $exists: true },
         'status.timestamp_ms': {
-          $gte: params.since.getTime(),
-          $lte: params.until.getTime()
+          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
+          $lte: new Date().getTime()
         },
         block: params.retriveBlocked 
       } },
@@ -353,17 +417,26 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    console.log(JSON.stringify(pipeline));
-    model.aggregate(pipeline, cb);
+    
+    model.aggregate(pipeline, function(err, result) {
+      if (err) return cb(err, null);
+
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(err, result);
+    });
   };
 
-  twitterAnalyticsMethods['most_retweeted_images'] = function(params, model, cb) {
+  twitterAnalyticsMethods['most_retweeted_images'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var pipeline = [
       { $match: {
         'status.entities.media.0': { $exists: true },
         'status.timestamp_ms': {
-          $gte: params.since.getTime(),
-          $lte: params.until.getTime()
+          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
+          $lte: new Date().getTime()
         },
         block: params.retriveBlocked 
       } },
@@ -403,17 +476,26 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    console.log(JSON.stringify(pipeline));
-    model.aggregate(pipeline, cb);
+    
+    model.aggregate(pipeline, function(err, result) {
+      if (err) return cb(err, null);
+
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(err, result);
+    });
   };
 
-  twitterAnalyticsMethods['most_active_users'] = function(params, model, cb) {
+  twitterAnalyticsMethods['most_active_users'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var pipeline = [ 
       { $match: {
         'status.user.screen_name': { $exists: true },
         'status.timestamp_ms': {
-          $gte: params.since.getTime(),
-          $lte: params.until.getTime()
+          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
+          $lte: new Date().getTime()
         },
         block: params.retriveBlocked 
       } },
@@ -435,17 +517,26 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    console.log(JSON.stringify(pipeline));
-    model.aggregate(pipeline, cb);
+    
+    model.aggregate(pipeline, function(err, result) {
+      if (err) return cb(err, null);
+
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(err, result);
+    });
   };
 
-  twitterAnalyticsMethods['most_popular_hashtags'] = function(params, model, cb) {
+  twitterAnalyticsMethods['most_popular_hashtags'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var pipeline = [
       { $match: {
         'status.entities.hashtags.0': { $exists: true },
         'status.timestamp_ms': {
-          $gte: params.since.getTime(),
-          $lte: params.until.getTime()
+          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
+          $lte: new Date().getTime()
         },
         block: params.retriveBlocked 
       } },
@@ -468,18 +559,27 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    console.log(JSON.stringify(pipeline));
-    model.aggregate(pipeline, cb);
+    
+    model.aggregate(pipeline, function(err, result) {
+      if (err) return cb(err, null);
+
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(err, result);
+    });
   };
 
-  twitterAnalyticsMethods['geolocation'] = function(params, model, cb) { 
+  twitterAnalyticsMethods['geolocation'] = function(params, model, options, cb) { 
+    var resultCache = Analytic.cache.get(options.cache.key);
+
+    if (resultCache) return cb(null, resultCache);
+
     var pipeline = [
       { $match: {
         $or: [ { 'status.geo': { $ne: null } }, 
                { 'city_geo': { $exists: true } } ],
         'status.timestamp_ms': {
-          $gte: params.since.getTime(),
-          $lte: params.until.getTime()
+          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
+          $lte: new Date().getTime()
         },
         block: params.retriveBlocked 
       } }, 
@@ -507,7 +607,12 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    console.log(JSON.stringify(pipeline));
-    model.aggregate(pipeline, cb);
+    
+    model.aggregate(pipeline, function(err, result) {
+      if (err) return cb(err, null);
+
+      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(err, result);
+    });
   };
 };
