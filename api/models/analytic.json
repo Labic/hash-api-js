@@ -2,26 +2,24 @@
   "name": "Analytic",
   "plural": "analytics",
   "base": "PersistedModel",
-  "options": {
-    "mongodb": {
-      "collection": "analytics"
-    }
-  },
-  "properties": {
-    "id": {
-      "type": "String",
-      "id": true
-    },
-    "name": {
-      "type": "String",
-      "required": true
-    },
-    "args": {
-      "type": "[Object]"
-    }
-  },
   "mixins": {
-    "Cache": null
+    "Cache": null,
+    "DisableMethods": {
+      "selfMethods": [
+        "create",
+        "upsert",
+        "findOrCreate",
+        "exists",
+        "findById",
+        "find",
+        "findOne",
+        "deleteById",
+        "updateAll",
+        "updateAttributes",
+        "createChangeStream",
+        "count"
+      ]
+    }
   },
   "scope": {
     "limit": 25
