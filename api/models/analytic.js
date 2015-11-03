@@ -14,6 +14,21 @@ module.exports = function(Analytic) {
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
+  Analytic.remoteMethod('customCount', {
+    accepts: [
+      { arg: 'method', type: 'string', required: true },
+      { arg: 'period', type: 'string' },
+      { arg: 'profile_type', type: 'string', required: true },
+      { arg: 'post_type', type: '[string]' },
+      { arg: 'page', type: 'number' },
+      { arg: 'per_page', type: 'number' }
+    ],
+    returns: { type: 'object', root: true },
+    http: { path: '/count', verb: 'GET' }
+  });
+
+  Analytic.customCount = function(){};
+
   Analytic.remoteMethod('twitterAnalytics', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
@@ -302,7 +317,6 @@ module.exports = function(Analytic) {
     if(params.hashtags) 
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
     console.log('%j', pipeline);
-    console.log('%s', cacheKey);
 
     model.aggregate(pipeline, function(err, result) {
       if (err) return cb(err, null);
