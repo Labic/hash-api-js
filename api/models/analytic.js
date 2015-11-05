@@ -453,10 +453,9 @@ module.exports = function(Analytic) {
         },
         block: params.retriveBlocked 
       } },
-      // { $unwind: '$status.entities.media' },
+      { $unwind: '$status.entities.media' },
       { $group: {
         _id: '$status.entities.media.media_url_https',
-        id_str: { $last: '$status.id_str' },
         status_text: { $last: '$status.text' },
         user_id_str: { $last: '$status.user.id_str' },
         user_screen_name: { $last: '$status.user.screen_name' },
@@ -476,11 +475,9 @@ module.exports = function(Analytic) {
         media_url_https: '$_id',
         text: '$status_text',
         user: {
-            // TODO: THIS IS WRONG BECAUSE "SOMEONE" MAKE WRONG IN ANOTER API ENDPOINT
-            id_str: '$id_str',
-            // id_str: '$user_id_str',
-            screen_name: '$user_screen_name',
-            profile_image_url_https: '$user_profile_image_url_https'
+          id_str: '$user_id_str',
+          screen_name: '$user_screen_name',
+          profile_image_url_https: '$user_profile_image_url_https'
         },
         count: '$count'
       } }, 
