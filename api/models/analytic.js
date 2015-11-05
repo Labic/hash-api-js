@@ -61,7 +61,7 @@ module.exports = function(Analytic) {
       postType: postType === undefined ? null : postType.sort(),
       tags: tags === undefined ? null : tags.sort(),
       page: page === undefined ? 1 : page,
-      perPage: perPage === undefined ? 25 : perPage,
+      perPage: perPage === undefined ? 25 : perPage > 100 ? 100 : perPage
     }
 
     var options = {
@@ -104,10 +104,10 @@ module.exports = function(Analytic) {
       period: period === undefined ? '1h' : period,
       tags: tags === undefined ? null : tags.sort(),
       hashtags: hashtags === undefined ? null : hashtags.sort(),
-      last: last === undefined ? 1000 : last,
+      last: last === undefined ? 1000 : last > 5000 ? 5000 : last,
       retriveBlocked: retriveBlocked === undefined ? false : retriveBlocked,
       page: page === undefined ? 1 : page,
-      perPage: perPage === undefined ? 25 : perPage,
+      perPage: perPage === undefined ? 25 : perPage > 100 ? 100 : perPage
     };
 
     var options = {
@@ -116,6 +116,9 @@ module.exports = function(Analytic) {
         ttl: cacheTTLenum[params.period]
       }
     };
+
+    var resultCache = Analytic.cache.get(options.cache.key);
+    if (resultCache) return cb(null, resultCache);
     
     var model = Analytic.app.models.Tweet;
     twitterAnalyticsMethods[method](params, model, options, cb);
@@ -143,9 +146,6 @@ module.exports = function(Analytic) {
 
   var facebookPostAnalyticsMethods = {};
   facebookPostAnalyticsMethods['most_liked_posts'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
 
     var query = {
       where: {
@@ -203,7 +203,9 @@ module.exports = function(Analytic) {
     model.find(query, function(err, facebookPosts) {
       if (err) return cb(err, null);
       
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      if (facebookPosts.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
       return cb(null, facebookPosts);
     });
   };
@@ -236,16 +238,14 @@ module.exports = function(Analytic) {
     model.find(query, function(err, facebookPosts) {
       if (err) return cb(err, null);
       
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      if (facebookPosts.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
       return cb(null, facebookPosts);
     });
   };
 
   facebookPostAnalyticsMethods['most_active_profiles'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
-
     var pipeline = [
       { $match: { 
         created_time_ms: {
@@ -277,17 +277,15 @@ module.exports = function(Analytic) {
     model.aggregate(pipeline, function(err, result) {
       if (err) return cb(err, null);
 
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      if (facebookPosts.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
       return cb(err, result);
     });
   };
 
   var twitterAnalyticsMethods = {};
   twitterAnalyticsMethods['most_retweeted_tweets'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
-
     var pipeline = [
       { $match: {
         'status.retweeted_status': { $exists: true},
@@ -321,8 +319,10 @@ module.exports = function(Analytic) {
     model.aggregate(pipeline, function(err, result) {
       if (err) return cb(err, null);
 
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      return cb(err, result);
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
     });
   };
 
@@ -352,15 +352,18 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags) 
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    
-    model.aggregate(pipeline, cb);
+
+    model.aggregate(pipeline, function(err, result) {
+      if (err) return cb(err, null);
+
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
+    });
   };
 
   twitterAnalyticsMethods['most_mentioned_users'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
-
     var pipeline = [
       { $match: {
         'status.timestamp_ms': {
@@ -393,16 +396,14 @@ module.exports = function(Analytic) {
     model.aggregate(pipeline, function(err, result) {
       if (err) return cb(err, null);
 
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      return cb(err, result);
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
     });
   };
 
   twitterAnalyticsMethods['most_retweeted_urls'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
-
     var pipeline = [
       { $match: {
         'status.entities.urls.0': { $exists: true },
@@ -431,20 +432,18 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    
+
     model.aggregate(pipeline, function(err, result) {
       if (err) return cb(err, null);
 
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      return cb(err, result);
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
     });
   };
 
   twitterAnalyticsMethods['most_retweeted_images'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
-
     var pipeline = [
       { $match: {
         'status.entities.media.0': { $exists: true },
@@ -457,6 +456,7 @@ module.exports = function(Analytic) {
       { $unwind: '$status.entities.media' },
       { $group: {
         _id: '$status.entities.media.media_url_https',
+        id_str: { $last: '$status.id_str' },
         status_text: { $last: '$status.text' },
         user_id_str: { $last: '$status.user.id_str' },
         user_screen_name: { $last: '$status.user.screen_name' },
@@ -473,6 +473,7 @@ module.exports = function(Analytic) {
         //   created_at: '$status_created_at',
         //   media_url_https: '$_id',
         // },
+        id_str: '$_id.id_str',
         media_url_https: '$_id',
         text: '$status_text',
         user: {
@@ -490,20 +491,18 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    
+
     model.aggregate(pipeline, function(err, result) {
       if (err) return cb(err, null);
 
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      return cb(err, result);
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
     });
   };
 
   twitterAnalyticsMethods['most_active_users'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
-
     var pipeline = [ 
       { $match: {
         'status.user.screen_name': { $exists: true },
@@ -531,20 +530,18 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    
+
     model.aggregate(pipeline, function(err, result) {
       if (err) return cb(err, null);
 
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      return cb(err, result);
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
     });
   };
 
   twitterAnalyticsMethods['most_popular_hashtags'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
-
     var pipeline = [
       { $match: {
         'status.entities.hashtags.0': { $exists: true },
@@ -573,20 +570,18 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    
+
     model.aggregate(pipeline, function(err, result) {
       if (err) return cb(err, null);
 
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      return cb(err, result);
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
     });
   };
 
   twitterAnalyticsMethods['geolocation'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
-
     var pipeline = [
       { $match: {
         $or: [ { 'status.geo': { $ne: null } }, 
@@ -621,12 +616,14 @@ module.exports = function(Analytic) {
       pipeline[0].$match.categories = { $all: params.tags };
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    
+
     model.aggregate(pipeline, function(err, result) {
       if (err) return cb(err, null);
 
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      return cb(err, result);
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
     });
   };
 };
