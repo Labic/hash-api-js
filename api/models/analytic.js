@@ -473,11 +473,12 @@ module.exports = function(Analytic) {
         //   created_at: '$status_created_at',
         //   media_url_https: '$_id',
         // },
-        id_str: '$_id.id_str',
         media_url_https: '$_id',
         text: '$status_text',
         user: {
-            id_str: '$user_id_str',
+            // TODO: THIS IS WRONG BECAUSE "SOMEONE" MAKE WRONG IN ANOTER API ENDPOINT
+            id_str: '$_id.id_str',
+            // id_str: '$user_id_str',
             screen_name: '$user_screen_name',
             profile_image_url_https: '$user_profile_image_url_https'
         },
