@@ -343,13 +343,18 @@ module.exports = function(Analytic) {
       } },
       { $unwind: '$status.entities.user_mentions' },
       { $group: {
-        _id: '$status.entities.user_mentions.screen_name',
+        _id: '$status.entities.user_mentions.id_str',
+        screen_name: { $last: '$status.entities.user_mentions.screen_name' },
         count: { $sum: 1 }
       } },
       { $sort: { count: -1 } },
       { $project: {
         _id: 0,
-        screen_name: '$_id',
+        status: {
+          user : {
+            screen_name: '$screen_name'
+          }
+        },
         count: '$count'
       } },
       { $limit: params.perPage * params.page },
@@ -371,7 +376,7 @@ module.exports = function(Analytic) {
     });
   };
 
-  twitterAnalyticsMethods['most_retweeted_urls'] = function(params, model, options, cb) { 
+  twitterAnalyticsMethods['most_shared_urls'] = function(params, model, options, cb) { 
     var pipeline = [
       { $match: {
         'status.entities.urls.0': { $exists: true },
@@ -389,7 +394,13 @@ module.exports = function(Analytic) {
       { $sort: { count: -1 } },
       { $project: {
         _id: 0,
-        url: '$_id',
+        status: {
+          entities: {
+            urls: {
+              expanded_url: '$_id'
+            }
+          }
+        },
         count: '$count'
       } }, 
       { $limit: params.perPage * params.page }, 
@@ -479,13 +490,18 @@ module.exports = function(Analytic) {
         block: params.retriveBlocked 
       } },
       { $group: {
-        _id: '$status.user.screen_name',
+        _id: '$status.user.id_str',
+        screen_name: { $last: '$status.user.screen_name' },
         count: { $sum: 1 }
       } },
       { $sort: { count: -1 } },
       { $project: {
         _id: 0,
-        screen_name: '$_id',
+        status: {
+          user: { 
+            screen_name: '$screen_name' 
+          }
+        },
         count: '$count'
       } }, 
       { $limit: params.perPage * params.page }, 
