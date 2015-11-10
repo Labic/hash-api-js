@@ -34,9 +34,8 @@ module.exports = function(Analytic) {
 
   Analytic.facebookPostsAnalytics = function(method, period, profileType, postType, tags, page, perPage, cb) {
     if (!facebookPostAnalyticsMethods[method]) {
-      var err = new Error('Malformed request syntax. Check the query string arguments!');
-      err.fields = ['method'];
-      err.status = 400;
+      var err = new Error('Endpoint not found!');
+      err.status = 404;
 
       return cb(err);
     }
