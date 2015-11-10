@@ -148,12 +148,13 @@ module.exports = function(Metric) {
       block: params.retriveBlocked
     };
 
-    if(params.has)
+    if(params.has) {
       if(params.has.indexOf('media') > -1)
         query['status.entities.media.0'] = { $exists: true };
       if(params.has.indexOf('url') > -1)
         query['status.entities.media.0'] = { $exists: true };
-
+    }
+    
     if(params.tags)
       query.categories = { $all: params.tags };
     
