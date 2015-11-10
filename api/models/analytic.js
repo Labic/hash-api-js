@@ -17,21 +17,6 @@ module.exports = function(Analytic) {
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
-  Analytic.remoteMethod('customCount', {
-    accepts: [
-      { arg: 'method', type: 'string', required: true },
-      { arg: 'period', type: 'string' },
-      { arg: 'profile_type', type: 'string', required: true },
-      { arg: 'post_type', type: '[string]' },
-      { arg: 'page', type: 'number' },
-      { arg: 'per_page', type: 'number' }
-    ],
-    returns: { type: 'object', root: true },
-    http: { path: '/count', verb: 'GET' }
-  });
-
-  Analytic.customCount = function(){};
-
   Analytic.remoteMethod('twitterAnalytics', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
@@ -426,6 +411,7 @@ module.exports = function(Analytic) {
     });
   };
 
+  // TODO: rename to most_shared_images
   twitterAnalyticsMethods['most_retweeted_images'] = function(params, model, options, cb) { 
     var pipeline = [
       { $match: {
@@ -448,19 +434,18 @@ module.exports = function(Analytic) {
       { $sort: { count: -1 } },
       { $project: {
         _id: 0,
-        // TODO: Refactor data structure
-        // status: {
-        //   id: '$status_id_str',
-        //   text: '$status_text',
-        //   created_at: '$status_created_at',
-        //   media_url_https: '$_id',
-        // },
-        media_url_https: '$_id',
-        text: '$status_text',
-        user: {
-          id_str: '$user_id_str',
-          screen_name: '$user_screen_name',
-          profile_image_url_https: '$user_profile_image_url_https'
+        status: {
+          text: '$status_text',
+          entities: {
+            media: { 
+              media_url_https: '$_id' 
+            }
+          },
+          user: {
+            id_str: '$user_id_str',
+            screen_name: '$user_screen_name',
+            profile_image_url_https: '$user_profile_image_url_https'
+          }
         },
         count: '$count'
       } }, 
