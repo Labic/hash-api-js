@@ -21,6 +21,7 @@
     "DisableMethods": {
       "selfMethods": [
         "create",
+        "count",
         "upsert",
         "findOrCreate",
         "exists",

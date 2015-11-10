@@ -19,6 +19,12 @@ module.exports = function(Tweet) {
     http: { path: '/find', verb: 'GET' }
   });
 
+  Tweet.remoteMethod('countByArgs', {
+    accepts: args,
+    returns: { type: 'object', root: true },
+    http: { path: '/count', verb: 'GET' }
+  });
+
   function dealWith(type, property, object) {
     switch (type) {
       case 'array':
@@ -107,6 +113,58 @@ module.exports = function(Tweet) {
       
       // Tweet.cache.put(options.cache.key, result, options.cache.ttl);
       return cb(null, tweets);
+    });
+  }
+
+  Tweet.countByArgs = function(period, filter, page, perPage, cb) {
+    filter = _.isEmpty(filter) ? {} : filter;
+    ['with_tags', 'contain_tags', 'hashtags', 'mentions', 'users']
+      .forEach(function (property) {
+        filter[property] = dealWith('array', property, filter);
+      });
+
+    var query = {
+      block: _.isEmpty(filter['blocked'])
+               ? false 
+               : (filter['blocked'] === 'true')
+    };
+
+    if (!_.isEmpty(period))
+      query['status.timestamp_ms'] = {
+        $gte: new Date(new Date() - periodEnum[period]).getTime(),
+        $lte: new Date().getTime()
+      }
+
+    if(!_.isEmpty(filter['has'])) {
+      if(filter['has'].indexOf('media') > -1)
+        query['status.entities.media.0'] = { $exists: true };
+      if(filter['has'].indexOf('url') > -1)
+        query['status.entities.urls.0'] = { $exists: true };
+      if(filter['has'].indexOf('mention') > -1)
+        query['status.entities.user_mentions.0'] = { $exists: true };
+    }
+
+    if(!_.isEmpty(filter['retweeted']))
+      query['status.retweeted_status'] = { $exists: (filter['retweeted'] === 'true') };
+
+    if(!_.isEmpty(filter['with_tags']))
+      query['categories'] = { $all: filter['with_tags'] };
+
+    if(!_.isEmpty(filter['contain_tags']))
+      query['categories'] = { $in: filter['contain_tags'] };
+    
+    if(!_.isEmpty(filter['hashtags']))
+      query['status.entities.hashtags.text'] = { $in: filter['hashtags'] };
+
+    if(!_.isEmpty(filter['mentions']))
+      query['status.entities.hashtags.text'] = { $in: filter['mentions'] };
+
+    console.info('countByArgs query: \n%j', query);
+    
+    return Tweet.mongodb.count(query, function(err, result) {
+      if (err) return cb(err, null);
+      
+      return cb(null, { count: result });
     });
   }
 };
