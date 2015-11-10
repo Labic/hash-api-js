@@ -1,3 +1,6 @@
+var periodEnum = require('./enums/periodEnum'),
+    cacheTTLenum = require('./enums/cacheTTLenum');
+
 module.exports = function(Analytic) {
 
   Analytic.remoteMethod('facebookPostsAnalytics', {
@@ -123,26 +126,6 @@ module.exports = function(Analytic) {
     var model = Analytic.app.models.Tweet;
     twitterAnalyticsMethods[method](params, model, options, cb);
   }
-
-  var periodEnum = {};
-  periodEnum['15m'] = 15 * 60 * 1000;
-  periodEnum['30m'] = 30 * 60 * 1000;
-  periodEnum['1h']  = 60 * 60 * 1000;
-  periodEnum['12h'] = 12 * 60 * 60 * 1000;
-  periodEnum['1d']  = 24 * 60 * 60 * 1000;
-  periodEnum['7d']  = 7 * 24 * 60 * 60 * 1000;
-  periodEnum['15d'] = 15 * 24 * 60 * 60 * 1000;
-
-  var cacheTTLenum = {};
-  cacheTTLenum['15m']  = 15 * 60 * 1000;
-  cacheTTLenum['30m']  = 30 * 60 * 1000;
-  cacheTTLenum['1h']   = 60 * 60 * 1000;
-  cacheTTLenum['6h']   = 6 * 60 * 60 * 1000;
-  cacheTTLenum['12h'] = 6 * 60 * 60 * 1000;
-  cacheTTLenum['1d']  = 6 * 60 * 60 * 1000;
-  cacheTTLenum['7d']  = 6 * 60 * 60 * 1000;
-  cacheTTLenum['15d'] = 6 * 60 * 60 * 1000;
-
 
   var facebookPostAnalyticsMethods = {};
   facebookPostAnalyticsMethods['most_liked_posts'] = function(params, model, options, cb) { 

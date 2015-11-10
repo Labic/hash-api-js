@@ -1,3 +1,7 @@
+var periodEnum = require('./enums/periodEnum'),
+    granularityEnum = require('./enums/granularityEnum'),
+    cacheTTLenum = require('./enums/cacheTTLenum');
+
 module.exports = function(Metric) {
 
   Metric.remoteMethod('facebookPostsMetrics', {
@@ -17,6 +21,8 @@ module.exports = function(Metric) {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string' },
+      { arg: 'granularity', type: 'string' },
+      { arg: 'filter', type: '[string]' },
       { arg: 'tags', type: '[string]' },
       { arg: 'hashtags', type: '[string]' },
       { arg: 'has', type: '[string]' }, // Used for count method
@@ -83,7 +89,7 @@ module.exports = function(Metric) {
     facebookPostsMetricsMethods[method](params, model, options, cb);
   }
 
-  Metric.twitterMetrics = function(method, period, tags, hashtags, has, retriveBlocked, page, perPage, cb) {
+  Metric.twitterMetrics = function(method, period, granularity, filter, tags, hashtags, has, retriveBlocked, page, perPage, cb) {
     if (!twitterMetricsMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.status = 404;
@@ -95,10 +101,17 @@ module.exports = function(Metric) {
       endpoint: '/metrics/twitter',
       method: method,
       period: period === undefined ? '1h' : period,
+      granularity: granularity === undefined ? 'PT15M' : granularity,
+      filter: {
+        tags: tags === undefined ? null : tags.sort(),
+        hashtags: hashtags === undefined ? null : hashtags.sort(),
+        has: has, 
+        blocked: retriveBlocked === undefined ? false : retriveBlocked
+      },
       tags: tags === undefined ? null : tags.sort(),
       hashtags: hashtags === undefined ? null : hashtags.sort(),
       has: has, 
-      retriveBlocked: retriveBlocked === undefined ? 'false' : retriveBlocked,
+      retriveBlocked: retriveBlocked === undefined ? false : retriveBlocked,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage
     };
@@ -122,25 +135,6 @@ module.exports = function(Metric) {
     twitterMetricsMethods[method](params, model, options, cb);
   }
 
-  var periodEnum = {};
-  periodEnum['15m']  = 15 * 60 * 1000;
-  periodEnum['30m']  = 30 * 60 * 1000;
-  periodEnum['1h']   = 60 * 60 * 1000;
-  periodEnum['12h']  = 12 * 60 * 60 * 1000;
-  periodEnum['1d']   = 24 * 60 * 60 * 1000;
-  periodEnum['7d']   = 7 * 24 * 60 * 60 * 1000;
-  periodEnum['15d']  = 15 * 24 * 60 * 60 * 1000;
-
-  var cacheTTLenum = {};
-  cacheTTLenum['15m'] = 15 * 60 * 1000;
-  cacheTTLenum['30m'] = 30 * 60 * 1000;
-  cacheTTLenum['1h']  = 60 * 60 * 1000;
-  cacheTTLenum['6h']  = 6 * 60 * 60 * 1000;
-  cacheTTLenum['12h'] = 6 * 60 * 60 * 1000;
-  cacheTTLenum['1d']  = 6 * 60 * 60 * 1000;
-  cacheTTLenum['7d']  = 6 * 60 * 60 * 1000;
-  cacheTTLenum['15d'] = 6 * 60 * 60 * 1000;
-
   var twitterMetricsMethods = {};
   twitterMetricsMethods['count'] = function(params, model, options, cb) { 
     var resultCache = Metric.cache.get(options.cache.key);
@@ -157,12 +151,66 @@ module.exports = function(Metric) {
     if(params.has)
       if(params.has.indexOf('media') > -1)
         query['status.entities.media.0'] = { $exists: true };
+      if(params.has.indexOf('url') > -1)
+        query['status.entities.media.0'] = { $exists: true };
 
     if(params.tags)
       query.categories = { $all: params.tags };
     
     if(params.hashtags)
       query['status.entities.hashtags.text'] = { $in: params.hashtags };
+    
+    return model.mongodb.count(query, function(err, result) {
+      if (err) return cb(err, null);
+      
+      Metric.cache.put(options.cache.key, { count: result }, options.cache.ttl);
+      return cb(null, { count: result });
+    });
+  };
+
+  twitterMetricsMethods['post_rate'] = function(params, model, options, cb) { 
+    var resultCache = Metric.cache.get(options.cache.key);
+    if (resultCache) return cb(null, resultCache);
+
+    var group = {
+    }
+
+    var pipeline = [
+      { $match: {
+        'status.timestamp_ms': {
+          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
+          $lte: new Date().getTime()
+        },
+        block: params.filter.blocked
+      } },
+      { $group: {
+        _id: { 
+          year: { $year: '$status.created_at' },
+          month: { $month: '$status.created_at' },
+          day: { $dayOfMonth: '$status.created_at' }
+        },
+        count: { $sum: 1 }
+      } },
+      { $sort: { count: -1 } },
+      { $project: {
+        _id: 0,
+        count: '$count'
+      } },
+      { $limit: params.perPage * params.page },
+      { $skip : (params.perPage * params.page) - params.perPage }
+    ];
+
+    if(params.has)
+      if(params.has.indexOf('media') > -1)
+        pipeline[0].$match['status.entities.media.0'] = { $exists: true };
+      if(params.has.indexOf('url') > -1)
+        pipeline[0].$match['status.entities.media.0'] = { $exists: true };
+
+    if(params.tags)
+      pipeline[0].$match.categories = { $all: params.tags };
+    
+    if(params.hashtags)
+      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
     
     return model.mongodb.count(query, function(err, result) {
       if (err) return cb(err, null);
@@ -196,3 +244,6 @@ module.exports = function(Metric) {
   };
 
 };
+
+// https://blog.bufferapp.com/social-media-metrics
+// https://hdf5-json.readthedocs.org/en/latest/index.html
