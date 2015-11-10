@@ -1,16 +1,112 @@
+var periodEnum = require('../enums/periodEnum'),
+    cacheTTLenum = require('../enums/cacheTTLenum'),
+    _ = require('underscore');
+
 module.exports = function(Tweet) {
 
-  Tweet.remoteMethod('analytics', {
-    accepts: [
-      { arg: 'type', type: 'string', required: true },
-      { arg: 'filter', type: 'object', http: { source: 'query' }, required: true }
-    ],
-    returns: { type: 'object', root: true },
-    http: { path: '/analytics', verb: 'get' }
+  var args = [
+    { arg: 'period', type: 'string' },
+    { arg: 'filter', type: '[string]', http: { source: 'query' } },
+    { arg: 'page', type: 'number' },
+    { arg: 'per_page', type: 'number' }
+  ];
+
+  // TODO: implement httpArgsMapping
+
+  Tweet.remoteMethod('findByArgs', {
+    accepts: args,
+    returns: { type: 'array', root: true },
+    http: { path: '/find', verb: 'GET' }
   });
 
-  Tweet.analytics = function(type, filter, callback) {
-    Tweet.analytics.mongodb(type, filter, callback);
+  function dealWith(type, property, object) {
+    switch (type) {
+      case 'array':
+        return _.isEmpty(object[property])
+          ? null 
+          : _.isArray(object[property])
+            ? object[property]
+            : [object[property]];
+      default:
+        throw new Error('type not supported!');
+        break;
+    }
   }
 
+  Tweet.findByArgs = function(period, filter, page, perPage, cb) {
+    page = _.isEmpty(page) ? 1 : page;
+    perPage = _.isEmpty(perPage) ? 25 : perPage > 100 ? 100 : perPage;
+    filter = _.isEmpty(filter) ? {} : filter;
+    ['with_tags', 'contain_tags', 'hashtags', 'mentions', 'users']
+      .forEach(function (property) {
+        filter[property] = dealWith('array', property, filter);
+      });
+
+    var query = {
+      where: {
+        block: _.isEmpty(filter['blocked'])
+                 ? false 
+                 : (filter['blocked'] === 'true')
+      },
+      order: 'status.timestamp_ms DESC',
+      limit: perPage * page,
+      skip: (perPage * page) - perPage
+    };
+
+    if (!_.isEmpty(period))
+      query.where['status.timestamp_ms'] = {
+        between: [
+          new Date(new Date() - periodEnum[period]).getTime(),
+          new Date().getTime()
+        ]
+      }
+
+    if(!_.isEmpty(filter['has'])) {
+      if(filter['has'].indexOf('media') > -1)
+        query.where['status.entities.media.0'] = { exists: true };
+      if(filter['has'].indexOf('url') > -1)
+        query.where['status.entities.urls.0'] = { exists: true };
+      if(filter['has'].indexOf('mention') > -1)
+        query.where['status.entities.user_mentions.0'] = { exists: true };
+    }
+
+    if(!_.isEmpty(filter['retweeted']))
+      query.where['status.retweeted_status'] = { exists: (filter['retweeted'] === 'true') };
+
+    if(!_.isEmpty(filter['with_tags'])) {
+      query.where.and = _.isEmpty(query.where.and) ? [] : query.where.and;
+      filter['with_tags'].forEach(function (tag) {
+        query.where.and.push({ categories: tag });
+      });
+    }
+
+    if(!_.isEmpty(filter['contain_tags'])) {
+      query.where.or = [];
+      filter['contain_tags'].forEach(function (tag) {
+        query.where.or.push({ categories: tag });
+      });
+    }
+    
+    if(!_.isEmpty(filter['hashtags']))
+      query.where['status.entities.hashtags.text'] = { in: filter['hashtags'] };
+
+    if(!_.isEmpty(filter['mentions'])) {
+      query.where['status.entities.user_mentions.screen_name'] = { in: [] };
+      filter['mentions'].forEach(function (screenName) {
+        query.where['status.entities.user_mentions.screen_name'].in.push(screenName);
+      });
+    }
+
+    if(!_.isEmpty(filter['users']))
+      query.where['status.user.screen_name'] = { in: filter['users'] };
+
+    console.info('findByArgs query: \n%j', query);
+
+    Tweet.find(query, function(err, tweets) {
+      if (err) return cb(err, null);
+      
+      // Tweet.cache.put(options.cache.key, result, options.cache.ttl);
+      return cb(null, tweets);
+    });
+  }
 };

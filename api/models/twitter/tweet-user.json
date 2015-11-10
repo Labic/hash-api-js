@@ -98,6 +98,9 @@
     "profile_sidebar_fill_color": {
       "type": "string"
     },
+    "profile_banner_url": {
+      "type": "string"
+    },
     "screen_name": {
       "type": "string"
     },
@@ -126,12 +129,14 @@
     "verified",
     "profile_sidebar_border_color",
     "profile_background_color",
+    "default_profile",
     "default_profile_image",
     "geo_enabled",
     "profile_background_image_url",
     "profile_background_image_url_https",
     "follow_request_sent",
     "url",
+    "profile_banner_url",
     "utc_offset",
     "time_zone",
     "notifications",

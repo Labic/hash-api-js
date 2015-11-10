@@ -16,7 +16,6 @@
     }
   },
   "mixins": {
-    "TweetAnalytics": null,
     "Mongodb": null,
     "Cache": null,
     "DisableMethods": {
