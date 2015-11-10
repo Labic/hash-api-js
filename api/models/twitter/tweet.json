@@ -11,16 +11,27 @@
     "status": {
       "type": "TweetStatus"
     },
-    "theme": {
-      "type": "string"
-    },
     "categories": {
-      "type": "[string]"
+      "type": ["string"]
     }
   },
   "mixins": {
     "TweetAnalytics": null,
-    "Mongodb": null
+    "Mongodb": null,
+    "Cache": null,
+    "DisableMethods": {
+      "selfMethods": [
+        "create",
+        "upsert",
+        "findOrCreate",
+        "exists",
+        "findById",
+        "deleteById",
+        "updateAll",
+        "updateAttributes",
+        "createChangeStream"
+      ]
+    }
   },
   "scope": {
     "limit": 25

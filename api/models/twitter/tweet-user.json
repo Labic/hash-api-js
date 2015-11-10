@@ -3,115 +3,141 @@
   "base": "PersistedModel",
   "properties": {
     "location": {
-      "type": "String"
+      "type": "string"
     },
     "default_profile": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "statuses_count": {
-      "type": "Number"
+      "type": "number"
     },
     "profile_background_tile": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "lang": {
-      "type": "String"
+      "type": "string"
     },
     "profile_link_color": {
-      "type": "String"
+      "type": "string"
     },
     "id": {
-      "type": "Number"
+      "type": "number"
     },
     "following": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "favourites_count": {
-      "type": "Number"
+      "type": "number"
     },
     "protected": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "profile_text_color": {
-      "type": "String"
+      "type": "string"
     },
     "contributors_enabled": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "verified": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "description": {
-      "type": "String"
+      "type": "string"
     },
     "name": {
-      "type": "String"
+      "type": "string"
     },
     "profile_sidebar_border_color": {
-      "type": "String"
+      "type": "string"
     },
     "profile_background_color": {
-      "type": "String"
+      "type": "string"
     },
     "created_at": {
-      "type": "Date"
+      "type": "date"
     },
     "default_profile_image": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "followers_count": {
-      "type": "Number"
+      "type": "number"
     },
     "profile_image_url_https": {
-      "type": "String"
+      "type": "string"
     },
     "geo_enabled": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "profile_background_image_url": {
-      "type": "String"
+      "type": "string"
     },
     "profile_background_image_url_https": {
-      "type": "String"
+      "type": "string"
     },
     "follow_request_sent": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "url": {
-      "type": "String"
+      "type": "string"
     },
     "utc_offset": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "time_zone": {
-      "type": "String"
+      "type": "string"
     },
     "notifications": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "friends_count": {
-      "type": "Number"
+      "type": "number"
     },
     "profile_use_background_image": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "profile_sidebar_fill_color": {
-      "type": "String"
+      "type": "string"
     },
     "screen_name": {
-      "type": "String"
+      "type": "string"
     },
     "id_str": {
-      "type": "String"
+      "type": "string"
     },
     "profile_image_url": {
-      "type": "String"
+      "type": "string"
     },
     "listed_count": {
-      "type": "Number"
+      "type": "number"
     },
     "is_translator": {
-      "type": "Boolean"
+      "type": "boolean"
     }
-  }
+  },
+  "hidden": [
+    "profile_background_tile",
+    "lang",
+    "profile_link_color",
+    "following",
+    "favourites_count",
+    "protected",
+    "profile_text_color",
+    "contributors_enabled",
+    "verified",
+    "profile_sidebar_border_color",
+    "profile_background_color",
+    "default_profile_image",
+    "geo_enabled",
+    "profile_background_image_url",
+    "profile_background_image_url_https",
+    "follow_request_sent",
+    "url",
+    "utc_offset",
+    "time_zone",
+    "notifications",
+    "profile_use_background_image",
+    "profile_sidebar_fill_color",
+    "profile_image_url",
+    "is_translator"
+  ]
 }

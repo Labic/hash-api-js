@@ -3,11 +3,11 @@
   "base": "PersistedModel",
   "properties": {
     "type": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "coordinates": {
-      "type": ["Number"],
+      "type": ["number"],
       "required": true
     }
   }

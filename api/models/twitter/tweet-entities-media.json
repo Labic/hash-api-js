@@ -3,31 +3,31 @@
   "base": "PersistedModel",
   "properties": {
     "source_status_id_str": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "expanded_url": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "display_url": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "url": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "media_url_https": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "source_status_id": {
-      "type": "Number",
+      "type": "number",
       "required": true
     },
     "id_str": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "sizes": {
@@ -35,20 +35,31 @@
       "required": true
     },
     "indices": {
-      "type": ["Number"],
+      "type": ["number"],
       "required": true
     },
     "type": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "id": {
-      "type": "Number",
+      "type": "number",
       "required": true
     },
     "media_url": {
-      "type": "String",
+      "type": "string",
       "required": true
     }
-  }
+  },
+  "hidden": [
+    "source_status_id_str", 
+    "indices", 
+    "id", 
+    "media_url", 
+    "sizes", 
+    "lang",
+    "display_url",
+    "url",
+    "expanded_url"
+  ]
 }

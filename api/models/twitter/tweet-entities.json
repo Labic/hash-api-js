@@ -3,26 +3,22 @@
   "base": "PersistedModel",
   "properties": {
     "trends": {
-      "type": ["Object"]
+      "type": ["object"]
     },
     "symbols": {
-      "type": ["Object"]
+      "type": ["object"]
     },
     "media": {
       "type": ["TweetEntitiesMedia"]
     },
     "urls": {
-      "type": ["Object"]
+      "type": ["object"]
     },
     "hashtags": {
-      "type": ["Object"]
+      "type": ["object"]
     },
     "user_mentions": {
-      "type": ["Object"]
+      "type": ["object"]
     }
-  },
-  "validations": [],
-  "relations": {},
-  "acls": [],
-  "methods": []
+  }
 }

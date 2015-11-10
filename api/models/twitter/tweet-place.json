@@ -3,37 +3,34 @@
   "base": "PersistedModel",
   "properties": {
     "full_name": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "url": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "country": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "place_type": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "bounding_box": {
-      "type": "Object",
+      "type": "object",
       "required": true
     },
     "country_code": {
-      "type": "Object",
+      "type": "object",
       "required": true
     },
     "attributes": {
-      "type": "Object"
+      "type": "object"
     },
     "id": {
-      "type": "String"
-    },
-    "id": {
-      "type": "name"
+      "type": "string"
     }
   }
 }

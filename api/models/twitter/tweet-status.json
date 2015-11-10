@@ -3,52 +3,52 @@
   "base": "PersistedModel",
   "properties": {
     "contributors": {
-      "type": ["Object"]
+      "type": ["object"]
     },
     "truncated": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "text": {
-      "type": "String"
+      "type": "string"
     },
     "in_reply_to_status_id": {
-      "type": "Number"
+      "type": "number"
     },
     "id": {
-      "type": "Number"
+      "type": "number"
     },
     "favorite_count": {
-      "type": "Number"
+      "type": "number"
     },
     "source": {
-      "type": "String"
+      "type": "string"
     },
     "retweeted": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "coordinates": {
       "type": "TweetCoordinatesPoint"
     },
     "timestamp_ms": {
-      "type": "Number"
+      "type": "number"
     },
     "entities": {
       "type": "TweetEntities"
     },
     "in_reply_to_screen_name": {
-      "type": "String"
+      "type": "string"
     },
     "id_str": {
-      "type": "String"
+      "type": "string"
     },
     "retweet_count": {
-      "type": "Number"
+      "type": "number"
     },
     "in_reply_to_user_id": {
-      "type": "Number"
+      "type": "number"
     },
     "favorited": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "retweeted_status": {
       "type": "TweetStatus"
@@ -57,31 +57,42 @@
       "type": "TweetUser"
     },
     "geo": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "in_reply_to_user_id_str": {
-      "type": "String"
+      "type": "string"
     },
     "possibly_sensitive": {
-      "type": "Boolean"
+      "type": "boolean"
     },
     "lang": {
-      "type": "String"
+      "type": "string"
     },
     "created_at": {
-      "type": "Date"
+      "type": "date"
     },
     "filter_level": {
-      "type": "String"
+      "type": "string"
     },
     "in_reply_to_status_id_str": {
-      "type": "String"
+      "type": "string"
     },
     "place": {
       "type": "TweetPlace"
     },
     "extended_entities": {
-      "type": "Object"
+      "type": "object"
     }
-  }
+  },
+  "hidden": [
+    "contributors", 
+    "truncated", 
+    "in_reply_to_screen_name", 
+    "in_reply_to_user_id_str", 
+    "is_quote_status", 
+    "possibly_sensitive", 
+    "lang",
+    "filter_level",
+    "extended_entities"
+  ]
 }

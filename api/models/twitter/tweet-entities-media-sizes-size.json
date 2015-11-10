@@ -3,15 +3,15 @@
   "base": "PersistedModel",
   "properties": {
     "resize": {
-      "type": "String",
+      "type": "string",
       "required": true
     },
     "h": {
-      "type": "Number",
+      "type": "number",
       "required": true
     },
     "w": {
-      "type": "Number",
+      "type": "number",
       "required": true
     }
   }
