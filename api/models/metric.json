@@ -2,28 +2,23 @@
   "name": "Metric",
   "plural": "metrics",
   "base": "PersistedModel",
-  "options": {
-    "mongodb": {
-      "collection": "metrics"
-    }
-  },
-  "properties": {
-    "id": {
-      "type": "String",
-      "id": true
-    },
-    "name": {
-      "type": "String",
-      "required": true
-    },
-    "args": {
-      "type": "[Object]"
-    }
-  },
   "mixins": {
-    "Cache": null
-  },
-  "scope": {
-    "limit": 25
+    "Cache": null,
+    "DisableMethods": {
+      "selfMethods": [
+        "create",
+        "upsert",
+        "findOrCreate",
+        "exists",
+        "findById",
+        "find",
+        "findOne",
+        "deleteById",
+        "updateAll",
+        "updateAttributes",
+        "createChangeStream",
+        "count"
+      ]
+    }
   }
 }
