@@ -40,7 +40,7 @@ module.exports = function(Tweet) {
   }
 
   Tweet.findByArgs = function(period, filter, page, perPage, cb) {
-    period = .isEmpty(period) ? '1d' : period;
+    period = _.isEmpty(period) ? '1d' : period;
     page = _.isEmpty(page) ? 1 : page;
     perPage = _.isEmpty(perPage) ? 25 : perPage > 100 ? 100 : perPage;
     filter = _.isEmpty(filter) ? {} : filter;
@@ -120,7 +120,7 @@ module.exports = function(Tweet) {
   }
 
   Tweet.countByArgs = function(period, filter, page, perPage, cb) {
-    period = .isEmpty(period) ? '1d' : period;
+    period = _.isEmpty(period) ? '1d' : period;
     filter = _.isEmpty(filter) ? {} : filter;
     ['with_tags', 'contain_tags', 'hashtags', 'mentions', 'users']
       .forEach(function (property) {
