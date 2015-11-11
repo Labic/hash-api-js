@@ -23,6 +23,7 @@
         "create",
         "count",
         "upsert",
+        "find",
         "findOrCreate",
         "exists",
         "findById",

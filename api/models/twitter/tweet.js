@@ -16,7 +16,7 @@ module.exports = function(Tweet) {
   Tweet.remoteMethod('findByArgs', {
     accepts: args,
     returns: { type: 'array', root: true },
-    http: { path: '/find', verb: 'GET' }
+    http: { path: '/', verb: 'GET' }
   });
 
   Tweet.remoteMethod('countByArgs', {
@@ -40,6 +40,7 @@ module.exports = function(Tweet) {
   }
 
   Tweet.findByArgs = function(period, filter, page, perPage, cb) {
+    period = .isEmpty(period) ? '1d' : period;
     page = _.isEmpty(page) ? 1 : page;
     perPage = _.isEmpty(perPage) ? 25 : perPage > 100 ? 100 : perPage;
     filter = _.isEmpty(filter) ? {} : filter;
@@ -74,6 +75,8 @@ module.exports = function(Tweet) {
         query.where['status.entities.urls.0'] = { exists: true };
       if(filter['has'].indexOf('mention') > -1)
         query.where['status.entities.user_mentions.0'] = { exists: true };
+      if(filter['has'].indexOf('geolocation') > -1)
+        query.where['status.geo'] = { neq: null };
     }
 
     if(!_.isEmpty(filter['retweeted']))
@@ -117,6 +120,7 @@ module.exports = function(Tweet) {
   }
 
   Tweet.countByArgs = function(period, filter, page, perPage, cb) {
+    period = .isEmpty(period) ? '1d' : period;
     filter = _.isEmpty(filter) ? {} : filter;
     ['with_tags', 'contain_tags', 'hashtags', 'mentions', 'users']
       .forEach(function (property) {
@@ -142,6 +146,8 @@ module.exports = function(Tweet) {
         query['status.entities.urls.0'] = { $exists: true };
       if(filter['has'].indexOf('mention') > -1)
         query['status.entities.user_mentions.0'] = { $exists: true };
+      if(filter['has'].indexOf('geolocation') > -1)
+        query['status.geo'] = { ne: null };
     }
 
     if(!_.isEmpty(filter['retweeted']))
