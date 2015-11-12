@@ -1,0 +1,15 @@
+{
+  "name": "InstagramMediaDataImagesImage",
+  "base": "PersistedModel",
+  "properties": {
+    "url": {
+      "type": "string"
+    },
+    "width": {
+      "type": "number"
+    },
+    "height": {
+      "type": "number"
+    }
+  }
+}

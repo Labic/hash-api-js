@@ -5,6 +5,7 @@
       "./models/authentication",
       "./models/twitter",
       "./models/facebook",
+      "./models/instagram",
       "../node_modules/loopback-component-passport/lib/models"
     ],
     "mixins": [
@@ -106,6 +107,42 @@
   "FacebookPagePost": {
     "dataSource": "documentDB",
     "public": true
+  },
+  "InstagramMedia": {
+    "dataSource": "documentDB",
+    "public": true
+  },
+  "InstagramMediaData": {
+    "dataSource": false,
+    "public": false
+  },
+  "InstagramMediaDataUser": {
+    "dataSource": false,
+    "public": false
+  },
+  "InstagramMediaDataLocation": {
+    "dataSource": false,
+    "public": false
+  },
+  "InstagramMediaDataLikes": {
+    "dataSource": false,
+    "public": false
+  },
+  "InstagramMediaDataImages": {
+    "dataSource": false,
+    "public": false
+  },
+  "InstagramMediaDataImagesImage": {
+    "dataSource": false,
+    "public": false
+  },
+  "InstagramMediaDataComments": {
+    "dataSource": false,
+    "public": false
+  },
+  "InstagramMediaDataCaption": {
+    "dataSource": false,
+    "public": false
   },
   "Metric": {
     "dataSource": "documentDB",

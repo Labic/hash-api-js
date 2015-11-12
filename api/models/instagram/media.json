@@ -1,0 +1,44 @@
+{
+  "name": "InstagramMedia",
+  "plural": "medias",
+  "base": "PersistedModel",
+  "http": {"path": "instagram/medias"},
+  "options": {
+    "mongodb": {
+      "collection": "instagram_media"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true
+    },
+    "data": {
+      "type": "InstagramMediaData"
+    },
+    "categories": {
+      "type": ["string"]
+    }
+  },
+  "mixins": {
+    "Mongodb": null,
+    "Cache": null
+  },
+  "scope": {
+    "limit": 25
+  },
+  "acls": [
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    }
+  ]
+}

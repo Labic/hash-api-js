@@ -1,0 +1,51 @@
+{
+  "name": "InstagramMediaData",
+  "base": "PersistedModel",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "likes": {
+      "type": "InstagramMediaDataLikes"
+    },
+    "comments": {
+      "type": "InstagramMediaDataComments"
+    },
+    "caption": {
+      "type": "InstagramMediaDataCaption"
+    },
+    "users_in_photo": {
+      "type": ["InstagramMediaDataUser"]
+    },
+    "created_time": {
+      "type": "number"
+    },
+    "location": {
+      "type": "InstagramMediaDataLocation"
+    },
+    "link": {
+      "type": "string"
+    },
+    "images": {
+      "type": "InstagramMediaDataImages"
+    },
+    "filter": {
+      "type": "string"
+    },
+    "user": {
+      "type": "InstagramMediaDataUser"
+    },
+    "tags": {
+      "type": ["string"]
+    },
+    "attribution": {
+      "type": "object"
+    },
+    "user_has_liked": {
+      "type": "boolean"
+    }
+  }
+}

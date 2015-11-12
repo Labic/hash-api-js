@@ -1,0 +1,15 @@
+{
+  "name": "InstagramMediaDataImages",
+  "base": "PersistedModel",
+  "properties": {
+    "low_resolution": {
+      "type": "InstagramMediaDataImagesImage"
+    },
+    "thumbnail": {
+      "type": "InstagramMediaDataImagesImage"
+    },
+    "standard_resolution": {
+      "type": "InstagramMediaDataImagesImage"
+    }
+  }
+}

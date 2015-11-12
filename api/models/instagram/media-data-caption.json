@@ -1,0 +1,18 @@
+{
+  "name": "InstagramMediaDataCaption",
+  "base": "PersistedModel",
+  "properties": {
+    "id": {
+      "type": "number"
+    },
+    "created_time": {
+      "type": "number"
+    },
+    "text": {
+      "type": "string"
+    },
+    "from": {
+      "type": "InstagramMediaDataUser"
+    }
+  }
+}
