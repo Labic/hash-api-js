@@ -50,17 +50,16 @@ module.exports = function(Tweet) {
       });
 
     var query = {
-      where: {
-        block: _.isEmpty(filter['blocked'])
-                 ? false 
-                 : (filter['blocked'] === 'true')
-      },
+      where: {},
       order: 'status.timestamp_ms DESC',
       limit: perPage * page,
       skip: (perPage * page) - perPage
     };
 
-    if (!_.isEmpty(period))
+    if(_.isEmpty(filter['blocked']))
+      query.where.block = false;
+
+    if(!_.isEmpty(period))
       query.where['status.timestamp_ms'] = {
         between: [
           new Date(new Date() - periodEnum[period]).getTime(),
@@ -127,13 +126,12 @@ module.exports = function(Tweet) {
         filter[property] = dealWith('array', property, filter);
       });
 
-    var query = {
-      block: _.isEmpty(filter['blocked'])
-               ? false 
-               : (filter['blocked'] === 'true')
-    };
+    var query = {};
 
-    if (!_.isEmpty(period))
+    if(_.isEmpty(filter['blocked']))
+      query.block = false;
+
+    if(!_.isEmpty(period))
       query['status.timestamp_ms'] = {
         $gte: new Date(new Date() - periodEnum[period]).getTime(),
         $lte: new Date().getTime()
