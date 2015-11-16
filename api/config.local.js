@@ -3,10 +3,10 @@ var p = require('../package.json'),
 
 module.exports = {
   isDevEnv: (process.env.NODE_ENV === 'development'),
-  restApiRoot: '/v' + version,
+  restApiRoot: (process.env.REST_API_ROOT || '/v' + version),
   host: process.env.IP || '0.0.0.0',
-  port: 3000,
-  cookieSecret: process.env.COOKIE_SECRET || 'F1FEE670-3C72-11E4-916C-0800200C9A66',
+  port: (process.env.PORT || 3000),
+  cookieSecret: (process.env.COOKIE_SECRET || 'F1FEE670-3C72-11E4-916C-0800200C9A66'),
   remoting: {
     context: {
       enableHttpContext: false
@@ -27,7 +27,7 @@ module.exports = {
     },
     urlencoded: {
       extended: true,
-      limit: '100kb'
+      limit: '50kb'
     },
     cors: {
       origin: true,
