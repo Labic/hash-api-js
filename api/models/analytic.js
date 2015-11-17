@@ -115,7 +115,7 @@ module.exports = function(Analytic) {
     };
 
     var resultCache = Analytic.cache.get(options.cache.key);
-    if (resultCache) {
+    if (resultCache)
       return cb(null, resultCache);
 
     params.since = new Date(new Date() - periodEnum[params.period]);
