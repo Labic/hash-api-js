@@ -49,4 +49,24 @@ _.mixin({
   }
 });
 
+_.mixin({
+  renameProperties: function(object, map) {
+    _.isArray(object) 
+      ? _.each(object, function(element) {
+          _.each(element, function(value, key) {
+            var newKey = map[key] || key;
+            element[newKey] = value;
+            delete element[key];
+          });
+        })
+      : _.each(object, function(value, key) {
+          var newKey = map[key] || key;
+          object[newKey] = value;
+          delete object[key];
+        });
+
+    return this;
+  }
+});
+
 module.exports = _;
