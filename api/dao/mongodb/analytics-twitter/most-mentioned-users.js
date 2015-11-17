@@ -42,7 +42,7 @@ module.exports = function mostMentionedUsers(params, model, cb) {
     pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.filter.hashtags };
 
   if(params.filter.mentions)
-    pipeline[0].$match['status.user.screen_name'] = { $in: params.filter.mentions };
+    pipeline[0].$match['status.entities.screen_name'] = { $in: params.filter.mentions };
 
   if(params.filter.users)
     pipeline[0].$match['status.user.screen_name'] = { $in: params.filter.users };

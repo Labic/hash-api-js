@@ -1,6 +1,6 @@
 var periodEnum = require('./enums/periodEnum'),
     cacheTTLenum = require('./enums/cacheTTLenum'),
-    _ = require('../lib/underscoreExtended')
+    _ = require('../lib/underscoreExtended'),
     dao = { 
       mongodb: {
         analyticsTwitter: require('../dao/mongodb/analytics-twitter'),
@@ -10,7 +10,7 @@ var periodEnum = require('./enums/periodEnum'),
 
 module.exports = function(Analytic) {
 
-  Analytic.remoteMethod('facebookPostsAnalytics', {
+  Analytic.remoteMethod('analyticsFacebookPosts', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'profile_type', type: 'string', required: true },
@@ -47,7 +47,7 @@ module.exports = function(Analytic) {
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
-  Analytic.remoteMethod('twitterAnalytics', {
+  Analytic.remoteMethod('analyticsTwitter', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string' },
@@ -86,8 +86,8 @@ module.exports = function(Analytic) {
     http: { path: '/twitter/:method', verb: 'GET' }
   });
 
-  Analytic.facebookPostsAnalytics = function(method, profileType, period, filter, page, perPage, cb) {
-    if (!facebookPostAnalyticsRemtoteMethods[method]) {
+  Analytic.analyticsFacebookPosts = function(method, profileType, period, filter, page, perPage, cb) {
+    if (!analyticsFacebookPostRemtoteMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.statusCode = 404;
 
@@ -133,7 +133,7 @@ module.exports = function(Analytic) {
         return cb(err, null);
     }
     
-    facebookPostAnalyticsRemtoteMethods[method](params, model, function(err, result) {
+    analyticsFacebookPostRemtoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
 
       if (result.length > 0)
@@ -143,8 +143,8 @@ module.exports = function(Analytic) {
     });
   }
 
-  Analytic.twitterAnalytics = function(method, period, filter, last, page, perPage, cb) {
-    if (!twitterAnalyticsRemoteMethods[method]) {
+  Analytic.analyticsTwitter = function(method, period, filter, last, page, perPage, cb) {
+    if (!analyticsTwitterRemoteMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.status = 404;
 
@@ -177,7 +177,7 @@ module.exports = function(Analytic) {
     }
     
     var model = Analytic.app.models.Tweet;
-    twitterAnalyticsRemoteMethods[method](params, model, function(err, result) {
+    analyticsTwitterRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
 
       if (result.length > 0)
@@ -187,14 +187,14 @@ module.exports = function(Analytic) {
     });
   }
 
-  var facebookPostAnalyticsRemtoteMethods = {
+  var analyticsFacebookPostRemtoteMethods = {
     'most_active_profiles': dao.mongodb.analyticsFacebook.mostActiveProfiles,
     'most_commented_posts': dao.mongodb.analyticsFacebook.mostCommentedPosts,
     'most_liked_posts': dao.mongodb.analyticsFacebook.mostLikedPosts,
     'most_shared_posts': dao.mongodb.analyticsFacebook.mostSharedPosts,
   };
 
-  var twitterAnalyticsRemoteMethods = {
+  var analyticsTwitterRemoteMethods = {
     'geolocation': dao.mongodb.analyticsTwitter.geolocation,
     'most_active_users': dao.mongodb.analyticsTwitter.mostActiveUsers,
     'most_mentioned_users': dao.mongodb.analyticsTwitter.mostMentionedUsers,
