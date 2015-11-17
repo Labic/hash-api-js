@@ -9,30 +9,28 @@ module.exports = function(Model) {
 
     Model.getDataSource().connector.connect(function(err, db) {
       var collection = db.collection(Model.settings.mongodb.collection);
-      collection.find(query, options).toArray(function (err, result) {
-        if (err) return cb(err);
-        cb(null, result);
-      });
+      collection.find(query, options).toArray(cb);
+    });
+  }
+
+  Model.dao.mongodb.mapReduce = function(map, reduce, options, cb) {
+    Model.getDataSource().connector.connect(function(err, db) {
+      var collection = db.collection(Model.settings.mongodb.collection);
+      collection.mapReduce(map, reduce, options, cb);
     });
   }
 
   Model.dao.mongodb.count = function(query, cb) {
     Model.getDataSource().connector.connect(function(err, db) {
       var collection = db.collection(Model.settings.mongodb.collection);
-      collection.count(query, function (err, result) {
-        if (err) return cb(err);
-        cb(null, result);
-      });
+      collection.count(query, cb);
     });
   }
 
   Model.dao.mongodb.aggregate = function(pipeline, cb) {
     Model.getDataSource().connector.connect(function(err, db) {
       var collection = db.collection(Model.settings.mongodb.collection);
-      collection.aggregate(pipeline, function (err, result) {
-        if (err) return cb(err);
-        cb(null, result);
-      });
+      collection.aggregate(pipeline, cb);
     });
   }
 }
