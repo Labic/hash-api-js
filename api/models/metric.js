@@ -55,10 +55,7 @@ module.exports = function(Metric) {
 
         return filter;
       } },
-      { arg: 'tags', type: '[string]' },
-      { arg: 'hashtags', type: '[string]' },
-      { arg: 'has', type: '[string]' }, // Used for count method
-      { arg: 'retrive_blocked', type: 'boolean' },
+      { arg: 'last', type: 'number' },
       { arg: 'page', type: 'number' },
       { arg: 'per_page', type: 'number' }
     ],
@@ -121,7 +118,7 @@ module.exports = function(Metric) {
     facebookPostsMetricsMethods[method](params, model, options, cb);
   }
 
-  Metric.metricsTwitter = function(method, period, granularity, filter, tags, hashtags, has, retriveBlocked, page, perPage, cb) {
+  Metric.metricsTwitter = function(method, period, granularity, filter, last, page, perPage, cb) {
     if (!metricsTwitterRemoteMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.statusCode = 404;
@@ -132,13 +129,10 @@ module.exports = function(Metric) {
     var params = {
       endpoint: '/metrics/twitter',
       method: method,
-      period: period === undefined ? 'P1H' : period,
+      period: period === undefined ? 'P1D' : period,
       granularity: granularity === undefined ? 'P1D' : granularity,
       filter: filter,
-      tags: tags === undefined ? null : tags.sort(),
-      hashtags: hashtags === undefined ? null : hashtags.sort(),
-      has: has, 
-      retriveBlocked: retriveBlocked === undefined ? false : retriveBlocked,
+      last: last === undefined ? 1000 : last > 5000 ? 5000 : last,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage
     };
@@ -177,8 +171,8 @@ module.exports = function(Metric) {
   }
 
   var metricsTwitterRemoteMethods = {};
-  metricsTwitterRemoteMethods['tags_count'] = dao.mongodb.metricsTwitter.tagsCount;
   metricsTwitterRemoteMethods['interations_rate'] = dao.mongodb.metricsTwitter.interactionsRate;
+  metricsTwitterRemoteMethods['tags_count'] = dao.mongodb.metricsTwitter.tagsCount;
 
   var facebookPostsMetricsMethods = {};
   facebookPostsMetricsMethods['count'] = function(params, model, options, cb) { 
