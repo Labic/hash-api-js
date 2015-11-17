@@ -161,7 +161,7 @@ module.exports = function(Metric) {
     if(params.hashtags)
       query['status.entities.hashtags.text'] = { $in: params.hashtags };
     
-    return model.mongodb.count(query, function(err, result) {
+    return model.dao.mongodb.count(query, function(err, result) {
       if (err) return cb(err, null);
       
       Metric.cache.put(options.cache.key, { count: result }, options.cache.ttl);
@@ -213,7 +213,7 @@ module.exports = function(Metric) {
     if(params.hashtags)
       pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
     
-    return model.mongodb.count(query, function(err, result) {
+    return model.dao.mongodb.count(query, function(err, result) {
       if (err) return cb(err, null);
       
       Metric.cache.put(options.cache.key, { count: result }, options.cache.ttl);
@@ -236,7 +236,7 @@ module.exports = function(Metric) {
     if (params.postType)
       query.type = { $in: params.postType };
     
-    return model.mongodb.count(query, function(err, result) {
+    return model.dao.mongodb.count(query, function(err, result) {
       if (err) return cb(err, null);
       
       Metric.cache.put(options.cache.key, { count: result }, options.cache.ttl);

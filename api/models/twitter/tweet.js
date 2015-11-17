@@ -165,7 +165,7 @@ module.exports = function(Tweet) {
 
     console.info('countByArgs query: \n%j', query);
     
-    return Tweet.mongodb.count(query, function(err, result) {
+    return Tweet.dao.mongodb.count(query, function(err, result) {
       if (err) return cb(err, null);
       
       return cb(null, { count: result });

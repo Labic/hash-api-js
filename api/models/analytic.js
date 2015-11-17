@@ -1,15 +1,45 @@
 var periodEnum = require('./enums/periodEnum'),
-    cacheTTLenum = require('./enums/cacheTTLenum');
+    cacheTTLenum = require('./enums/cacheTTLenum'),
+    _ = require('../lib/underscoreExtended')
+    dao = { 
+      mongodb: {
+        analyticsTwitter: require('../dao/mongodb/analytics-twitter'),
+        analyticsFacebook: require('../dao/mongodb/analytics-facebook')
+      }
+    };
 
 module.exports = function(Analytic) {
 
   Analytic.remoteMethod('facebookPostsAnalytics', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
-      { arg: 'period', type: 'string' },
       { arg: 'profile_type', type: 'string', required: true },
-      { arg: 'post_type', type: '[string]' },
-      { arg: 'tags', type: '[string]' },
+      { arg: 'period', type: 'string' },
+      { arg: 'filter', type: 'object', http: function mapping(ctx) {
+        var filter = ctx.req.query.filter;
+
+        if(filter) {
+          var mappedFilter = {
+            tags: {
+              with: undefined,
+              contains: undefined
+            }
+          };
+
+          mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
+          mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
+          mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
+          mappedFilter.profiles      = _.convertToArray(filter['profiles']);
+          mappedFilter.postType      = _.convertToArray(filter['post_type']);
+
+          filter = mappedFilter;
+        } else {
+          filter = {};
+        }
+
+        return filter;
+      } },
       { arg: 'page', type: 'number' },
       { arg: 'per_page', type: 'number' }
     ],
@@ -21,10 +51,34 @@ module.exports = function(Analytic) {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string' },
-      { arg: 'tags', type: '[string]' },
-      { arg: 'hashtags', type: '[string]' },
+      { arg: 'filter', type: 'object', http: function mapping(ctx) {
+        var filter = ctx.req.query.filter;
+
+        if(filter) {
+          var mappedFilter = {
+            tags: {
+              with: undefined,
+              contains: undefined
+            }
+          };
+
+          mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
+          mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
+          mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
+          mappedFilter.users         = _.convertToArray(filter['users']);
+          mappedFilter.has           = _.convertToArray(filter['has']);
+          mappedFilter.retweeted     = _.convertToBoolean(filter['retweeted']);
+          mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
+
+          filter = mappedFilter;
+        } else {
+          filter = {};
+        }
+
+        return filter;
+      } },
       { arg: 'last', type: 'number' },
-      { arg: 'retrive_blocked', type: 'boolean' },
       { arg: 'page', type: 'number' },
       { arg: 'per_page', type: 'number' }
     ],
@@ -32,10 +86,10 @@ module.exports = function(Analytic) {
     http: { path: '/twitter/:method', verb: 'GET' }
   });
 
-  Analytic.facebookPostsAnalytics = function(method, period, profileType, postType, tags, page, perPage, cb) {
-    if (!facebookPostAnalyticsMethods[method]) {
+  Analytic.facebookPostsAnalytics = function(method, profileType, period, filter, page, perPage, cb) {
+    if (!facebookPostAnalyticsRemtoteMethods[method]) {
       var err = new Error('Endpoint not found!');
-      err.status = 404;
+      err.statusCode = 404;
 
       return cb(err);
     }
@@ -43,10 +97,9 @@ module.exports = function(Analytic) {
     var params = {
       endpoint: '/analytics/facebook',
       method: method,
-      period: period === undefined ? '1h' : period,
       profileType: profileType,
-      postType: postType === undefined ? null : postType.sort(),
-      tags: tags === undefined ? null : tags.sort(),
+      period: period === undefined ? 'P1H' : period,
+      filter: filter,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage > 100 ? 100 : perPage
     }
@@ -57,6 +110,14 @@ module.exports = function(Analytic) {
         ttl: cacheTTLenum[params.period]
       }
     };
+
+    var resultCache = Analytic.cache.get(options.cache.key);
+    if (resultCache) {
+      return cb(null, resultCache);
+    } else {
+      params.since = new Date(new Date() - periodEnum[params.period]);
+      params.until = new Date();
+    }
 
     switch (params.profileType) {
       case 'user':
@@ -66,19 +127,24 @@ module.exports = function(Analytic) {
         var model = Analytic.app.models.FacebookPagePost;
         break;
       default:
-        var err = new Error('Malformed request syntax. Check the query string arguments!');
-        err.fields = ['profile_type'];
-        err.status = 400;
+        var err = new Error('Malformed request syntax. profile_type query param is required!');
+        err.statusCode = 400;
 
-        return cb(err);
-        break; 
+        return cb(err, null);
     }
     
-    facebookPostAnalyticsMethods[method](params, model, options, cb);
+    facebookPostAnalyticsRemtoteMethods[method](params, model, function(err, result) {
+      if (err) return cb(err, null);
+
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
+    });
   }
 
-  Analytic.twitterAnalytics = function(method, period, tags, hashtags, last, retriveBlocked, page, perPage, cb) {
-    if (!twitterAnalyticsMethods[method]) {
+  Analytic.twitterAnalytics = function(method, period, filter, last, page, perPage, cb) {
+    if (!twitterAnalyticsRemoteMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.status = 404;
 
@@ -88,11 +154,9 @@ module.exports = function(Analytic) {
     var params = {
       endpoint: '/analytics/twitter',
       method: method,
-      period: period === undefined ? '1h' : period,
-      tags: tags === undefined ? null : tags.sort(),
-      hashtags: hashtags === undefined ? null : hashtags.sort(),
+      period: period === undefined ? 'P1H' : period,
+      filter: filter,
       last: last === undefined ? 1000 : last > 5000 ? 5000 : last,
-      retriveBlocked: retriveBlocked === undefined ? false : retriveBlocked,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage > 100 ? 100 : perPage
     };
@@ -105,506 +169,39 @@ module.exports = function(Analytic) {
     };
 
     var resultCache = Analytic.cache.get(options.cache.key);
-    if (resultCache) return cb(null, resultCache);
+    if (resultCache) {
+      return cb(null, resultCache);
+    } else {
+      params.since = new Date(new Date() - periodEnum[params.period]);
+      params.until = new Date();
+    }
     
     var model = Analytic.app.models.Tweet;
-    twitterAnalyticsMethods[method](params, model, options, cb);
+    twitterAnalyticsRemoteMethods[method](params, model, function(err, result) {
+      if (err) return cb(err, null);
+
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
+    });
   }
 
-  var facebookPostAnalyticsMethods = {};
-  facebookPostAnalyticsMethods['most_liked_posts'] = function(params, model, options, cb) { 
-
-    var query = {
-      where: {
-        created_time_ms: {
-          between: [
-            new Date(new Date() - periodEnum[params.period]).getTime(),
-            new Date().getTime()
-          ]
-        }
-      },
-      order: 'likes_count DESC',
-      limit: params.perPage * params.page,
-      skip: (params.perPage * params.page) - params.perPage
-    };
-
-    if (params.postType)
-      query.type = { $all: params.postType };
-
-    if (params.tags)
-      query.categories = { $all: params.tags };
-
-    model.find(query, function(err, facebookPosts) {
-      if (err) return cb(err, null);
-      
-      Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      return cb(null, facebookPosts);
-    });
+  var facebookPostAnalyticsRemtoteMethods = {
+    'most_active_profiles': dao.mongodb.analyticsFacebook.mostActiveProfiles,
+    'most_commented_posts': dao.mongodb.analyticsFacebook.mostCommentedPosts,
+    'most_liked_posts': dao.mongodb.analyticsFacebook.mostLikedPosts,
+    'most_shared_posts': dao.mongodb.analyticsFacebook.mostSharedPosts,
   };
 
-  facebookPostAnalyticsMethods['most_shared_posts'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
-
-    var query = {
-      where: {
-        created_time_ms: {
-          between: [
-            new Date(new Date() - periodEnum[params.period]).getTime(),
-            new Date().getTime()
-          ]
-        }
-      },
-      order: 'shares_count DESC',
-      limit: params.perPage * params.page,
-      skip: (params.perPage * params.page) - params.perPage
-    };
-
-    if (params.type)
-      query.type = { $all: params.postType };
-
-    if (params.tags)
-      query.categories = { $all: params.tags };
-
-    model.find(query, function(err, facebookPosts) {
-      if (err) return cb(err, null);
-      
-      if (facebookPosts.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(null, facebookPosts);
-    });
-  };
-
-  facebookPostAnalyticsMethods['most_commented_posts'] = function(params, model, options, cb) { 
-    var resultCache = Analytic.cache.get(options.cache.key);
-
-    if (resultCache) return cb(null, resultCache);
-
-    var query = {
-      where: {
-        created_time_ms: {
-          between: [
-            new Date(new Date() - periodEnum[params.period]).getTime(),
-            new Date().getTime()
-          ]
-        }
-      },
-      order: 'comments_count DESC',
-      limit: params.perPage * params.page,
-      skip: (params.perPage * params.page) - params.perPage
-    };
-
-    if (params.type)
-      query.type = { $all: params.postType };
-
-    if (params.tags)
-      query.categories = { $all: params.tags };
-
-    model.find(query, function(err, facebookPosts) {
-      if (err) return cb(err, null);
-      
-      if (facebookPosts.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(null, facebookPosts);
-    });
-  };
-
-  facebookPostAnalyticsMethods['most_active_profiles'] = function(params, model, options, cb) { 
-    var pipeline = [
-      { $match: { 
-        created_time_ms: {
-          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
-          $lte: new Date().getTime()
-        }
-      } },
-      { $group: {
-        _id: '$from',
-        posts_count: { $sum: 1 }
-      } },
-      { $project: { 
-          _id: 0,
-          id: '$_id.id',
-          name: '$_id.name',
-          posts_count: '$posts_count'
-      } }, 
-      { $sort: { posts_count: -1 } },
-      { $limit: params.perPage * params.page },
-      { $skip : (params.perPage * params.page) - params.perPage }
-    ];
-
-    if (params.type)
-      pipeline[0].$match.type = { $all: params.postType };
-
-    if (params.tags)
-      pipeline[0].$match.categories = { $all: params.tags };
-
-    model.aggregate(pipeline, function(err, result) {
-      if (err) return cb(err, null);
-
-      if (facebookPosts.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(err, result);
-    });
-  };
-
-  var twitterAnalyticsMethods = {};
-  twitterAnalyticsMethods['most_retweeted_tweets'] = function(params, model, options, cb) { 
-    var pipeline = [
-      { $match: {
-        'status.retweeted_status': { $exists: true},
-        'status.timestamp_ms': {
-          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
-          $lte: new Date().getTime()
-        },
-        block: params.retriveBlocked
-      } },
-      { $group: {
-        _id: '$status.retweeted_status.id_str',
-        status: { $last: '$status' },
-        count: { $sum: 1 }
-      } },
-      { $sort: { count: -1 } },
-      { $project: {
-        _id: 0,
-        status: '$status',
-        count: '$count'
-      } },
-      { $limit: params.perPage * params.page },
-      { $skip : (params.perPage * params.page) - params.perPage }
-    ];
-
-    if(params.tags)
-      pipeline[0].$match.categories = { $all: params.tags };
-    if(params.hashtags) 
-      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    console.log('%j', pipeline);
-
-    model.aggregate(pipeline, function(err, result) {
-      if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(null, result);
-    });
-  };
-
-  twitterAnalyticsMethods['most_recent_retweeted_tweets'] = function(params, model, options, cb) { 
-    var pipeline = [
-      { $match: {
-        'status.retweeted_status': { $exists: true},
-        block: params.retriveBlocked
-      } },
-      { $limit: params.last },
-      { $group: {
-        _id: '$status.retweeted_status.id_str',
-        status: { $last: '$status' },
-        count: { $sum: 1 }
-      } },
-      { $sort: { count: -1 } },
-      { $project: {
-        _id: 0,
-        status: '$status',
-        count: '$count'
-      } },
-      { $limit: params.perPage * params.page },
-      { $skip : (params.perPage * params.page) - params.perPage }
-    ];
-
-    if(params.tags)
-      pipeline[0].$match.categories = { $all: params.tags };
-    if(params.hashtags) 
-      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-
-    model.aggregate(pipeline, function(err, result) {
-      if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(null, result);
-    });
-  };
-
-  twitterAnalyticsMethods['most_mentioned_users'] = function(params, model, options, cb) { 
-    var pipeline = [
-      { $match: {
-        'status.timestamp_ms': {
-          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
-          $lte: new Date().getTime()
-        },
-        'status.entities.user_mentions.0': { $exists: true }, 
-        block: params.retriveBlocked 
-      } },
-      { $unwind: '$status.entities.user_mentions' },
-      { $group: {
-        _id: '$status.entities.user_mentions.id_str',
-        screen_name: { $last: '$status.entities.user_mentions.screen_name' },
-        count: { $sum: 1 }
-      } },
-      { $sort: { count: -1 } },
-      { $project: {
-        _id: 0,
-        status: {
-          user : {
-            screen_name: '$screen_name'
-          }
-        },
-        count: '$count'
-      } },
-      { $limit: params.perPage * params.page },
-      { $skip : (params.perPage * params.page) - params.perPage }
-    ];
-
-    if(params.tags)
-      pipeline[0].$match.categories = { $all: params.tags };
-    if(params.hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-
-    model.aggregate(pipeline, function(err, result) {
-      if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(null, result);
-    });
-  };
-
-  twitterAnalyticsMethods['most_shared_urls'] = function(params, model, options, cb) { 
-    var pipeline = [
-      { $match: {
-        'status.entities.urls.0': { $exists: true },
-        'status.timestamp_ms': {
-          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
-          $lte: new Date().getTime()
-        },
-        block: params.retriveBlocked 
-      } },
-      { $unwind: '$status.entities.urls' },
-      { $group: {
-        _id: '$status.entities.urls.expanded_url',
-        count: { $sum: 1 }
-      } },
-      { $sort: { count: -1 } },
-      { $project: {
-        _id: 0,
-        status: {
-          entities: {
-            urls: {
-              expanded_url: '$_id'
-            }
-          }
-        },
-        count: '$count'
-      } }, 
-      { $limit: params.perPage * params.page }, 
-      { $skip : (params.perPage * params.page) - params.perPage } 
-    ];
-
-    if(params.tags)
-      pipeline[0].$match.categories = { $all: params.tags };
-    if(params.hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-
-    model.aggregate(pipeline, function(err, result) {
-      if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(null, result);
-    });
-  };
-
-  // TODO: rename to most_shared_images
-  twitterAnalyticsMethods['most_retweeted_images'] = function(params, model, options, cb) { 
-    var pipeline = [
-      { $match: {
-        'status.entities.media.0': { $exists: true },
-        'status.timestamp_ms': {
-          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
-          $lte: new Date().getTime()
-        },
-        block: params.retriveBlocked 
-      } },
-      { $unwind: '$status.entities.media' },
-      { $group: {
-        _id: '$status.entities.media.media_url_https',
-        status_id_str: { $last: '$status.id_str' },
-        status_text: { $last: '$status.text' },
-        user_id_str: { $last: '$status.user.id_str' },
-        user_profile_image_url_https: { $last: '$status.user.profile_image_url_https' },
-        count: { $sum: 1 }
-      } },
-      { $sort: { count: -1 } },
-      { $project: {
-        _id: 0,
-        status: {
-          id_str: '$status_id_str',
-          text: '$status_text',
-          entities: {
-            media: { 
-              media_url_https: '$_id' 
-            }
-          },
-          user: {
-            screen_name: '$user_screen_name',
-            profile_image_url_https: '$user_profile_image_url_https'
-          }
-        },
-        count: '$count'
-      } }, 
-      { $limit: params.perPage * params.page }, 
-      { $skip : (params.perPage * params.page) - params.perPage } 
-    ];
-
-    if(params.tags)
-      pipeline[0].$match.categories = { $all: params.tags };
-    if(params.hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-
-    model.aggregate(pipeline, function(err, result) {
-      if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(null, result);
-    });
-  };
-
-  twitterAnalyticsMethods['most_active_users'] = function(params, model, options, cb) { 
-    var pipeline = [ 
-      { $match: {
-        'status.user.screen_name': { $exists: true },
-        'status.timestamp_ms': {
-          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
-          $lte: new Date().getTime()
-        },
-        block: params.retriveBlocked 
-      } },
-      { $group: {
-        _id: '$status.user.id_str',
-        screen_name: { $last: '$status.user.screen_name' },
-        count: { $sum: 1 }
-      } },
-      { $sort: { count: -1 } },
-      { $project: {
-        _id: 0,
-        status: {
-          user: { 
-            screen_name: '$screen_name' 
-          }
-        },
-        count: '$count'
-      } }, 
-      { $limit: params.perPage * params.page }, 
-      { $skip : (params.perPage * params.page) - params.perPage } 
-    ];
-
-    if(params.tags)
-      pipeline[0].$match.categories = { $all: params.tags };
-    if(params.hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-
-    model.aggregate(pipeline, function(err, result) {
-      if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(null, result);
-    });
-  };
-
-  twitterAnalyticsMethods['most_popular_hashtags'] = function(params, model, options, cb) { 
-    var pipeline = [
-      { $match: {
-        'status.entities.hashtags.0': { $exists: true },
-        'status.timestamp_ms': {
-          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
-          $lte: new Date().getTime()
-        },
-        block: params.retriveBlocked 
-      } },
-      { $unwind: '$status.entities.hashtags' },
-      { $group: {
-        _id: '$status.entities.hashtags.text',
-        count: { $sum: 1 }
-      } },
-      { $sort: { count: -1 } },
-      { $project: {
-        _id: 0,
-        hashtag: '$_id',
-        count: '$count'
-      } }, 
-      { $limit: params.perPage * params.page }, 
-      { $skip : (params.perPage * params.page) - params.perPage } 
-    ];
-
-    if(params.tags)
-      pipeline[0].$match.categories = { $all: params.tags };
-    if(params.hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-
-    model.aggregate(pipeline, function(err, result) {
-      if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(null, result);
-    });
-  };
-
-  twitterAnalyticsMethods['geolocation'] = function(params, model, options, cb) { 
-    var pipeline = [
-      { $match: {
-        $or: [ { 'status.geo': { $ne: null } }, 
-               { 'city_geo': { $exists: true } } ],
-        'status.timestamp_ms': {
-          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
-          $lte: new Date().getTime()
-        },
-        block: params.retriveBlocked 
-      } }, 
-      { $group: {
-        _id: 0,
-        features: { $push: { 
-          // type: {  $literal: 'Feature' },
-          properties: {
-            id_str: '$status.id_str',
-          },
-          geometry: {
-            // type: {  $literal: 'Point' }, 
-            coordinates: { $cond: [ { $ne: [ '$status.geo', null ] }, '$status.geo.coordinates', '$city_geo' ] }
-          }
-        } }
-      } },
-      { $project: {
-        _id: 0,
-        // type: {  $literal: 'FeatureCollection' },
-        features: '$features'
-      } }
-    ];
-
-    if(params.tags)
-      pipeline[0].$match.categories = { $all: params.tags };
-    if(params.hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-
-    model.aggregate(pipeline, function(err, result) {
-      if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
-      
-      return cb(null, result);
-    });
+  var twitterAnalyticsRemoteMethods = {
+    'geolocation': dao.mongodb.analyticsTwitter.geolocation,
+    'most_active_users': dao.mongodb.analyticsTwitter.mostActiveUsers,
+    'most_mentioned_users': dao.mongodb.analyticsTwitter.mostMentionedUsers,
+    'most_popular_hashtags': dao.mongodb.analyticsTwitter.mostPopularHashtags,
+    'most_recently_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRecentlyRetweetedTweets,
+    'most_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRetweetedTweets,
+    'most_shared_images': dao.mongodb.analyticsTwitter.mostSharedImages,
+    'most_shared_urls': dao.mongodb.analyticsTwitter.mostSharedUrls
   };
 };
