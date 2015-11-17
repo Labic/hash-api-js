@@ -32,6 +32,7 @@ module.exports = function(Analytic) {
           mappedFilter.mentions      = _.convertToArray(filter['mentions']);
           mappedFilter.profiles      = _.convertToArray(filter['profiles']);
           mappedFilter.postType      = _.convertToArray(filter['post_type']);
+          mappedFilter.postType      = _.convertToBoolean(filter['blocked']);
 
           filter = mappedFilter;
         } else {
@@ -40,6 +41,7 @@ module.exports = function(Analytic) {
 
         return filter;
       } },
+      { arg: 'last', type: 'number' },
       { arg: 'page', type: 'number' },
       { arg: 'per_page', type: 'number' }
     ],
@@ -86,7 +88,7 @@ module.exports = function(Analytic) {
     http: { path: '/twitter/:method', verb: 'GET' }
   });
 
-  Analytic.analyticsFacebookPosts = function(method, profileType, period, filter, page, perPage, cb) {
+  Analytic.analyticsFacebookPosts = function(method, profileType, period, filter, last, page, perPage, cb) {
     if (!analyticsFacebookPostRemtoteMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.statusCode = 404;
@@ -98,8 +100,9 @@ module.exports = function(Analytic) {
       endpoint: '/analytics/facebook',
       method: method,
       profileType: profileType,
-      period: period === undefined ? 'P1H' : period,
+      period: period === undefined ? 'P7D' : period,
       filter: filter,
+      last: last === undefined ? 1000 : last > 5000 ? 5000 : last,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage > 100 ? 100 : perPage
     }
@@ -114,10 +117,9 @@ module.exports = function(Analytic) {
     var resultCache = Analytic.cache.get(options.cache.key);
     if (resultCache) {
       return cb(null, resultCache);
-    } else {
-      params.since = new Date(new Date() - periodEnum[params.period]);
-      params.until = new Date();
-    }
+
+    params.since = new Date(new Date() - periodEnum[params.period]);
+    params.until = new Date();
 
     switch (params.profileType) {
       case 'user':
@@ -154,7 +156,7 @@ module.exports = function(Analytic) {
     var params = {
       endpoint: '/analytics/twitter',
       method: method,
-      period: period === undefined ? 'P1H' : period,
+      period: period === undefined ? 'P7D' : period,
       filter: filter,
       last: last === undefined ? 1000 : last > 5000 ? 5000 : last,
       page: page === undefined ? 1 : page,
@@ -169,12 +171,11 @@ module.exports = function(Analytic) {
     };
 
     var resultCache = Analytic.cache.get(options.cache.key);
-    if (resultCache) {
+    if (resultCache)
       return cb(null, resultCache);
-    } else {
-      params.since = new Date(new Date() - periodEnum[params.period]);
-      params.until = new Date();
-    }
+    
+    params.since = new Date(new Date() - periodEnum[params.period]);
+    params.until = new Date();
     
     var model = Analytic.app.models.Tweet;
     analyticsTwitterRemoteMethods[method](params, model, function(err, result) {
@@ -204,4 +205,5 @@ module.exports = function(Analytic) {
     'most_shared_images': dao.mongodb.analyticsTwitter.mostSharedImages,
     'most_shared_urls': dao.mongodb.analyticsTwitter.mostSharedUrls
   };
+
 };
