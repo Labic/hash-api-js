@@ -1,6 +1,12 @@
 var periodEnum = require('./enums/periodEnum'),
     granularityEnum = require('./enums/granularityEnum'),
-    cacheTTLenum = require('./enums/cacheTTLenum');
+    cacheTTLenum = require('./enums/cacheTTLenum'),
+    _ = require('../lib/underscoreExtended'),
+    dao = { 
+      mongodb: {
+        metricsTwitter: require('../dao/mongodb/metrics-twitter')
+      }
+    };
 
 module.exports = function(Metric) {
 
@@ -17,12 +23,38 @@ module.exports = function(Metric) {
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
-  Metric.remoteMethod('twitterMetrics', {
+  Metric.remoteMethod('metricsTwitter', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string' },
       { arg: 'granularity', type: 'string' },
-      { arg: 'filter', type: '[string]' },
+      { arg: 'filter', type: 'object', http: function mapping(ctx) {
+        var filter = ctx.req.query.filter;
+
+        if(filter) {
+          var mappedFilter = {
+            tags: {
+              with: undefined,
+              contains: undefined
+            }
+          };
+
+          mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
+          mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
+          mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
+          mappedFilter.users         = _.convertToArray(filter['users']);
+          mappedFilter.has           = _.convertToArray(filter['has']);
+          mappedFilter.retweeted     = _.convertToBoolean(filter['retweeted']);
+          mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
+
+          filter = mappedFilter;
+        } else {
+          filter = {};
+        }
+
+        return filter;
+      } },
       { arg: 'tags', type: '[string]' },
       { arg: 'hashtags', type: '[string]' },
       { arg: 'has', type: '[string]' }, // Used for count method
@@ -89,10 +121,10 @@ module.exports = function(Metric) {
     facebookPostsMetricsMethods[method](params, model, options, cb);
   }
 
-  Metric.twitterMetrics = function(method, period, granularity, filter, tags, hashtags, has, retriveBlocked, page, perPage, cb) {
-    if (!twitterMetricsMethods[method]) {
+  Metric.metricsTwitter = function(method, period, granularity, filter, tags, hashtags, has, retriveBlocked, page, perPage, cb) {
+    if (!metricsTwitterRemoteMethods[method]) {
       var err = new Error('Endpoint not found!');
-      err.status = 404;
+      err.statusCode = 404;
 
       return cb(err);
     }
@@ -100,14 +132,9 @@ module.exports = function(Metric) {
     var params = {
       endpoint: '/metrics/twitter',
       method: method,
-      period: period === undefined ? '1h' : period,
-      granularity: granularity === undefined ? 'PT15M' : granularity,
-      filter: {
-        tags: tags === undefined ? null : tags.sort(),
-        hashtags: hashtags === undefined ? null : hashtags.sort(),
-        has: has, 
-        blocked: retriveBlocked === undefined ? false : retriveBlocked
-      },
+      period: period === undefined ? 'P1H' : period,
+      granularity: granularity === undefined ? 'P1D' : granularity,
+      filter: filter,
       tags: tags === undefined ? null : tags.sort(),
       hashtags: hashtags === undefined ? null : hashtags.sort(),
       has: has, 
@@ -119,7 +146,7 @@ module.exports = function(Metric) {
     if (!periodEnum[params.period]) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
       err.fields = ['period'];
-      err.status = 400;
+      err.statusCode = 400;
 
       return cb(err);
     }
@@ -130,96 +157,28 @@ module.exports = function(Metric) {
         ttl: cacheTTLenum[params.period]
       }
     };
+
+    var resultCache = Metric.cache.get(options.cache.key);
+    if (resultCache)
+      return cb(null, resultCache);
+
+    params.since = new Date(new Date() - periodEnum[params.period]);
+    params.until = new Date();
     
     var model = Metric.app.models.Tweet;
-    twitterMetricsMethods[method](params, model, options, cb);
+    metricsTwitterRemoteMethods[method](params, model, function (err, result) {
+      if (err) return cb(err, null);
+
+      if (result.length > 0)
+        Metric.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
+    });
   }
 
-  var twitterMetricsMethods = {};
-  twitterMetricsMethods['count'] = function(params, model, options, cb) { 
-    var resultCache = Metric.cache.get(options.cache.key);
-    if (resultCache) return cb(null, resultCache);
-
-    var query = {
-      'status.timestamp_ms': {
-        $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
-        $lte: new Date().getTime()
-      },
-      block: params.retriveBlocked
-    };
-
-    if(params.has) {
-      if(params.has.indexOf('media') > -1)
-        query['status.entities.media.0'] = { $exists: true };
-      if(params.has.indexOf('url') > -1)
-        query['status.entities.media.0'] = { $exists: true };
-    }
-    
-    if(params.tags)
-      query.categories = { $all: params.tags };
-    
-    if(params.hashtags)
-      query['status.entities.hashtags.text'] = { $in: params.hashtags };
-    
-    return model.dao.mongodb.count(query, function(err, result) {
-      if (err) return cb(err, null);
-      
-      Metric.cache.put(options.cache.key, { count: result }, options.cache.ttl);
-      return cb(null, { count: result });
-    });
-  };
-
-  twitterMetricsMethods['post_rate'] = function(params, model, options, cb) { 
-    var resultCache = Metric.cache.get(options.cache.key);
-    if (resultCache) return cb(null, resultCache);
-
-    var group = {
-    }
-
-    var pipeline = [
-      { $match: {
-        'status.timestamp_ms': {
-          $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
-          $lte: new Date().getTime()
-        },
-        block: params.filter.blocked
-      } },
-      { $group: {
-        _id: { 
-          year: { $year: '$status.created_at' },
-          month: { $month: '$status.created_at' },
-          day: { $dayOfMonth: '$status.created_at' }
-        },
-        count: { $sum: 1 }
-      } },
-      { $sort: { count: -1 } },
-      { $project: {
-        _id: 0,
-        count: '$count'
-      } },
-      { $limit: params.perPage * params.page },
-      { $skip : (params.perPage * params.page) - params.perPage }
-    ];
-
-    if(params.has)
-      if(params.has.indexOf('media') > -1)
-        pipeline[0].$match['status.entities.media.0'] = { $exists: true };
-      if(params.has.indexOf('url') > -1)
-        pipeline[0].$match['status.entities.media.0'] = { $exists: true };
-
-    if(params.tags)
-      pipeline[0].$match.categories = { $all: params.tags };
-    
-    if(params.hashtags)
-      pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.hashtags };
-    
-    return model.dao.mongodb.count(query, function(err, result) {
-      if (err) return cb(err, null);
-      
-      Metric.cache.put(options.cache.key, { count: result }, options.cache.ttl);
-      return cb(null, { count: result });
-    });
-  };
+  var metricsTwitterRemoteMethods = {};
+  metricsTwitterRemoteMethods['tags_count'] = dao.mongodb.metricsTwitter.tagsCount;
+  metricsTwitterRemoteMethods['interations_rate'] = dao.mongodb.metricsTwitter.interactionsRate;
 
   var facebookPostsMetricsMethods = {};
   facebookPostsMetricsMethods['count'] = function(params, model, options, cb) { 
