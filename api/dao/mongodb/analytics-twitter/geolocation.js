@@ -38,10 +38,21 @@ module.exports = function geolocation(params, model, cb) {
   if(_.isBoolean(params.filter.blocked))
     pipeline[0].$match.block = params.filter.blocked;
 
-  console.log('%j', pipeline);
-
   // TODO: Implement geojson-flatten for GeoJSON format result
-  model.dao.mongodb.aggregate(pipeline, cb);
+  model.dao.mongodb.aggregate(pipeline, function (err, result) {
+    if(err) return cb(err, null);
+
+    if(result) {
+      result[0].bbox = [7, 7, -31, -31];
+      result[0].type = 'Feature';
+      result[0].geometry.type = 'MultiPoint';
+      for (var i = 0; i < result[0].geometry.coordinates.length; i++) {
+        var coordinate = result[0].geometry.coordinates[i];
+        result[0].geometry.coordinates[i] = [parseFloat(coordinate[1]), parseFloat(coordinate[0])];
+      };
+    }
+    cb(null, result[0]);
+  });
 }
 
 var format = {
@@ -66,7 +77,9 @@ var format = {
         coordinates: '$coordinates'
       },
       properties: {
-        id_str: "$ids_str"
+        coordinates: {
+          id: "$ids_str"
+        }
       }
     } }
   ]
