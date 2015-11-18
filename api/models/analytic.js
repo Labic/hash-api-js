@@ -33,7 +33,6 @@ module.exports = function(Analytic) {
           mappedFilter.mentions      = _.convertToArray(filter['mentions']);
           mappedFilter.profiles      = _.convertToArray(filter['profiles']);
           mappedFilter.postType      = _.convertToArray(filter['post_type']);
-          mappedFilter.postType      = _.convertToBoolean(filter['blocked']);
 
           filter = mappedFilter;
         } else {
