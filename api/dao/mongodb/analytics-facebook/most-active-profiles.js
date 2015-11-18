@@ -26,8 +26,6 @@ module.exports = function mostActiveProfiles(params, model, cb) {
     { $skip : (params.perPage * params.page) - params.perPage }
   ];
 
-  console.log('%j', pipeline);
-
   if(params.filter.tags) {
     if(params.filter.tags.with)
       pipeline[0].$match.categories = { $all: params.filter.tags.with };
