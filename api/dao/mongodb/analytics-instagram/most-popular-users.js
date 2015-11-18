@@ -40,7 +40,7 @@ module.exports = function mostPopularUsers(params, model, cb) {
     pipeline[0].$match['data.tags'] = { $in: params.filter.hashtags };
 
   if(params.filter.mentions)
-    pipeline[0].$match['data.users_in_photo.username'] = { $in: params.filter.mentions };
+    pipeline[0].$match['data.users_in_photo.user.username'] = { $in: params.filter.mentions };
 
   if(params.filter.users)
     pipeline[0].$match['data.user.username'] = { $in: params.filter.users };

@@ -7,7 +7,7 @@ module.exports = function mostLikedMedias(params, model, cb) {
   }
 
   var options = {
-    sort: [['data.likes.count', -1]],
+    sort: [ [ 'data.likes.count', -1 ] ],
     limit: params.perPage * params.page,
     skip: (params.perPage * params.page) - params.perPage
   }
@@ -24,7 +24,7 @@ module.exports = function mostLikedMedias(params, model, cb) {
     query['data.tags'] = { $in: params.filter.hashtags };
 
   if(params.filter.mentions)
-    query['data.users_in_photo.username'] = { $in: params.filter.mentions };
+    query['data.users_in_photo.user.username'] = { $in: params.filter.mentions };
 
   if(params.filter.users)
     query['data.user.username'] = { $in: params.filter.users };

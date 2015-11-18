@@ -1,13 +1,13 @@
 module.exports = function mostCommentedMedia(params, model, cb) { 
   var query = {
     'data.created_time': {
-      $gte: params.since.getTime(),
-      $lte: params.until.getTime()
+      $gte: params.since.getTime() / 1000,
+      $lte: params.until.getTime() / 1000
     }
   }
 
   var options = {
-    sort: [['data.comments.count', -1]],
+    sort: [ [ 'data.comments.count', -1 ] ],
     limit: params.perPage * params.page,
     skip: (params.perPage * params.page) - params.perPage
   }
@@ -24,13 +24,13 @@ module.exports = function mostCommentedMedia(params, model, cb) {
     query['data.tags'] = { $in: params.filter.hashtags };
 
   if(params.filter.mentions)
-    query['data.users_in_photo.username'] = { $in: params.filter.mentions };
+    query['data.users_in_photo.user.username'] = { $in: params.filter.mentions };
 
   if(params.filter.users)
     query['data.user.username'] = { $in: params.filter.users };
 
-  if(params.filter.mediaType)
-    query['data.type'] = { $in: params.filter.mediaType };
+  if(params.filter.type)
+    query['data.type'] = { $in: params.filter.type };
 
   model.dao.mongodb.find(query, options, cb);
 };

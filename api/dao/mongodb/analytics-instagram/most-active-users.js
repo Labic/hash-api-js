@@ -4,8 +4,8 @@ module.exports = function mostActiveUsers(params, model, cb) {
   var pipeline = [ 
     { $match: {
       'data.created_time': {
-        $gte: params.since.getTime(),
-        $lte: params.until.getTime()
+        $gte: params.since.getTime() / 1000,
+        $lte: params.until.getTime() / 1000
       }
     } },
     { $group: {
@@ -39,7 +39,7 @@ module.exports = function mostActiveUsers(params, model, cb) {
     pipeline[0].$match['data.tags'] = { $in: params.filter.hashtags };
 
   if(params.filter.mentions)
-    pipeline[0].$match['data.users_in_photo.username'] = { $in: params.filter.mentions };
+    pipeline[0].$match['data.users_in_photo.user.username'] = { $in: params.filter.mentions };
 
   if(params.filter.users)
     pipeline[0].$match['data.user.username'] = { $in: params.filter.users };
