@@ -3,8 +3,9 @@ var periodEnum = require('./enums/periodEnum'),
     _ = require('../lib/underscoreExtended'),
     dao = { 
       mongodb: {
-        analyticsTwitter: require('../dao/mongodb/analytics-twitter'),
-        analyticsFacebook: require('../dao/mongodb/analytics-facebook')
+        analyticsFacebook: require('../dao/mongodb/analytics-facebook'),
+        analyticsInstagram: require('../dao/mongodb/analytics-instagram'),
+        analyticsTwitter: require('../dao/mongodb/analytics-twitter')
       }
     };
 
@@ -49,6 +50,44 @@ module.exports = function(Analytic) {
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
+  Analytic.remoteMethod('analyticsInstagram', {
+    accepts: [
+      { arg: 'method', type: 'string', required: true },
+      { arg: 'period', type: 'string' },
+      { arg: 'filter', type: 'object', http: function mapping(ctx) {
+        var filter = ctx.req.query.filter;
+
+        if(filter) {
+          var mappedFilter = {
+            tags: {
+              with: undefined,
+              contains: undefined
+            }
+          };
+
+          mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
+          mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
+          mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
+          mappedFilter.users         = _.convertToArray(filter['users']);
+          mappedFilter.has           = _.convertToArray(filter['type']);
+          mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
+
+          filter = mappedFilter;
+        } else {
+          filter = {};
+        }
+
+        return filter;
+      } },
+      { arg: 'last', type: 'number' },
+      { arg: 'page', type: 'number' },
+      { arg: 'per_page', type: 'number' }
+    ],
+    returns: { type: 'object', root: true },
+    http: { path: '/instagram/:method', verb: 'GET' }
+  });
+
   Analytic.remoteMethod('analyticsTwitter', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
@@ -89,7 +128,7 @@ module.exports = function(Analytic) {
   });
 
   Analytic.analyticsFacebookPosts = function(method, profileType, period, filter, last, page, perPage, cb) {
-    if (!analyticsFacebookPostRemtoteMethods[method]) {
+    if (!analyticsFacebookPostRemoteMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.statusCode = 404;
 
@@ -135,7 +174,7 @@ module.exports = function(Analytic) {
         return cb(err, null);
     }
     
-    analyticsFacebookPostRemtoteMethods[method](params, model, function(err, result) {
+    analyticsFacebookPostRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
 
       if (result.length > 0)
@@ -144,6 +183,60 @@ module.exports = function(Analytic) {
       return cb(null, result);
     });
   }
+
+  var analyticsFacebookPostRemoteMethods = {
+    'most_active_profiles': dao.mongodb.analyticsFacebook.mostActiveProfiles,
+    'most_commented_posts': dao.mongodb.analyticsFacebook.mostCommentedPosts,
+    'most_liked_posts': dao.mongodb.analyticsFacebook.mostLikedPosts,
+    'most_shared_posts': dao.mongodb.analyticsFacebook.mostSharedPosts
+  };
+
+  Analytic.analyticsInstagram = function(method, period, filter, last, page, perPage, cb) {
+    if (!analyticsInstagramRemoteMethods[method]) {
+      var err = new Error('Endpoint not found!');
+      err.status = 404;
+
+      return cb(err);
+    }
+
+    var params = {
+      endpoint: '/analytics/twitter',
+      method: method,
+      period: period === undefined ? 'P7D' : period,
+      filter: filter,
+      last: last === undefined ? 1000 : last > 5000 ? 5000 : last,
+      page: page === undefined ? 1 : page,
+      perPage: perPage === undefined ? 25 : perPage > 100 ? 100 : perPage
+    };
+
+    var options = {
+      cache: {
+        key: JSON.stringify(params),
+        ttl: cacheTTLenum[params.period]
+      }
+    };
+
+    var resultCache = Analytic.cache.get(options.cache.key);
+    if (resultCache)
+      return cb(null, resultCache);
+    
+    params.since = new Date(new Date() - periodEnum[params.period]);
+    params.until = new Date();
+    
+    var model = Analytic.app.models.InstagramMedia;
+    analyticsInstagramRemoteMethods[method](params, model, function(err, result) {
+      if (err) return cb(err, null);
+
+      if (result.length > 0)
+        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
+      
+      return cb(null, result);
+    });
+  }
+
+  var analyticsInstagramRemoteMethods = {
+    'most_popular_users': dao.mongodb.analyticsInstagram.mostPopularUsers
+  };
 
   Analytic.analyticsTwitter = function(method, period, filter, last, page, perPage, cb) {
     if (!analyticsTwitterRemoteMethods[method]) {
@@ -187,13 +280,6 @@ module.exports = function(Analytic) {
       return cb(null, result);
     });
   }
-
-  var analyticsFacebookPostRemtoteMethods = {
-    'most_active_profiles': dao.mongodb.analyticsFacebook.mostActiveProfiles,
-    'most_commented_posts': dao.mongodb.analyticsFacebook.mostCommentedPosts,
-    'most_liked_posts': dao.mongodb.analyticsFacebook.mostLikedPosts,
-    'most_shared_posts': dao.mongodb.analyticsFacebook.mostSharedPosts,
-  };
 
   var analyticsTwitterRemoteMethods = {
     'geolocation': dao.mongodb.analyticsTwitter.geolocation,

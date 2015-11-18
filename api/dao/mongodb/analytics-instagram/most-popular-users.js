@@ -4,16 +4,16 @@ module.exports = function mostPopularUsers(params, model, cb) {
   var pipeline = [ 
     { $match: {
       'data.created_time': {
-        $gte: params.since.getTime(),
-        $lte: params.until.getTime()
+        $gte: params.since.getTime() / 1000,
+        $lte: params.until.getTime() / 1000
       }
     } },
     { $group: {
       _id: '$data.user.id',
       username: { $last: '$data.user.username' },
-      score: { $add: ['$data.comments.count', '$data.likes.count'] }
+      likes_score: { $sum: { $divide: [ '$data.likes.count', 2 ] } },
+      comments_score: { $sum: { $divide: [ '$data.comments.count', 1 ] } }
     } },
-    { $sort: { count: -1 } },
     { $project: {
       _id: 0,
       data: {
@@ -21,8 +21,9 @@ module.exports = function mostPopularUsers(params, model, cb) {
           username: '$username' 
         }
       },
-      score: '$score'
+      score: { $add: ['$likes_score', '$comments_score'] }
     } }, 
+    { $sort: { score: -1 } },
     { $limit: params.perPage * params.page }, 
     { $skip : (params.perPage * params.page) - params.perPage } 
   ];
@@ -44,8 +45,8 @@ module.exports = function mostPopularUsers(params, model, cb) {
   if(params.filter.users)
     pipeline[0].$match['data.user.username'] = { $in: params.filter.users };
 
-  if(params.filter.mediaType)
-    query['data.type'] = { $in: params.filter.mediaType };
+  if(params.filter.type)
+    query['data.type'] = { $in: params.filter.type };
 
   model.dao.mongodb.aggregate(pipeline, cb);
 };
