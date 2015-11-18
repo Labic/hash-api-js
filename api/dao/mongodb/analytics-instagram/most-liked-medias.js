@@ -1,8 +1,8 @@
 module.exports = function mostLikedMedias(params, model, cb) { 
   var query = {
     'data.created_time': {
-      $gte: params.since.getTime(),
-      $lte: params.until.getTime()
+      $gte: params.since.getTime() / 1000,
+      $lte: params.until.getTime() / 1000
     }
   }
 

@@ -70,7 +70,7 @@ module.exports = function(Analytic) {
           mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
           mappedFilter.mentions      = _.convertToArray(filter['mentions']);
           mappedFilter.users         = _.convertToArray(filter['users']);
-          mappedFilter.has           = _.convertToArray(filter['type']);
+          mappedFilter.type          = _.convertToArray(filter['type']);
           mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
 
           filter = mappedFilter;
@@ -235,6 +235,7 @@ module.exports = function(Analytic) {
   }
 
   var analyticsInstagramRemoteMethods = {
+    'most_liked_medias': dao.mongodb.analyticsInstagram.mostLikedMedias,
     'most_popular_users': dao.mongodb.analyticsInstagram.mostPopularUsers
   };
 
