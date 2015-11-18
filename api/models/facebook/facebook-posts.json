@@ -11,7 +11,7 @@
   },
   "properties": {
     "id": {
-      "type": "Number",
+      "type": "number",
       "id": true
     },
     "from": {
@@ -24,7 +24,88 @@
       "type": "FacebookPostSources"
     },
     "url": {
-      "type": "String"
+      "type": "string"
+    },
+    "caption": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "hashtags": {
+      "type": ["string"]
+    },
+    "name": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "object_id": {
+      "type": "object"
+    },
+    "to": {
+      "type": "object"
+    },
+    "comments_count": {
+      "type": "number"
+    },
+    "likes_count": {
+      "type": "number"
+    },
+    "full_picture": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "story": {
+      "type": "object"
+    },
+    "status_type": {
+      "type": "string"
+    },
+    "shares_count": {
+      "type": "number"
+    },
+    "link": {
+      "type": "object"
+    },
+    "picture": {
+      "type": "object"
+    },
+    "properties": {
+      "type": ["object"]
+    },
+    "with_tags": {
+      "type": ["object"]
+    },
+    "message_tags": {
+      "type": ["object"]
+    },
+    "scheduled_publish_time_ms": {
+      "type": "number"
+    },
+    "updated_time": {
+      "type": "date"
+    },
+    "updated_time_ms": {
+      "type": "number"
+    },
+    "created_time": {
+      "type": "date"
+    },
+    "created_time_ms": {
+      "type": "number"
+    },
+    "api_inf": {
+      "type": "object"
+    },
+    "collect_at": {
+      "type": "number"
     }
   },
   "scope": {
