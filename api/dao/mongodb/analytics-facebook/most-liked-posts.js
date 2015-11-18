@@ -31,8 +31,8 @@ module.exports = function mostLikedPosts(params, model, cb) {
   if(params.filter.profiles)
     query['from.id'] = { $in: params.filter.profiles };
 
-  if(params.filter.postType)
-    query['type'] = { $in: params.filter.postType };
+  if(params.filter.type)
+    query['type'] = { $in: params.filter.type };
 
   model.dao.mongodb.find(query, options, cb);
 };

@@ -30,9 +30,9 @@ module.exports = function(Analytic) {
           mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
           mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
           mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
-          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
           mappedFilter.profiles      = _.convertToArray(filter['profiles']);
-          mappedFilter.postType      = _.convertToArray(filter['post_type']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
+          mappedFilter.type          = _.convertToArray(filter['type']);
 
           filter = mappedFilter;
         } else {
@@ -110,7 +110,8 @@ module.exports = function(Analytic) {
     'most_active_profiles': dao.mongodb.analyticsFacebook.mostActiveProfiles,
     'most_commented_posts': dao.mongodb.analyticsFacebook.mostCommentedPosts,
     'most_liked_posts': dao.mongodb.analyticsFacebook.mostLikedPosts,
-    'most_shared_images': dao.mongodb.analyticsFacebook.mostSharedImages,
+    // TODO: Rename function dao.mongodb.analyticsFacebook.mostSharedImages to dao.mongodb.analyticsFacebook.mostRecurringImages
+    'most_recurring_images': dao.mongodb.analyticsFacebook.mostSharedImages,
     'most_shared_posts': dao.mongodb.analyticsFacebook.mostSharedPosts
   };
 
@@ -133,8 +134,8 @@ module.exports = function(Analytic) {
           mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
           mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
           mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
-          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
           mappedFilter.users         = _.convertToArray(filter['users']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
           mappedFilter.type          = _.convertToArray(filter['type']);
           mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
 
@@ -223,8 +224,8 @@ module.exports = function(Analytic) {
           mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
           mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
           mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
-          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
           mappedFilter.users         = _.convertToArray(filter['users']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
           mappedFilter.has           = _.convertToArray(filter['has']);
           mappedFilter.retweeted     = _.convertToBoolean(filter['retweeted']);
           mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
