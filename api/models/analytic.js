@@ -110,6 +110,7 @@ module.exports = function(Analytic) {
     'most_active_profiles': dao.mongodb.analyticsFacebook.mostActiveProfiles,
     'most_commented_posts': dao.mongodb.analyticsFacebook.mostCommentedPosts,
     'most_liked_posts': dao.mongodb.analyticsFacebook.mostLikedPosts,
+    'most_shared_images': dao.mongodb.analyticsFacebook.mostSharedImages,
     'most_shared_posts': dao.mongodb.analyticsFacebook.mostSharedPosts
   };
 
