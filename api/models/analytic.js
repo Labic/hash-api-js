@@ -50,83 +50,6 @@ module.exports = function(Analytic) {
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
-  Analytic.remoteMethod('analyticsInstagram', {
-    accepts: [
-      { arg: 'method', type: 'string', required: true },
-      { arg: 'period', type: 'string' },
-      { arg: 'filter', type: 'object', http: function mapping(ctx) {
-        var filter = ctx.req.query.filter;
-
-        if(filter) {
-          var mappedFilter = {
-            tags: {
-              with: undefined,
-              contains: undefined
-            }
-          };
-
-          mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
-          mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
-          mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
-          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
-          mappedFilter.users         = _.convertToArray(filter['users']);
-          mappedFilter.type          = _.convertToArray(filter['type']);
-          mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
-
-          filter = mappedFilter;
-        } else {
-          filter = {};
-        }
-
-        return filter;
-      } },
-      { arg: 'last', type: 'number' },
-      { arg: 'page', type: 'number' },
-      { arg: 'per_page', type: 'number' }
-    ],
-    returns: { type: 'object', root: true },
-    http: { path: '/instagram/:method', verb: 'GET' }
-  });
-
-  Analytic.remoteMethod('analyticsTwitter', {
-    accepts: [
-      { arg: 'method', type: 'string', required: true },
-      { arg: 'period', type: 'string' },
-      { arg: 'filter', type: 'object', http: function mapping(ctx) {
-        var filter = ctx.req.query.filter;
-
-        if(filter) {
-          var mappedFilter = {
-            tags: {
-              with: undefined,
-              contains: undefined
-            }
-          };
-
-          mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
-          mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
-          mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
-          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
-          mappedFilter.users         = _.convertToArray(filter['users']);
-          mappedFilter.has           = _.convertToArray(filter['has']);
-          mappedFilter.retweeted     = _.convertToBoolean(filter['retweeted']);
-          mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
-
-          filter = mappedFilter;
-        } else {
-          filter = {};
-        }
-
-        return filter;
-      } },
-      { arg: 'last', type: 'number' },
-      { arg: 'page', type: 'number' },
-      { arg: 'per_page', type: 'number' }
-    ],
-    returns: { type: 'object', root: true },
-    http: { path: '/twitter/:method', verb: 'GET' }
-  });
-
   Analytic.analyticsFacebookPosts = function(method, profileType, period, filter, last, page, perPage, cb) {
     if (!analyticsFacebookPostRemoteMethods[method]) {
       var err = new Error('Endpoint not found!');
@@ -191,6 +114,45 @@ module.exports = function(Analytic) {
     'most_shared_posts': dao.mongodb.analyticsFacebook.mostSharedPosts
   };
 
+
+  Analytic.remoteMethod('analyticsInstagram', {
+    accepts: [
+      { arg: 'method', type: 'string', required: true },
+      { arg: 'period', type: 'string' },
+      { arg: 'filter', type: 'object', http: function mapping(ctx) {
+        var filter = ctx.req.query.filter;
+
+        if(filter) {
+          var mappedFilter = {
+            tags: {
+              with: undefined,
+              contains: undefined
+            }
+          };
+
+          mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
+          mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
+          mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
+          mappedFilter.users         = _.convertToArray(filter['users']);
+          mappedFilter.type          = _.convertToArray(filter['type']);
+          mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
+
+          filter = mappedFilter;
+        } else {
+          filter = {};
+        }
+
+        return filter;
+      } },
+      { arg: 'last', type: 'number' },
+      { arg: 'page', type: 'number' },
+      { arg: 'per_page', type: 'number' }
+    ],
+    returns: { type: 'object', root: true },
+    http: { path: '/instagram/:method', verb: 'GET' }
+  });
+
   Analytic.analyticsInstagram = function(method, period, filter, last, page, perPage, cb) {
     if (!analyticsInstagramRemoteMethods[method]) {
       var err = new Error('Endpoint not found!');
@@ -235,9 +197,52 @@ module.exports = function(Analytic) {
   }
 
   var analyticsInstagramRemoteMethods = {
+    'geolocation': dao.mongodb.analyticsInstagram.geolocation,
+    'most_active_users': dao.mongodb.analyticsInstagram.mostActiveUsers,
+    'most_commented_medias': dao.mongodb.analyticsInstagram.mostCommentedMedia,
     'most_liked_medias': dao.mongodb.analyticsInstagram.mostLikedMedias,
     'most_popular_users': dao.mongodb.analyticsInstagram.mostPopularUsers
   };
+
+
+  Analytic.remoteMethod('analyticsTwitter', {
+    accepts: [
+      { arg: 'method', type: 'string', required: true },
+      { arg: 'period', type: 'string' },
+      { arg: 'filter', type: 'object', http: function mapping(ctx) {
+        var filter = ctx.req.query.filter;
+
+        if(filter) {
+          var mappedFilter = {
+            tags: {
+              with: undefined,
+              contains: undefined
+            }
+          };
+
+          mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
+          mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
+          mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
+          mappedFilter.users         = _.convertToArray(filter['users']);
+          mappedFilter.has           = _.convertToArray(filter['has']);
+          mappedFilter.retweeted     = _.convertToBoolean(filter['retweeted']);
+          mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
+
+          filter = mappedFilter;
+        } else {
+          filter = {};
+        }
+
+        return filter;
+      } },
+      { arg: 'last', type: 'number' },
+      { arg: 'page', type: 'number' },
+      { arg: 'per_page', type: 'number' }
+    ],
+    returns: { type: 'object', root: true },
+    http: { path: '/twitter/:method', verb: 'GET' }
+  });
 
   Analytic.analyticsTwitter = function(method, period, filter, last, page, perPage, cb) {
     if (!analyticsTwitterRemoteMethods[method]) {
@@ -275,7 +280,7 @@ module.exports = function(Analytic) {
     analyticsTwitterRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
 
-      if (result.length > 0)
+      if (result.length > 0 || !_.isEmpty(result))
         Analytic.cache.put(options.cache.key, result, options.cache.ttl);
       
       return cb(null, result);
