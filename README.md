@@ -1,126 +1,260 @@
 # Hash API
 
-## Tecnologies
-Loopback
-MongoDB
+API de Analytics e metrics para Twitter, Facebook e Instagram.
 
-## Usage
+# Analytics - Facebook 
 
-### Find
+## Perfis Mais Ativos
 
-**Find a tweet that contains a hashtag with match a minimum of array of string**
-
-    API_URL/v1/tweets?filter=FILTER
-
-_FILTER_
-
-    {
-      "where": { 
-        "status.entities.hashtags.text": { 
-          "all": ["G1", "G2"] 
-        } 
-      } 
-    }
-
-For more information about filter see [Loopback documentation about Querying data](https://docs.strongloop.com/display/public/LB/Querying+data)
-
-### Count
-
-    API_URL/v1/tweets/count?where=WHERE
-
-**Count tweets with categorie "conteudo-estupro"**
-
-    // WHERE
-    {
-      "categories": {
-        "all": ["conteudo-estupro"]
-      }
-    }
-
-**Count tweets with categorie "conteudo-estupro" and on a time range**
-
-    // WHERE NOT WORK
-    {
-      "categories": {
-        "all": ["conteudo-estupro"]
+```javascript
+angular
+  .module('app', ['hash.api'])
+  .controller('MyCtrl', function ($scope, AnalyticsFacebook) {
+    AnalyticsFacebook.mostActiveProfiles({
+        profile_type: 'page', // Requiried
+        period: '1d',
+        'filter[with_tags]': ['tag-1', 'tag-2'],
+        'filter[contain_tags]': ['tag-1', 'tag-2'],
+        'filter[hashtags]': ['hashtag1'],
+        'filter[profiles]': [123129313013, 123129313013, 123129313013, 123129313013],
+        'filter[mentions]': ['user1', 'user2'],
+        'filter[type]': ['link', 'video', 'photo']
+      }, 
+      function success(res) {
+        console.info(res);
       },
-      "status.created_at": { 
-        "gte": "2015-08-12T00:00:00.000Z",
-        "lte": "2015-08-19T00:00:00.000Z"
-      }
-    }
+      function error(err) {
+        console.error(err);
+      });
+  });
+```
 
-or
+> O código acima retornara uma estrutura em `JSON` parecida com essa:
 
-    // WHERE NOT WORK
-    {
-      "and": [
-        {
-          "categories": {
-            "all": ["conteudo-estupro"]
-          }
-        },
-        {
-          "status.created_at": { 
-            "gte": "2015-08-12T00:00:00.000Z",
-            "lte": "2015-08-19T00:00:00.000Z"
-          }
-        }
-      ]
-    }
+```json
+[
+]
+```
 
-### Analytics
+Esse endpoint retorna todos os posts de Facecook com opção de selecionar um período e filtros.
 
-    API_URL/v1/tweets/analytics?type=TYPE&filter=FILTER
+### HTTP Request
 
-_TYPE_
+`GET https://hash-api.herokuapp.com/v1/analytics/facebook/most_active_profiles`
 
- - top-retweets
- - top-mentions
- - top-urls
- - top-images
- - top-hashtags
- - top-users
- - retweets-count
- - categories-count
- - top-word (not implemented)
+### Paramentros da Query
 
-_FILTER_
+Parameter            | Default | Description
+---------------------| ------- | -----------
+profile_type | | **Obrigatório**. Tipo de perfil a ser analisado, páginas `page` ou usuários `user`.
+period               |   1d    | _Opcional_. Período que vai ser consultado a parti do inicio da requisição, as opções são: <ul> <li>`15m` : 15 minutos</li> <li>`30m` : 30 minutos</li> <li>`1h` : 1 hora</li> <li>`6h` : 6 horas</li> <li>`12h` : 12 horas</li> <li>`1d` : 1 dia</li> <li>`7d` : 7 dias</li> <li>`15d` - 15 dias</li> </ul>
+filter[with_tags]    |         | _Opcional_. Uma array de strings que filtra os posts que possuem todas as tags informadas.
+filter[contain_tags] |         | _Opcional_. Uma array de strings que filtra os posts que possuem qualquer uma das tags informadas.
+filter[hashtags]     |         | _Opcional_. Uma array de strings que filtra os posts que possuem qualquer uma das hashtags informadas.
+filter[profiles]        |         | _Opcional_. Uma array de inteiros `int32` dos ids dos perfis que filtra os posts que possuem qualquer um dos perfis informados.
+filter[mentions]     |         | _Opcional_. Uma array que filtra os posts que possuem qualquer um dos usuários informados e que foram mencionados.
+filter[type]          |         | _Opcional_. Uma array que filtra os tweets que possuem todas as condições informadas. As condições são: <ul> <li>`link` : URL/Link</li> <li>`photo` : Fotos ou Imagens</li> <li>`video` : Vídeos</li> <li>`event` : Eventos</li> <li>`status` : Status</li> <li>`music` : Música</li></ul> 
 
-    { 
-      "where": { 
-        "status.created_at": { 
-          "gte": "2015-08-23T15:30", 
-          "lte": "2015-08-23T15:45" 
-        }, 
-        "theme": "negros", 
-        "categories": { 
-          "all": ["perfil", "conteudo"] 
-        } 
+## Posts Mais Comentados
+
+```javascript
+angular
+  .module('app', ['hash.api'])
+  .controller('MyCtrl', function ($scope, AnalyticsFacebook) {
+    AnalyticsFacebook.mostCommentedPosts({
+        profile_type: 'page', // Requiried
+        period: '1d',
+        'filter[with_tags]': ['tag-1', 'tag-2'],
+        'filter[contain_tags]': ['tag-1', 'tag-2'],
+        'filter[hashtags]': ['hashtag1'],
+        'filter[profiles]': [123129313013, 123129313013, 123129313013, 123129313013],
+        'filter[mentions]': ['user1', 'user2'],
+        'filter[type]': ['link', 'video', 'photo']
+      }, 
+      function success(res) {
+        console.info(res);
       },
-      "limit": 25,
-      "skip": 0
-    }
+      function error(err) {
+        console.error(err);
+      });
+  });
+```
 
-_where['status.created_at'].gte_ and _where['status.created_at'].lte_ is required.
-_limit_ and _skip_ is for pagination but is't required, default values is _limit: 25_ and _skip: 0_
+> O código acima retornara uma estrutura em `JSON` parecida com essa:
 
-**Example: Top Retweets by Date Range**
+```json
+[
+]
+```
 
-    API_URL/v1/tweets/analytics?type=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" } }, "limit": 25, "skip": 0 }
+Esse endpoint retorna todos os posts de Facecook com opção de selecionar um período e filtros.
 
-**Example: Top Retweets by Theme and Date Range**
+### HTTP Request
 
-    API_URL/v1/tweets/analytics?type=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "theme": "negros" }, "limit": 25, "skip": 0 }
+`GET https://hash-api.herokuapp.com/v1/analytics/facebook/most_commented_posts`
 
-**Example: Top Retweets by Categories and Date Range**
+### Paramentros da Query
 
-    API_URL/v1/tweets/analytics?type=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "categories": { "all": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
+Parameter            | Default | Description
+---------------------| ------- | -----------
+profile_type | | **Obrigatório**. Tipo de perfil a ser analisado, páginas `page` ou usuários `user`.
+period               |   1d    | _Opcional_. Período que vai ser consultado a parti do inicio da requisição, as opções são: <ul> <li>`15m` : 15 minutos</li> <li>`30m` : 30 minutos</li> <li>`1h` : 1 hora</li> <li>`6h` : 6 horas</li> <li>`12h` : 12 horas</li> <li>`1d` : 1 dia</li> <li>`7d` : 7 dias</li> <li>`15d` - 15 dias</li> </ul>
+filter[with_tags]    |         | _Opcional_. Uma array de strings que filtra os posts que possuem todas as tags informadas.
+filter[contain_tags] |         | _Opcional_. Uma array de strings que filtra os posts que possuem qualquer uma das tags informadas.
+filter[hashtags]     |         | _Opcional_. Uma array de strings que filtra os posts que possuem qualquer uma das hashtags informadas.
+filter[profiles]        |         | _Opcional_. Uma array de inteiros `int32` dos ids dos perfis que filtra os posts que possuem qualquer um dos perfis informados.
+filter[mentions]     |         | _Opcional_. Uma array que filtra os posts que possuem qualquer um dos usuários informados e que foram mencionados.
+filter[type]          |         | _Opcional_. Uma array que filtra os tweets que possuem todas as condições informadas. As condições são: <ul> <li>`link` : URL/Link</li> <li>`photo` : Fotos ou Imagens</li> <li>`video` : Vídeos</li> <li>`event` : Eventos</li> <li>`status` : Status</li> <li>`music` : Música</li></ul> 
 
-**Example: Top Retweets by Theme, Categories and Date Range**
+## Posts Mais Curtidos
 
-    API_URL/v1/tweets/analytics?type=top-retweets&filter={ "where": { "status.created_at": { "gte": "2015-08-23T15:30", "lte": "2015-08-23T15:45" }, "theme": "negros", "categories": { "all": ["perfil", "conteudo"] } }, "limit": 25, "skip": 0 }
+```javascript
+angular
+  .module('app', ['hash.api'])
+  .controller('MyCtrl', function ($scope, AnalyticsFacebook) {
+    AnalyticsFacebook.mostLikedPosts({
+        profile_type: 'page', // Requiried
+        period: '1d',
+        'filter[with_tags]': ['tag-1', 'tag-2'],
+        'filter[contain_tags]': ['tag-1', 'tag-2'],
+        'filter[hashtags]': ['hashtag1'],
+        'filter[profiles]': [123129313013, 123129313013, 123129313013, 123129313013],
+        'filter[mentions]': ['user1', 'user2'],
+        'filter[type]': ['link', 'video', 'photo']
+      }, 
+      function success(res) {
+        console.info(res);
+      },
+      function error(err) {
+        console.error(err);
+      });
+  });
+```
 
-**Pagination**
-  
-To make pagination just change _limit_ and _skip_ properties. Ex.: first page is _limit: 25, skip: 0_, next page is _limit: 50, skip: 25_, and so on.
+> O código acima retornara uma estrutura em `JSON` parecida com essa:
+
+```json
+[
+]
+```
+
+Esse endpoint retorna todos os posts de Facecook com opção de selecionar um período e filtros.
+
+### HTTP Request
+
+`GET https://hash-api.herokuapp.com/v1/analytics/facebook/most_liked_posts`
+
+### Paramentros da Query
+
+Parameter            | Default | Description
+---------------------| ------- | -----------
+profile_type | | **Obrigatório**. Tipo de perfil a ser analisado, páginas `page` ou usuários `user`.
+period               |   1d    | _Opcional_. Período que vai ser consultado a parti do inicio da requisição, as opções são: <ul> <li>`15m` : 15 minutos</li> <li>`30m` : 30 minutos</li> <li>`1h` : 1 hora</li> <li>`6h` : 6 horas</li> <li>`12h` : 12 horas</li> <li>`1d` : 1 dia</li> <li>`7d` : 7 dias</li> <li>`15d` - 15 dias</li> </ul>
+filter[with_tags]    |         | _Opcional_. Uma array de strings que filtra os posts que possuem todas as tags informadas.
+filter[contain_tags] |         | _Opcional_. Uma array de strings que filtra os posts que possuem qualquer uma das tags informadas.
+filter[hashtags]     |         | _Opcional_. Uma array de strings que filtra os posts que possuem qualquer uma das hashtags informadas.
+filter[profiles]        |         | _Opcional_. Uma array de inteiros `int32` dos ids dos perfis que filtra os posts que possuem qualquer um dos perfis informados.
+filter[mentions]     |         | _Opcional_. Uma array que filtra os posts que possuem qualquer um dos usuários informados e que foram mencionados.
+filter[type]          |         | _Opcional_. Uma array que filtra os tweets que possuem todas as condições informadas. As condições são: <ul> <li>`link` : URL/Link</li> <li>`photo` : Fotos ou Imagens</li> <li>`video` : Vídeos</li> <li>`event` : Eventos</li> <li>`status` : Status</li> <li>`music` : Música</li></ul> 
+
+## Imagens Mais Recorrentes
+
+```javascript
+angular
+  .module('app', ['hash.api'])
+  .controller('MyCtrl', function ($scope, AnalyticsFacebook) {
+    AnalyticsFacebook.mostRecurringIimages({
+        profile_type: 'page', // Requiried
+        period: '1d',
+        'filter[with_tags]': ['tag-1', 'tag-2'],
+        'filter[contain_tags]': ['tag-1', 'tag-2'],
+        'filter[hashtags]': ['hashtag1'],
+        'filter[profiles]': [123129313013, 123129313013, 123129313013, 123129313013],
+        'filter[mentions]': ['user1', 'user2'],
+        'filter[type]': ['link', 'video', 'photo']
+      }, 
+      function success(res) {
+        console.info(res);
+      },
+      function error(err) {
+        console.error(err);
+      });
+  });
+```
+
+> O código acima retornara uma estrutura em `JSON` parecida com essa:
+
+```json
+[
+]
+```
+
+Esse endpoint retorna todos os posts de Facecook com opção de selecionar um período e filtros.
+
+### HTTP Request
+
+`GET https://hash-api.herokuapp.com/v1/analytics/facebook/most_recurring_images`
+
+### Paramentros da Query
+
+Parameter            | Default | Description
+---------------------| ------- | -----------
+profile_type | | **Obrigatório**. Tipo de perfil a ser analisado, páginas `page` ou usuários `user`.
+period               |   1d    | _Opcional_. Período que vai ser consultado a parti do inicio da requisição, as opções são: <ul> <li>`15m` : 15 minutos</li> <li>`30m` : 30 minutos</li> <li>`1h` : 1 hora</li> <li>`6h` : 6 horas</li> <li>`12h` : 12 horas</li> <li>`1d` : 1 dia</li> <li>`7d` : 7 dias</li> <li>`15d` - 15 dias</li> </ul>
+filter[with_tags]    |         | _Opcional_. Uma array de strings que filtra os posts que possuem todas as tags informadas.
+filter[contain_tags] |         | _Opcional_. Uma array de strings que filtra os posts que possuem qualquer uma das tags informadas.
+filter[hashtags]     |         | _Opcional_. Uma array de strings que filtra os posts que possuem qualquer uma das hashtags informadas.
+filter[profiles]        |         | _Opcional_. Uma array de inteiros `int32` dos ids dos perfis que filtra os posts que possuem qualquer um dos perfis informados.
+filter[mentions]     |         | _Opcional_. Uma array que filtra os posts que possuem qualquer um dos usuários informados e que foram mencionados.
+filter[type]          |         | _Opcional_. Uma array que filtra os tweets que possuem todas as condições informadas. As condições são: <ul> <li>`link` : URL/Link</li> <li>`photo` : Fotos ou Imagens</li> <li>`video` : Vídeos</li> <li>`event` : Eventos</li> <li>`status` : Status</li> <li>`music` : Música</li></ul> 
+
+## Posts Mais Compartilhados
+
+```javascript
+angular
+  .module('app', ['hash.api'])
+  .controller('MyCtrl', function ($scope, AnalyticsFacebook) {
+    AnalyticsFacebook.mostSharedPosts({
+        profile_type: 'page', // Requiried
+        period: '1d',
+        'filter[with_tags]': ['tag-1', 'tag-2'],
+        'filter[contain_tags]': ['tag-1', 'tag-2'],
+        'filter[hashtags]': ['hashtag1'],
+        'filter[profiles]': [123129313013, 123129313013, 123129313013, 123129313013],
+        'filter[mentions]': ['user1', 'user2'],
+        'filter[type]': ['link', 'video', 'photo']
+      }, 
+      function success(res) {
+        console.info(res);
+      },
+      function error(err) {
+        console.error(err);
+      });
+  });
+```
+
+> O código acima retornara uma estrutura em `JSON` parecida com essa:
+
+```json
+[
+]
+```
+
+Esse endpoint retorna todos os posts de Facecook com opção de selecionar um período e filtros.
+
+### HTTP Request
+
+`GET https://hash-api.herokuapp.com/v1/analytics/facebook/most_shared_posts`
+
+### Paramentros da Query
+
+Parameter            | Default | Description
+---------------------| ------- | -----------
+profile_type | | **Obrigatório**. Tipo de perfil a ser analisado, páginas `page` ou usuários `user`.
+period               |   1d    | _Opcional_. Período que vai ser consultado a parti do inicio da requisição, as opções são: <ul> <li>`15m` : 15 minutos</li> <li>`30m` : 30 minutos</li> <li>`1h` : 1 hora</li> <li>`6h` : 6 horas</li> <li>`12h` : 12 horas</li> <li>`1d` : 1 dia</li> <li>`7d` : 7 dias</li> <li>`15d` - 15 dias</li> </ul>
+filter[with_tags]    |         | _Opcional_. Uma array de strings que filtra os posts que possuem todas as tags informadas.
+filter[contain_tags] |         | _Opcional_. Uma array de strings que filtra os posts que possuem qualquer uma das tags informadas.
+filter[hashtags]     |         | _Opcional_. Uma array de strings que filtra os posts que possuem qualquer uma das hashtags informadas.
+filter[profiles]        |         | _Opcional_. Uma array de inteiros `int32` dos ids dos perfis que filtra os posts que possuem qualquer um dos perfis informados.
+filter[mentions]     |         | _Opcional_. Uma array que filtra os posts que possuem qualquer um dos usuários informados e que foram mencionados.
+filter[type]          |         | _Opcional_. Uma array que filtra os tweets que possuem todas as condições informadas. As condições são: <ul> <li>`link` : URL/Link</li> <li>`photo` : Fotos ou Imagens</li> <li>`video` : Vídeos</li> <li>`event` : Eventos</li> <li>`status` : Status</li> <li>`music` : Música</li></ul> 
