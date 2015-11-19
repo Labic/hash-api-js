@@ -51,19 +51,26 @@ _.mixin({
 
 _.mixin({
   renameProperties: function(object, map) {
-    _.isArray(object) 
-      ? _.each(object, function(element) {
-          _.each(element, function(value, key) {
-            var newKey = map[key] || key;
-            element[newKey] = value;
-            delete element[key];
-          });
-        })
-      : _.each(object, function(value, key) {
+    if(_.isArray(object)) {
+      _.each(object, function(element) {
+        _.each(element, function(value, key) {
           var newKey = map[key] || key;
-          object[newKey] = value;
-          delete object[key];
+          element[newKey] = value;
         });
+        _.each(map, function(value, key) {
+          delete element[key];
+        });
+      })
+    } else {
+      _.each(object, function(value, key) {
+        var newKey = map[key] || key;
+        object[newKey] = value;
+        delete object[map[key]];
+      });
+      _.each(object, function(value, key) {
+        delete object[key];
+      });
+    }
 
     return this;
   }

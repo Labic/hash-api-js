@@ -14,7 +14,7 @@ module.exports = function(Analytic) {
   Analytic.remoteMethod('analyticsFacebookPosts', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
-      { arg: 'profile_type', type: 'string', required: true },
+      { arg: 'profile_type', type: 'string' },
       { arg: 'period', type: 'string' },
       { arg: 'filter', type: 'object', http: function mapping(ctx) {
         var filter = ctx.req.query.filter;
@@ -32,7 +32,9 @@ module.exports = function(Analytic) {
           mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
           mappedFilter.profiles      = _.convertToArray(filter['profiles']);
           mappedFilter.mentions      = _.convertToArray(filter['mentions']);
+          // TODO: Rename mappedFilter.type to mappedFilter.types
           mappedFilter.type          = _.convertToArray(filter['type']);
+          mappedFilter.posts         = _.convertToArray(filter['posts']);
 
           filter = mappedFilter;
         } else {
@@ -90,10 +92,14 @@ module.exports = function(Analytic) {
         var model = Analytic.app.models.FacebookPagePost;
         break;
       default:
-        var err = new Error('Malformed request syntax. profile_type query param is required!');
-        err.statusCode = 400;
+        if(params.method === 'most_liked_comments') {
+          var model = Analytic.app.models.FacebookComment;
+        } else {
+          var err = new Error('Malformed request syntax. profile_type query param is required!');
+          err.statusCode = 400;
 
-        return cb(err, null);
+          return cb(err, null);
+        }
     }
     
     analyticsFacebookPostRemoteMethods[method](params, model, function(err, result) {
@@ -109,6 +115,7 @@ module.exports = function(Analytic) {
   var analyticsFacebookPostRemoteMethods = {
     'most_active_profiles': dao.mongodb.analyticsFacebook.mostActiveProfiles,
     'most_commented_posts': dao.mongodb.analyticsFacebook.mostCommentedPosts,
+    'most_liked_comments': dao.mongodb.analyticsFacebook.mostLikedComments,
     'most_liked_posts': dao.mongodb.analyticsFacebook.mostLikedPosts,
     'most_recurring_images': dao.mongodb.analyticsFacebook.mostRecurringImages,
     'most_shared_posts': dao.mongodb.analyticsFacebook.mostSharedPosts
