@@ -1,4 +1,4 @@
-module.exports = function mostSharedImages(params, model, cb) { 
+module.exports = function mostRecurringImages(params, model, cb) { 
   var pipeline = [
     { $match: {
       'full_picture': { $ne: 'null' }, 

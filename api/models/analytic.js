@@ -110,8 +110,7 @@ module.exports = function(Analytic) {
     'most_active_profiles': dao.mongodb.analyticsFacebook.mostActiveProfiles,
     'most_commented_posts': dao.mongodb.analyticsFacebook.mostCommentedPosts,
     'most_liked_posts': dao.mongodb.analyticsFacebook.mostLikedPosts,
-    // TODO: Rename function dao.mongodb.analyticsFacebook.mostSharedImages to dao.mongodb.analyticsFacebook.mostRecurringImages
-    'most_recurring_images': dao.mongodb.analyticsFacebook.mostSharedImages,
+    'most_recurring_images': dao.mongodb.analyticsFacebook.mostRecurringImages,
     'most_shared_posts': dao.mongodb.analyticsFacebook.mostSharedPosts
   };
 
