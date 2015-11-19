@@ -1,0 +1,41 @@
+{
+  "name": "FacebookComment",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "strict": true,
+  "http": {"path": "facebook/comments"},
+  "options": {
+    "mongodb": {
+      "collection": "facebook_comments"
+    }
+  },
+  "properties": {
+    "id": {
+      "id": true,
+      "type": "string",
+      "generated": false,
+      "required": true
+    },
+    "categories": {
+      "type": ["string"]
+    },
+    "created_time": {
+      "type": "date"
+    },
+    "from": {
+      "type": "FacebookPostFrom",
+      "required": true
+    },
+    "like_count": {
+      "type": "number",
+      "required": true
+    },
+    "message": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "mixins": {
+      "Mongodb": null
+  }
+}

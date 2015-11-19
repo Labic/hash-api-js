@@ -92,6 +92,10 @@
     "dataSource": "documentDB",
     "public": true
   },
+  "FacebookPagePost": {
+    "dataSource": "documentDB",
+    "public": true
+  },
   "FacebookPostFrom": {
     "dataSource": false,
     "public": false
@@ -104,7 +108,7 @@
     "dataSource": false,
     "public": false
   },
-  "FacebookPagePost": {
+  "FacebookComment": {
     "dataSource": "documentDB",
     "public": true
   },

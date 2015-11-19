@@ -11,8 +11,10 @@
   },
   "properties": {
     "id": {
-      "type": "number",
-      "id": true
+      "id": true,
+      "type": "string",
+      "generated": false,
+      "required": true
     },
     "from": {
       "type": "FacebookPostFrom"
@@ -106,6 +108,13 @@
     },
     "collect_at": {
       "type": "number"
+    }
+  },
+ "relations": {
+    "comments": {
+      "type": "hasMany",
+      "model": "FacebookComment",
+      "foreignKey": "post_id"
     }
   },
   "scope": {

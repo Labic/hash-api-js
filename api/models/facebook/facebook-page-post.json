@@ -1,7 +1,7 @@
 {
   "name": "FacebookPagePost",
   "plural": "facebook_page_posts",
-  "base": "FacebookPostApiCollector",
+  "base": "FacebookPost",
   "strict": true,
   "http": {"path": "facebook/page/posts"},
   "options": {
@@ -9,7 +9,22 @@
       "collection": "facebook_pages"
     }
   },
+  "properties": {
+    "id": {
+      "id": true,
+      "type": "string",
+      "generated": false,
+      "required": true
+    }
+  },
   "mixins": {
       "Mongodb": null
+  },
+ "relations": {
+    "comments": {
+      "type": "hasMany",
+      "model": "FacebookComment",
+      "foreignKey": "post_id"
+    }
   }
 }
