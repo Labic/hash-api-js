@@ -298,11 +298,11 @@ module.exports = function(Analytic) {
     'geolocation': dao.mongodb.analyticsTwitter.geolocation,
     'most_active_users': dao.mongodb.analyticsTwitter.mostActiveUsers,
     'most_mentioned_users': dao.mongodb.analyticsTwitter.mostMentionedUsers,
-    'most_popular_hashtags': dao.mongodb.analyticsTwitter.mostPopularHashtags,
     'most_recently_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRecentlyRetweetedTweets,
-    'most_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRetweetedTweets,
-    'most_shared_images': dao.mongodb.analyticsTwitter.mostSharedImages,
-    'most_shared_urls': dao.mongodb.analyticsTwitter.mostSharedUrls
+    'most_recurring_hashtags': dao.mongodb.analyticsTwitter.mostRecurringHashtags,
+    'most_recurring_images': dao.mongodb.analyticsTwitter.mostRecurringImages,
+    'most_recurring_urls': dao.mongodb.analyticsTwitter.mostRecurringUrls,
+    'most_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRetweetedTweets
   };
 
 };
