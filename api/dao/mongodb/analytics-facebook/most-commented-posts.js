@@ -23,10 +23,8 @@ module.exports = function mostCommentedPosts(params, model, cb) {
   if(params.filter.hashtags)
     query['hashtags'] = { $in: params.filter.hashtags };
 
-  if(params.filter.mentions) {
+  if(params.filter.mentions)
     query['message_tags.id'] = { $in: params.filter.mentions };
-    query['with_tags.id'] = { $in: params.filter.mentions };
-  }
 
   if(params.filter.profiles)
     query['from.id'] = { $in: params.filter.profiles };
