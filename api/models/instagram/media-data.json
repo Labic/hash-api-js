@@ -6,37 +6,44 @@
       "type": "string"
     },
     "type": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "likes": {
-      "type": "InstagramMediaDataLikes"
+      "type": "InstagramLikes"
     },
     "comments": {
-      "type": "InstagramMediaDataComments"
+      "type": "InstagramComments"
     },
     "caption": {
-      "type": "InstagramMediaDataCaption"
+      "type": "InstagramCaption"
     },
     "users_in_photo": {
-      "type": ["InstagramMediaDataUser"]
+      "type": ["InstagramUser"]
     },
     "created_time": {
       "type": "number"
     },
     "location": {
-      "type": "InstagramMediaDataLocation"
+      "type": "InstagramLocation"
     },
     "link": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "images": {
-      "type": "InstagramMediaDataImages"
+      "type": "InstagramImages",
+      "required": true
+    },
+    "video": {
+      "type": "InstagramVideos"
     },
     "filter": {
       "type": "string"
     },
     "user": {
-      "type": "InstagramMediaDataUser"
+      "type": "InstagramUser",
+      "required": true
     },
     "tags": {
       "type": ["string"]

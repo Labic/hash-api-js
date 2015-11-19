@@ -1,12 +1,12 @@
 {
-  "name": "InstagramMediaDataComments",
+  "name": "InstagramLikes",
   "base": "PersistedModel",
   "properties": {
     "count": {
       "type": "number"
     },
     "data": {
-      "type": ["InstagramMediaDataUser"]
+      "type": ["InstagramUser"]
     }
   }
 }

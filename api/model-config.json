@@ -120,31 +120,39 @@
     "dataSource": false,
     "public": false
   },
-  "InstagramMediaDataUser": {
+  "InstagramUser": {
     "dataSource": false,
     "public": false
   },
-  "InstagramMediaDataLocation": {
+  "InstagramLocation": {
     "dataSource": false,
     "public": false
   },
-  "InstagramMediaDataLikes": {
+  "InstagramImages": {
     "dataSource": false,
     "public": false
   },
-  "InstagramMediaDataImages": {
+  "InstagramImage": {
     "dataSource": false,
     "public": false
   },
-  "InstagramMediaDataImagesImage": {
+  "InstagramVideos": {
     "dataSource": false,
     "public": false
   },
-  "InstagramMediaDataComments": {
+  "InstagramVideo": {
     "dataSource": false,
     "public": false
   },
-  "InstagramMediaDataCaption": {
+  "InstagramLikes": {
+    "dataSource": false,
+    "public": false
+  },
+  "InstagramComments": {
+    "dataSource": false,
+    "public": false
+  },
+  "InstagramCaption": {
     "dataSource": false,
     "public": false
   },

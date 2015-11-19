@@ -1,0 +1,16 @@
+{
+  "name": "InstagramVideo",
+  "base": "PersistedModel",
+  "properties": {
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "width": {
+      "type": "number"
+    },
+    "height": {
+      "type": "number"
+    }
+  }
+}

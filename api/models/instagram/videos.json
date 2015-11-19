@@ -1,0 +1,15 @@
+{
+  "name": "InstagramVideos",
+  "base": "PersistedModel",
+  "properties": {
+    "low_resolution": {
+      "type": "InstagramVideo"
+    },
+    "thumbnail": {
+      "type": "InstagramVideo"
+    },
+    "standard_resolution": {
+      "type": "InstagramVideo"
+    }
+  }
+}

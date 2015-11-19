@@ -1,12 +1,14 @@
 {
-  "name": "InstagramMediaDataUser",
+  "name": "InstagramUser",
   "base": "PersistedModel",
   "properties": {
     "id": {
-      "type": "number"
+      "type": "number",
+      "required": true
     },
     "username": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "full_name": {
       "type": "string"

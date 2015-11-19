@@ -1,0 +1,21 @@
+{
+  "name": "InstagramCaption",
+  "base": "PersistedModel",
+  "properties": {
+    "id": {
+      "type": "number",
+      "required": true
+    },
+    "created_time": {
+      "type": "number",
+      "required": true
+    },
+    "text": {
+      "type": "string"
+    },
+    "from": {
+      "type": "InstagramUser",
+      "required": true
+    }
+  }
+}

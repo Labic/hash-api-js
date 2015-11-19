@@ -1,0 +1,16 @@
+{
+  "name": "InstagramImages",
+  "base": "PersistedModel",
+  "properties": {
+    "low_resolution": {
+      "type": "InstagramImage",
+      "required": true
+    },
+    "thumbnail": {
+      "type": "InstagramImage"
+    },
+    "standard_resolution": {
+      "type": "InstagramImage"
+    }
+  }
+}
