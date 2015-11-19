@@ -10,31 +10,43 @@ module.exports = function mostSharedImages(params, model, cb) {
       },
       block: (params.filter.blocked || false) 
     } },
+    { $sort: { 'status.timestamp_ms': -1 } },
     { $unwind: '$status.entities.media' },
     { $group: {
       _id: '$status.entities.media.media_url_https',
-      status_id_str: { $last: '$status.id_str' },
-      status_text: { $last: '$status.text' },
-      user_id_str: { $last: '$status.user.id_str' },
+      status_id_str: { $first: '$status.id_str' },
+      status_text: { $first: '$status.text' },
+      user_id_str: { $first: '$status.user.id_str' },
+      user_screen_name: { $first: '$status.user.screen_name' },
       user_profile_image_url_https: { $last: '$status.user.profile_image_url_https' },
       count: { $sum: 1 }
     } },
     { $sort: { count: -1 } },
     { $project: {
       _id: 0,
-      status: {
-        id_str: '$status_id_str',
-        text: '$status_text',
-        entities: {
-          media: { 
-            media_url_https: '$_id' 
-          }
-        },
-        user: {
-          screen_name: '$user_screen_name',
-          profile_image_url_https: '$user_profile_image_url_https'
-        }
+      id_str: '$status_id_str',
+      text: '$status_text',
+      user: {
+        id_str: '$user_id_str',
+        screen_name: '$user_screen_name',
+        profile_image_url_https: '$user_profile_image_url_https'
       },
+      media_url_https: '$_id', 
+      // TODO: Back to this schema in the future
+      // status: {
+      //   id_str: '$status_id_str',
+      //   text: '$status_text',
+      //   entities: {
+      //     media: { 
+      //       media_url_https: '$_id' 
+      //     }
+      //   },
+      //   user: {
+      //     id_str: '$user_id_str',
+      //     screen_name: '$user_screen_name',
+      //     profile_image_url_https: '$user_profile_image_url_https'
+      //   }
+      // },
       count: '$count'
     } }, 
     { $limit: params.perPage * params.page }, 
