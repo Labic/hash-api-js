@@ -1,23 +1,23 @@
 {
-  "name": "FacebookPostFrom",
+  "name": "FacebookProfile",
   "base": "PersistedModel",
   "strict": true,
   "properties": {
     "id": {
-      "type": "Number",
+      "type": "number",
       "id": true
     },
     "name": {
-      "type": "String"
+      "type": "string"
     },
     "type": {
-      "type": "String"
+      "type": "string"
     },
     "link": {
-      "type": "String"
+      "type": "string"
     },
     "image": {
-      "type": "String"
+      "type": "string"
     }
   }
 }

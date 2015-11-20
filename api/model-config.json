@@ -96,15 +96,15 @@
     "dataSource": "documentDB",
     "public": true
   },
-  "FacebookPostFrom": {
+  "FacebookProfile": {
     "dataSource": false,
     "public": false
   },
-  "FacebookPostSources": {
+  "FacebookSources": {
     "dataSource": false,
     "public": false
   },
-  "FacebookPostHashSource": {
+  "FacebookHashCollector": {
     "dataSource": false,
     "public": false
   },

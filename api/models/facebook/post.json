@@ -1,6 +1,5 @@
 {
   "name": "FacebookPost",
-  "plural": "facebook_posts",
   "base": "PersistedModel",
   "strict": true,
   "http": {"path": "facebook/posts"},
@@ -13,17 +12,13 @@
     "id": {
       "id": true,
       "type": "string",
-      "generated": false,
-      "required": true
+      "generated": false
     },
     "from": {
-      "type": "FacebookPostFrom"
-    },
-    "api_collector": {
-      "type": "FacebookPostApiCollector"
+      "type": "FacebookProfile"
     },
     "sources": {
-      "type": "FacebookPostSources"
+      "type": "FacebookSources"
     },
     "url": {
       "type": "string"
@@ -50,7 +45,7 @@
       "type": "number"
     },
     "to": {
-      "type": "FacebookPostFrom"
+      "type": "FacebookProfile"
     },
     "comments_count": {
       "type": "number"
@@ -83,10 +78,10 @@
       "type": ["object"]
     },
     "with_tags": {
-      "type": ["FacebookPostFrom"]
+      "type": ["FacebookProfile"]
     },
     "message_tags": {
-      "type": ["FacebookPostFrom"]
+      "type": ["FacebookProfile"]
     },
     "scheduled_publish_time_ms": {
       "type": "number"

@@ -1,44 +1,44 @@
 {
-  "name": "FacebookPostHashSource",
+  "name": "FacebookHashCollector",
   "base": "PersistedModel",
   "idInjection": false,
   "strict": true,
   "properties": {
     "from": {
-      "type": "FacebookPostFrom"
+      "type": "FacebookProfile"
     },
     "created_time": {
-      "type": "Number"
+      "type": "number"
     },
     "message": {
-      "type": "String"
+      "type": "string"
     },
     "name": {
-      "type": "String"
+      "type": "string"
     },
     "link": {
-      "type": "String"
+      "type": "string"
     },
     "like_count": {
-      "type": "Number"
+      "type": "number"
     },
     "share_count": {
-      "type": "Number"
+      "type": "number"
     },
     "comment_count": {
-      "type": "Number"
+      "type": "number"
     },
     "url": {
-      "type": "String"
+      "type": "string"
     },
     "collect_at": {
-      "type": "Number"
+      "type": "number"
     },
     "hashtag": {
-      "type": "String"
+      "type": "string"
     },
     "user": {
-      "type": "String"
+      "type": "string"
     }
   }
 }

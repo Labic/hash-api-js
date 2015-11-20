@@ -9,14 +9,6 @@
       "collection": "facebook_pages"
     }
   },
-  "properties": {
-    "id": {
-      "id": true,
-      "type": "string",
-      "generated": false,
-      "required": true
-    }
-  },
   "mixins": {
       "Mongodb": null
   },

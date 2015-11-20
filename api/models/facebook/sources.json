@@ -1,11 +1,11 @@
 {
-  "name": "FacebookPostSources",
+  "name": "FacebookSources",
   "base": "PersistedModel",
   "idInjection": false,
   "strict": true,
   "properties": {
     "hash_collector": {
-      "type": "FacebookPostHashSource"
+      "type": "FacebookHashCollector"
     }
   }
 }

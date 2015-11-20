@@ -23,7 +23,7 @@
       "type": "date"
     },
     "from": {
-      "type": "FacebookPostFrom",
+      "type": "FacebookProfile",
       "required": true
     },
     "like_count": {
