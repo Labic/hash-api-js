@@ -1,4 +1,4 @@
 module.exports = {
-  commentsRate: require('./comments-rate'),
-  interactionsRate: require('./interactions-rate')
+  interactionsRate: require('./interactions-rate'),
+  tagsCount: require('./tags-count')
 };

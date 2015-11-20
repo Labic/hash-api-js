@@ -1,0 +1,67 @@
+var _ = require('../../../lib/underscoreExtended');
+
+module.exports = function tagsCount(params, model, cb) { 
+  var query = { 
+    'created_time_ms': {
+      $gte: params.since.getTime(),
+      $lte: params.until.getTime()
+    }
+  };
+
+  if(params.filter.tags) {
+    if(params.filter.tags.with)
+      query['categories'] = { $all: params.filter.tags.with };
+
+    if(params.filter.tags.contains)
+      query['categories'] = { $in: params.filter.tags.contains };
+  }
+
+  if(params.filter.hashtags)
+    query['hashtags'] = { $in: params.filter.hashtags };
+
+  if(params.filter.mentions) {
+    query['message_tags.id'] = { $in: params.filter.mentions };
+    query['with_tags.id'] = { $in: params.filter.mentions };
+  }
+
+  if(params.filter.profiles)
+    query['from.id'] = { $in: params.filter.profiles };
+
+  if(params.filter.types)
+    query['type'] = { $in: params.filter.types };
+  
+  model.dao.mongodb.mapReduce(
+    tagsMapFuncions['all_tags'],
+    function reduce(key, values) {
+      return Array.sum(values);
+    },{
+      query: query,
+      out: { inline: 1 }
+    },
+    function callback(err, result) {
+      if (err) return cb(err, null);
+
+      _.renameProperties(result, {_id: 'tag', value: 'count'});
+      return cb(null, _.sortBy(result, 'count').reverse());
+    });
+}
+
+var tagsMapFuncions = {};
+tagsMapFuncions['brazilian_states'] = function () {
+  if (this.categories)
+    for (var i = 0; i < this.categories.length; i++) {
+      var tag = this.categories[i].trim();
+      if (tag.indexOf('territorio-') > -1) {
+        tag = ''.concat('BR.', tag.substring(11, 14).toUpperCase());
+        emit(tag, 1);
+      }
+    };
+}
+
+tagsMapFuncions['all_tags'] = function () {
+  if (this.categories)
+    for (var i = 0; i < this.categories.length; i++) {
+      var tag = this.categories[i].trim();
+      emit(tag, 1);
+    };
+}
