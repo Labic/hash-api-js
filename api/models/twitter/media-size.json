@@ -1,5 +1,5 @@
 {
-  "name": "TweetEntitiesMediaSizesSize",
+  "name": "TwitterMediaSize",
   "base": "PersistedModel",
   "properties": {
     "resize": {

@@ -1,5 +1,5 @@
 {
-  "name": "TweetStatus",
+  "name": "TwitterStatuses",
   "base": "PersistedModel",
   "properties": {
     "contributors": {
@@ -27,13 +27,13 @@
       "type": "boolean"
     },
     "coordinates": {
-      "type": "TweetCoordinatesPoint"
+      "type": "TwitterCoordinatesPoint"
     },
     "timestamp_ms": {
       "type": "number"
     },
     "entities": {
-      "type": "TweetEntities"
+      "type": "TwitterEntities"
     },
     "in_reply_to_screen_name": {
       "type": "string"
@@ -51,10 +51,10 @@
       "type": "boolean"
     },
     "retweeted_status": {
-      "type": "TweetStatus"
+      "type": "TwitterStatuses"
     },
     "user": {
-      "type": "TweetUser"
+      "type": "TwitterUser"
     },
     "geo": {
       "type": "boolean"
@@ -78,7 +78,7 @@
       "type": "string"
     },
     "place": {
-      "type": "TweetPlace"
+      "type": "TwitterPlace"
     },
     "extended_entities": {
       "type": "object"

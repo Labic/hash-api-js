@@ -9,7 +9,7 @@
   },
   "properties": {
     "status": {
-      "type": "TweetStatus"
+      "type": "TwitterStatuses"
     },
     "categories": {
       "type": ["string"]

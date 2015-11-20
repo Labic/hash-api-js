@@ -1,5 +1,5 @@
 {
-  "name": "TweetEntitiesMedia",
+  "name": "TwitterMedia",
   "base": "PersistedModel",
   "properties": {
     "source_status_id_str": {
@@ -31,7 +31,7 @@
       "required": true
     },
     "sizes": {
-      "type": "TweetEntitiesMediaSizes",
+      "type": "TwitterMediaSizes",
       "required": true
     },
     "indices": {

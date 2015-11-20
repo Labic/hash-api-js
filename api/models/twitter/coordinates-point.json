@@ -1,5 +1,5 @@
 {
-  "name": "TweetCoordinatesPoint",
+  "name": "TwitterCoordinatesPoint",
   "base": "PersistedModel",
   "properties": {
     "type": {

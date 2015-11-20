@@ -1,5 +1,5 @@
 {
-  "name": "TweetUser",
+  "name": "TwitterUser",
   "base": "PersistedModel",
   "properties": {
     "location": {

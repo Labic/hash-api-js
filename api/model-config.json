@@ -52,39 +52,39 @@
     "dataSource": "documentDB",
     "public": true
   },
-  "TweetStatus": {
+  "TwitterStatuses": {
     "dataSource": "documentDB",
     "public": false
   },
-  "TweetUser": {
+  "TwitterUser": {
     "dataSource": false,
     "public": false
   },
-  "TweetCoordinatesPoint": {
+  "TwitterEntities": {
     "dataSource": false,
     "public": false
   },
-  "TweetEntities": {
+  "TwitterMedia": {
     "dataSource": false,
     "public": false
   },
-  "TweetEntitiesMedia": {
+  "TwitterMediaSizes": {
     "dataSource": false,
     "public": false
   },
-  "TweetEntitiesMediaSizes": {
+  "TwitterMediaSize": {
     "dataSource": false,
     "public": false
   },
-  "TweetEntitiesMediaSizesSize": {
+  "TwitterPlace": {
     "dataSource": false,
     "public": false
   },
-  "TweetPlace": {
+  "TwitterCoordinatesPoint": {
     "dataSource": false,
     "public": false
   },
-  "TweetCoordinatesPolygon": {
+  "TwitterCoordinatesPolygon": {
     "dataSource": false,
     "public": false
   },

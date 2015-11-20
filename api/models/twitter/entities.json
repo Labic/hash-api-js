@@ -1,5 +1,5 @@
 {
-  "name": "TweetEntities",
+  "name": "TwitterEntities",
   "base": "PersistedModel",
   "properties": {
     "trends": {
@@ -9,7 +9,7 @@
       "type": ["object"]
     },
     "media": {
-      "type": ["TweetEntitiesMedia"]
+      "type": ["TwitterMedia"]
     },
     "urls": {
       "type": ["object"]

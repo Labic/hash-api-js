@@ -1,5 +1,5 @@
 {
-  "name": "TweetCoordinatesPolygon",
+  "name": "TwitterCoordinatesPolygon",
   "base": "PersistedModel",
   "properties": {
     "type": {

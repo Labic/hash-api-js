@@ -1,21 +1,21 @@
 {
-  "name": "TweetEntitiesMediaSizes",
+  "name": "TwitterMediaSizes",
   "base": "PersistedModel",
   "properties": {
     "large": {
-      "type": "TweetEntitiesMediaSizesSize",
+      "type": "TwitterMediaSize",
       "required": true
     },
     "small": {
-      "type": "TweetEntitiesMediaSizesSize",
+      "type": "TwitterMediaSize",
       "required": true
     },
     "medium": {
-      "type": "TweetEntitiesMediaSizesSize",
+      "type": "TwitterMediaSize",
       "required": true
     },
     "thumb": {
-      "type": "TweetEntitiesMediaSizesSize",
+      "type": "TwitterMediaSize",
       "required": true
     }
   }
