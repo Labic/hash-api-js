@@ -32,8 +32,7 @@ module.exports = function(Analytic) {
           mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
           mappedFilter.profiles      = _.convertToArray(filter['profiles']);
           mappedFilter.mentions      = _.convertToArray(filter['mentions']);
-          // TODO: Rename mappedFilter.type to mappedFilter.types
-          mappedFilter.type          = _.convertToArray(filter['type']);
+          mappedFilter.types         = _.convertToArray(filter['types']);
           mappedFilter.posts         = _.convertToArray(filter['posts']);
 
           filter = mappedFilter;

@@ -32,23 +32,25 @@ module.exports = function mostRecurringImages(params, model, cb) {
 
   if(params.filter.tags) {
     if(params.filter.tags.with)
-      pipeline[0].$match.categories = { $all: params.filter.tags.with };
+      pipeline[0].$match['categories'] = { $all: params.filter.tags.with };
 
     if(params.filter.tags.contains)
-      pipeline[0].$match.categories = { $in: params.filter.tags.contains };
+      pipeline[0].$match['categories'] = { $in: params.filter.tags.contains };
   }
 
   if(params.filter.hashtags)
-    pipeline[0].$match.hashtags = { $in: params.filter.hashtags };
+    pipeline[0].$match['hashtags'] = { $in: params.filter.hashtags };
 
-  if(params.filter.mentions)
-    pipeline[0].$match['message_tags.id'] = { $in: params.filter.mentions };
+  if(params.filter.mentions) {
+    query['message_tags.id'] = { $in: params.filter.mentions };
+    query['with_tags.id'] = { $in: params.filter.mentions };
+  }
 
   if(params.filter.profiles)
     pipeline[0].$match['from.id'] = { $in: params.filter.profiles };
 
-  if (params.filter.type)
-    pipeline[0].$match.type = { $in: params.filter.type };
+  if (params.filter.types)
+    pipeline[0].$match['type'] = { $in: params.filter.types };
 
   model.dao.mongodb.aggregate(pipeline, cb);
 };

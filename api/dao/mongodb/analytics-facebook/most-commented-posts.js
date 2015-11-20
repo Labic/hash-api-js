@@ -27,14 +27,16 @@ module.exports = function mostCommentedPosts(params, model, cb) {
   if(params.filter.hashtags)
     query['hashtags'] = { $in: params.filter.hashtags };
 
-  if(params.filter.mentions)
+  if(params.filter.mentions) {
     query['message_tags.id'] = { $in: params.filter.mentions };
+    query['with_tags.id'] = { $in: params.filter.mentions };
+  }
 
   if(params.filter.profiles)
     query['from.id'] = { $in: params.filter.profiles };
 
-  if(params.filter.type)
-    query['type'] = { $in: params.filter.type };
+  if(params.filter.types)
+    query['type'] = { $in: params.filter.types };
 
   model.dao.mongodb.find(query, options, function (err, result) {
     if(err) return cb(err, null);
