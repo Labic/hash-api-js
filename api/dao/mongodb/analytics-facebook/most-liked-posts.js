@@ -1,4 +1,7 @@
-module.exports = function mostLikedPosts(params, model, cb) { 
+var _ = require('../../../lib/underscoreExtended'),
+    excludedFields = require('./utils/excluded-fields-post-model');
+
+module.exports module.exports = function mostLikedPosts(params, model, cb) { 
   var query = {
     'created_time_ms': {
       $gte: params.since.getTime(),
@@ -7,6 +10,7 @@ module.exports = function mostLikedPosts(params, model, cb) {
   }
 
   var options = {
+    fields: excludedFields,
     sort: [['likes_count', -1]],
     limit: params.perPage * params.page,
     skip: (params.perPage * params.page) - params.perPage
@@ -34,5 +38,10 @@ module.exports = function mostLikedPosts(params, model, cb) {
   if(params.filter.type)
     query['type'] = { $in: params.filter.type };
 
-  model.dao.mongodb.find(query, options, cb);
+  model.dao.mongodb.find(query, options, function (err, result) {
+    if(err) return cb(err, null);
+
+    _.renameProperties(result, {'_id': 'id'});
+    cb(null, result);
+  });
 };
