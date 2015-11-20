@@ -1,6 +1,6 @@
 var _ = require('../../../lib/underscoreExtended');
 
-module.exports = function interactionsRate(params, model, cb) { 
+module.exports = function commentsRate(params, model, cb) { 
   var query = { 
     'created_time_ms': {
       $gte: params.since.getTime(),
@@ -16,19 +16,8 @@ module.exports = function interactionsRate(params, model, cb) {
       query['categories'] = { $in: params.filter.tags.contains };
   }
 
-  if(params.filter.hashtags)
-    query['hashtags'] = { $in: params.filter.hashtags };
-
-  if(params.filter.mentions) {
-    query['message_tags.id'] = { $in: params.filter.mentions };
-    query['with_tags.id'] = { $in: params.filter.mentions };
-  }
-
   if(params.filter.profiles)
     query['from.id'] = { $in: params.filter.profiles };
-
-  if(params.filter.types)
-    query['type'] = { $in: params.filter.types };
 
   var options = {
     query: query,

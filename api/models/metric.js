@@ -11,10 +11,10 @@ var periodEnum = require('./enums/periodEnum'),
 
 module.exports = function(Metric) {
 
-  Metric.remoteMethod('facebookPostsMetrics', {
+  Metric.remoteMethod('metricsFacebook', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
-      { arg: 'profile_type', type: 'string', required: true },
+      { arg: 'profile_type', type: 'string' },
       { arg: 'period', type: 'string' },
       { arg: 'granularity', type: 'string' },
       { arg: 'filter', type: 'object', http: function mapping(ctx) {
@@ -31,9 +31,9 @@ module.exports = function(Metric) {
           mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
           mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
           mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
-          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
           mappedFilter.profiles      = _.convertToArray(filter['profiles']);
-          mappedFilter.postType      = _.convertToArray(filter['post_type']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
+          mappedFilter.types         = _.convertToArray(filter['types']);
 
           filter = mappedFilter;
         } else {
@@ -50,7 +50,7 @@ module.exports = function(Metric) {
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
-  Metric.facebookPostsMetrics = function(method, profileType, period, granularity, filter, last, page, perPage, cb) {
+  Metric.metricsFacebook = function(method, profileType, period, granularity, filter, last, page, perPage, cb) {
     if (!metricsFacebookPostsRemoteMethods[method]) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
       err.fields = ['method'];
@@ -95,17 +95,20 @@ module.exports = function(Metric) {
         break;
       
       default:
-        var err = new Error('Malformed request syntax. Check the query string arguments!');
-        err.fields = ['profile_type'];
-        err.status = 400;
+        if(params.method === 'comments_rate') {
+          var model = Metric.app.models.FacebookComment;
+        } else {
+          var err = new Error('Malformed request syntax. profile_type query param is required!');
+          err.statusCode = 400;
+        }
 
         return cb(err);
         break; 
     }
-    
+
     metricsFacebookPostsRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
-
+    console.log('213');
       if (result.length > 0)
         Metric.cache.put(options.cache.key, result, options.cache.ttl);
       
@@ -114,6 +117,7 @@ module.exports = function(Metric) {
   }
 
   var metricsFacebookPostsRemoteMethods = {
+    'comments_rate': dao.mongodb.metricsFacebook.commentsRate,
     'interations_rate': dao.mongodb.metricsFacebook.interactionsRate
   };
 
