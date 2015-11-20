@@ -1,0 +1,12 @@
+{
+  "name": "InstagramPosition",
+  "base": "PersistedModel",
+  "properties": {
+    "y": {
+      "type": "number"
+    },
+    "x": {
+      "type": "number"
+    }
+  }
+}

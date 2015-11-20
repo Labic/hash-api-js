@@ -120,7 +120,15 @@
     "dataSource": false,
     "public": false
   },
+  "InstagramUserInPhoto": {
+    "dataSource": false,
+    "public": false
+  },
   "InstagramUser": {
+    "dataSource": false,
+    "public": false
+  },
+  "InstagramPosition": {
     "dataSource": false,
     "public": false
   },

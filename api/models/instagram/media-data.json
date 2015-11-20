@@ -19,7 +19,7 @@
       "type": "InstagramCaption"
     },
     "users_in_photo": {
-      "type": ["InstagramUser"]
+      "type": ["InstagramUserInPhoto"]
     },
     "created_time": {
       "type": "number"
