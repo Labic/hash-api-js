@@ -148,6 +148,10 @@
     "dataSource": false,
     "public": false
   },
+  "InstagramComment": {
+    "dataSource": false,
+    "public": false
+  },
   "InstagramComments": {
     "dataSource": false,
     "public": false

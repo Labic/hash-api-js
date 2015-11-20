@@ -6,7 +6,7 @@
       "type": "number"
     },
     "data": {
-      "type": ["InstagramUser"]
+      "type": ["InstagramComment"]
     }
   }
 }
