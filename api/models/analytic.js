@@ -205,7 +205,7 @@ module.exports = function(Analytic) {
   var analyticsInstagramRemoteMethods = {
     'geolocation': dao.mongodb.analyticsInstagram.geolocation,
     'most_active_users': dao.mongodb.analyticsInstagram.mostActiveUsers,
-    'most_commented_medias': dao.mongodb.analyticsInstagram.mostCommentedMedia,
+    'most_commented_medias': dao.mongodb.analyticsInstagram.mostCommentedMedias,
     'most_liked_medias': dao.mongodb.analyticsInstagram.mostLikedMedias,
     'most_popular_users': dao.mongodb.analyticsInstagram.mostPopularUsers
   };

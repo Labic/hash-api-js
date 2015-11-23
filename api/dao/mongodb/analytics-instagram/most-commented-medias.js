@@ -1,4 +1,4 @@
-module.exports = function mostCommentedMedia(params, model, cb) { 
+module.exports = function mostCommentedMedias(params, model, cb) { 
   var query = {
     'data.created_time': {
       $gte: params.since.getTime() / 1000,
