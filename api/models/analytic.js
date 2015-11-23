@@ -82,23 +82,23 @@ module.exports = function(Analytic) {
 
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
-
-    switch (params.profileType) {
-      case 'user':
-        var model = Analytic.app.models.FacebookPost;
-        break;
-      case 'page':
-        var model = Analytic.app.models.FacebookPagePost;
-        break;
-      default:
-        if(params.method === 'most_liked_comments') {
-          var model = Analytic.app.models.FacebookComment;
-        } else {
+    
+    if(params.method === 'most_liked_comments') {
+      var model = Analytic.app.models.FacebookComment;
+    } else {
+      switch (params.profileType) {
+        case 'user':
+          var model = Analytic.app.models.FacebookPost;
+          break;
+        case 'page':
+          var model = Analytic.app.models.FacebookPagePost;
+          break;
+        default:
           var err = new Error('Malformed request syntax. profile_type query param is required!');
           err.statusCode = 400;
 
           return cb(err, null);
-        }
+      }
     }
     
     analyticsFacebookPostRemoteMethods[method](params, model, function(err, result) {
