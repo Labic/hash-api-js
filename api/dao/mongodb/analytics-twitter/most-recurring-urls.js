@@ -33,17 +33,17 @@ module.exports = function mostSharedUrls(params, model, cb) {
 
   if(params.filter.tags) {
     if(params.filter.tags.with)
-      pipeline[0].$match.categories = { $all: params.filter.tags.with };
+      pipeline[0].$match.['categories'] = { $all: params.filter.tags.with };
 
     if(params.filter.tags.contains)
-      pipeline[0].$match.categories = { $in: params.filter.tags.contains };
+      pipeline[0].$match['categories'] = { $in: params.filter.tags.contains };
   }
 
   if(params.filter.hashtags)
     pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.filter.hashtags };
 
   if(params.filter.mentions)
-    pipeline[0].$match['status.entities.screen_name'] = { $in: params.filter.mentions };
+    pipeline[0].$match['status.entities.user_mentions.screen_name'] = { $in: params.filter.mentions };
 
   if(params.filter.users)
     pipeline[0].$match['status.user.screen_name'] = { $in: params.filter.users };
@@ -52,7 +52,7 @@ module.exports = function mostSharedUrls(params, model, cb) {
     query.where['status.retweeted_status'] = { $exists: params.filter.retweeted };
 
   if(_.isBoolean(params.filter.blocked))
-    pipeline[0].$match.block = params.filter.blocked;
+    pipeline[0].$match['block'] = params.filter.blocked;
 
   model.dao.mongodb.aggregate(pipeline, cb);
 };

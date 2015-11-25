@@ -20,7 +20,7 @@ module.exports = function tagsCount(params, model, cb) {
     query['status.entities.hashtags.text'] = { $in: params.filter.hashtags };
 
   if(params.filter.mentions)
-    query['status.entities.screen_name'] = { $in: params.filter.mentions };
+    query['status.entities.user_mentions.screen_name'] = { $in: params.filter.mentions };
 
   if(params.filter.users)
     query['status.user.screen_name'] = { $in: params.filter.users };
