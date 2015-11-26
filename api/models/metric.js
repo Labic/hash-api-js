@@ -18,7 +18,26 @@ module.exports = function(Metric) {
       // TODO: Remove profile_type arg because of use node insted.
       { arg: 'profile_type', type: 'string' },
       { arg: 'node', type: 'string' },
-      { arg: 'period', type: 'string' },
+      { arg: 'period', type: 'string', http: function mapping(ctx) {
+        var period = ctx.req.query.period;
+
+        console.log('period:\n%j', period);
+
+        if(period) {
+          var mappedFilter = {};
+
+          if (!_.isEmpty(period['since']))
+            mappedFilter.since = new Date(period['since']);
+          if (!_.isEmpty(period['until']))
+            mappedFilter.until = new Date(period['until']);
+
+          period = mappedFilter;
+        } else {
+          period = null;
+        }
+
+        return period;
+      } },
       { arg: 'granularity', type: 'string' },
       { arg: 'filter', type: 'object', http: function mapping(ctx) {
         var filter = ctx.req.query.filter;
@@ -57,7 +76,7 @@ module.exports = function(Metric) {
     if (!metricsFacebookPostsRemoteMethods[method]) {
       var err = new Error('Malformed request syntax. Check the query string arguments!');
       err.fields = ['method'];
-      err.status = 400;
+      err.statusCode = 400;
 
       return cb(err);
     }
@@ -122,8 +141,8 @@ module.exports = function(Metric) {
   }
 
   var metricsFacebookPostsRemoteMethods = {
-    'comments_rate': dao.mongodb.metricsFacebook.commentsRate,
     'interations_rate': dao.mongodb.metricsFacebook.interactionsRate,
+    'profiles_rate': dao.mongodb.metricsFacebook.profilesRate,
     'tags_count': dao.mongodb.metricsFacebook.tagsCount
   };
 
