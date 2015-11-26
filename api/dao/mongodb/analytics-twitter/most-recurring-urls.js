@@ -33,7 +33,7 @@ module.exports = function mostSharedUrls(params, model, cb) {
 
   if(params.filter.tags) {
     if(params.filter.tags.with)
-      pipeline[0].$match.['categories'] = { $all: params.filter.tags.with };
+      pipeline[0].$match['categories'] = { $all: params.filter.tags.with };
 
     if(params.filter.tags.contains)
       pipeline[0].$match['categories'] = { $in: params.filter.tags.contains };
