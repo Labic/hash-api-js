@@ -10,7 +10,20 @@
     }
   },
   "mixins": {
-      "Mongodb": null
+    "Mongodb": null,
+    "Cache": null,
+    "DisableMethods": {
+      "selfMethods": [
+        "count",
+        "upsert",
+        "findOne",
+        "findOrCreate",
+        "deleteById",
+        "updateAll",
+        "updateAttributes",
+        "createChangeStream"
+      ]
+    }
   },
  "relations": {
     "comments": {
