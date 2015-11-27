@@ -5,7 +5,7 @@
   "http": {"path": "facebook/posts"},
   "options": {
     "mongodb": {
-      "collection": "facebook_posts"
+      "collection": "facebook_pages"
     }
   },
   "properties": {
@@ -103,6 +103,22 @@
     },
     "collect_at": {
       "type": "number"
+    }
+  },
+  "mixins": {
+    "Mongodb": null,
+    "Cache": null,
+    "DisableMethods": {
+      "selfMethods": [
+        "count",
+        "upsert",
+        "findOne",
+        "findOrCreate",
+        "deleteById",
+        "updateAll",
+        "updateAttributes",
+        "createChangeStream"
+      ]
     }
   },
  "relations": {

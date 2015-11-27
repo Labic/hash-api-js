@@ -2,7 +2,7 @@ var periodEnum = require('../enums/periodEnum'),
     cacheTTLenum = require('../enums/cacheTTLenum'),
     _ = require('underscore');
 
-module.exports = function(FacebookPagePost) {
+module.exports = function(FacebookPost) {
 
   var args = [
     { arg: 'profile_type', type: 'string' },
@@ -52,13 +52,13 @@ module.exports = function(FacebookPagePost) {
     { arg: 'last', type: 'number' }
   ];
 
-  FacebookPagePost.remoteMethod('countByArgs', {
+  FacebookPost.remoteMethod('countByArgs', {
     accepts: args,
     returns: { type: 'object', root: true },
     http: { path: '/count', verb: 'GET' }
   });
 
-  FacebookPagePost.countByArgs = function(profileType, period, filter, last, cb) {
+  FacebookPost.countByArgs = function(profileType, period, filter, last, cb) {
     var params = {
       endpoint: '/facebook/pages/post',
       profileType: profileType,
@@ -71,9 +71,6 @@ module.exports = function(FacebookPagePost) {
     var err = new Error('Malformed request syntax. Check the query string arguments!');
     err.statusCode = 400;
     if(_.isObject(params.period)) {
-      console.log('_.isDate(params.period.since) %j', _.isDate(params.period.since));
-      console.log('_.isEmpty(params.period.since) %j', _.isEmpty(params.period.since));
-      console.log('params.period.since %j', params.period.since);
       if(params.period.since === undefined || !_.isDate(params.period.since)) {
         err.fields = ['period[since]'];
         return cb(err);
@@ -94,13 +91,11 @@ module.exports = function(FacebookPagePost) {
       }
     };
 
-    var resultCache = FacebookPagePost.cache.get(options.cache.key);
+    var resultCache = FacebookPost.cache.get(options.cache.key);
     if (resultCache)
       return cb(null, resultCache);
 
     var query = {};
-
-    console.log('%j', params);
 
     if(params.filter.tags) {
       if(params.filter.tags.with)
@@ -124,7 +119,7 @@ module.exports = function(FacebookPagePost) {
     if(params.filter.types)
       query['type'] = { $in: params.filter.types };
     
-    return FacebookPagePost.dao.mongodb.count(query, function(err, result) {
+    return FacebookPost.dao.mongodb.count(query, function(err, result) {
       if (err) return cb(err, null);
       
       return cb(null, { count: result });
