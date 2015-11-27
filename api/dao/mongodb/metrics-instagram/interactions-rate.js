@@ -56,9 +56,9 @@ module.exports = function interactionsRate(params, model, cb) {
   model.dao.mongodb.mapReduce(
     function map() {
       if(node === 'media')
-        var time = new Date(this['data.created_time'] * 1000);
+        var time = new Date(this.data.created_time * 1000);
       if(node === 'comment')
-        var time = new Date(this['created_time'] * 1000);
+        var time = new Date(this.created_time * 1000);
 
       var daysInMonth = new Date(time.getDate(), time.getMonth(), 0).getDate();
       
