@@ -18,26 +18,28 @@ module.exports = function(Metric) {
       // TODO: Remove profile_type arg because of use node insted.
       { arg: 'profile_type', type: 'string' },
       { arg: 'node', type: 'string' },
-      { arg: 'period', type: 'string', http: function mapping(ctx) {
-        var period = ctx.req.query.period;
+      { arg: 'period', type: 'string' },
+      // TODO: Implement this in near future
+      // { arg: 'period', type: 'string', http: function mapping(ctx) {
+      //   var period = ctx.req.query.period;
 
-        console.log('period:\n%j', period);
+      //   console.log('period:\n%j', period);
 
-        if(period) {
-          var mappedFilter = {};
+      //   if(period) {
+      //     var mappedFilter = {};
 
-          if (!_.isEmpty(period['since']))
-            mappedFilter.since = new Date(period['since']);
-          if (!_.isEmpty(period['until']))
-            mappedFilter.until = new Date(period['until']);
+      //     if (!_.isEmpty(period['since']))
+      //       mappedFilter.since = new Date(period['since']);
+      //     if (!_.isEmpty(period['until']))
+      //       mappedFilter.until = new Date(period['until']);
 
-          period = mappedFilter;
-        } else {
-          period = null;
-        }
+      //     period = mappedFilter;
+      //   } else {
+      //     period = null;
+      //   }
 
-        return period;
-      } },
+      //   return period;
+      // }, 
       { arg: 'granularity', type: 'string' },
       { arg: 'filter', type: 'object', http: function mapping(ctx) {
         var filter = ctx.req.query.filter;
@@ -152,6 +154,27 @@ module.exports = function(Metric) {
       { arg: 'method', type: 'string', required: true },
       { arg: 'node', type: 'string', required: true },
       { arg: 'period', type: 'string' },
+      // TODO: Implement this in near future
+      // { arg: 'period', type: 'string', http: function mapping(ctx) {
+      //   var period = ctx.req.query.period;
+
+      //   console.log('period:\n%j', period);
+
+      //   if(period) {
+      //     var mappedFilter = {};
+
+      //     if (!_.isEmpty(period['since']))
+      //       mappedFilter.since = new Date(period['since']);
+      //     if (!_.isEmpty(period['until']))
+      //       mappedFilter.until = new Date(period['until']);
+
+      //     period = mappedFilter;
+      //   } else {
+      //     period = null;
+      //   }
+
+      //   return period;
+      // }, 
       { arg: 'granularity', type: 'string' },
       { arg: 'filter', type: 'object', http: function mapping(ctx) {
         var filter = ctx.req.query.filter;
@@ -258,6 +281,27 @@ module.exports = function(Metric) {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string' },
+      // TODO: Implement this in near future
+      // { arg: 'period', type: 'string', http: function mapping(ctx) {
+      //   var period = ctx.req.query.period;
+
+      //   console.log('period:\n%j', period);
+
+      //   if(period) {
+      //     var mappedFilter = {};
+
+      //     if (!_.isEmpty(period['since']))
+      //       mappedFilter.since = new Date(period['since']);
+      //     if (!_.isEmpty(period['until']))
+      //       mappedFilter.until = new Date(period['until']);
+
+      //     period = mappedFilter;
+      //   } else {
+      //     period = null;
+      //   }
+
+      //   return period;
+      // }, 
       { arg: 'granularity', type: 'string' },
       { arg: 'filter', type: 'object', http: function mapping(ctx) {
         var filter = ctx.req.query.filter;
@@ -348,7 +392,8 @@ module.exports = function(Metric) {
 
   var metricsTwitterRemoteMethods = {
     'interations_rate': dao.mongodb.metricsTwitter.interactionsRate,
-    'tags_count': dao.mongodb.metricsTwitter.tagsCount
+    'tags_count': dao.mongodb.metricsTwitter.tagsCount,
+    'users_rate': dao.mongodb.metricsTwitter.usersRate
   };
 
 };
