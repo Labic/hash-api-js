@@ -104,7 +104,6 @@ module.exports = function usersRate(params, model, cb) {
       emit(time, this.status.user.screen_name);
     },
     function reduce(key, values) {
-      // return { ids: values };
       return values.toString();
     },
     options,

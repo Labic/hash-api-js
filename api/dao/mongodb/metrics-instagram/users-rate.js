@@ -46,6 +46,18 @@ module.exports = function interactionsRate(params, model, cb) {
 
   var options = {
     query: query,
+    finalize: function (key, reducedValue) {
+      // TODO: Mongo bug/gambiarra
+      // http://www.shamasis.net/2009/09/fast-algorithm-to-find-unique-items-in-javascript-array/
+      var ids = reducedValue.split(','),
+          o = {}, 
+          i, 
+          count = 0;
+      for (i = 0; i < ids.length; i += 1) o[ids[i]] = ids[i];
+      for (i in o) count += 1;
+
+      return count;
+    },
     scope: { node: params.node },
     out: { inline: 1 }
   };
@@ -107,23 +119,13 @@ module.exports = function interactionsRate(params, model, cb) {
 
       time.setSeconds(0);
 
-
       if(node === 'media')
         emit(time, this.data.user.id);
-        // emit(time, 1);
       if(node === 'comment')
         emit(time, this.user.id);
     },
     function reduce(key, values) {
-      var o = {}, 
-          i, 
-          l = values.length, 
-          count = 0;
-      for (i = 0; i < l; i += 1) o[values[i]] = values[i];
-      for (i in o) count += 1;
-
-      return count;
-      // return values.length;
+      return values.toString();
     },
     options,
     function callback(err, result) {

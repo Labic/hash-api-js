@@ -35,11 +35,11 @@ module.exports = function profilesRate(params, model, cb) {
     finalize: function (key, reducedValue) {
       // TODO: Mongo bug/gambiarra
       // http://www.shamasis.net/2009/09/fast-algorithm-to-find-unique-items-in-javascript-array/
-      var o = {}, 
+      var ids = reducedValue.split(','),
+          o = {}, 
           i, 
-          l = reducedValue.ids.length, 
           count = 0;
-      for (i = 0; i < l; i += 1) o[reducedValue.ids[i]] = reducedValue.ids[i];
+      for (i = 0; i < ids.length; i += 1) o[ids[i]] = ids[i];
       for (i in o) count += 1;
 
       return count;
@@ -111,9 +111,7 @@ module.exports = function profilesRate(params, model, cb) {
       }
     },
     function reduce(key, values) {
-      return { ids: values };
-      // return values.toString();
-      // return values.length;
+      return values.toString();
     },
     options,
     function callback(err, result) {
