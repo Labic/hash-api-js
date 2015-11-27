@@ -272,8 +272,8 @@ module.exports = function(Metric) {
   }
 
   var metricsInstagramRemoteMethods = {
-    // 'tags_count': dao.mongodb.metricsTwitter.tagsCount,
-    'interations_rate': dao.mongodb.metricsInstagram.interactionsRate
+    'interations_rate': dao.mongodb.metricsInstagram.interactionsRate,
+    'users_rate': dao.mongodb.metricsInstagram.usersRate
   };
 
 
