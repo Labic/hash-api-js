@@ -32,6 +32,18 @@ module.exports = function profilesRate(params, model, cb) {
 
   var options = {
     query: query,
+    finalize: function (key, reducedValue) {
+      // TODO: Mongo bug/gambiarra
+      // http://www.shamasis.net/2009/09/fast-algorithm-to-find-unique-items-in-javascript-array/
+      var o = {}, 
+          i, 
+          l = reducedValue.ids.length, 
+          count = 0;
+      for (i = 0; i < l; i += 1) o[reducedValue.ids[i]] = reducedValue.ids[i];
+      for (i in o) count += 1;
+
+      return count;
+    },
     out: { inline: 1 }
   };
 
@@ -99,7 +111,9 @@ module.exports = function profilesRate(params, model, cb) {
       }
     },
     function reduce(key, values) {
-      return values.length;
+      return { ids: values };
+      // return values.toString();
+      // return values.length;
     },
     options,
     function callback(err, result) {
