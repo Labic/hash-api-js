@@ -273,6 +273,7 @@ module.exports = function(Metric) {
 
   var metricsInstagramRemoteMethods = {
     'interations_rate': dao.mongodb.metricsInstagram.interactionsRate,
+    'tags_count': dao.mongodb.metricsInstagram.tagsCount,
     'users_rate': dao.mongodb.metricsInstagram.usersRate
   };
 
