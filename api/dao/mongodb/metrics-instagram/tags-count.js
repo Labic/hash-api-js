@@ -45,7 +45,20 @@ module.exports = function interactionsRate(params, model, cb) {
   }
 
   model.dao.mongodb.mapReduce(
-    tagsMapFuncions['all_tags'],
+    function map() {
+      if (this.categories)
+        for (var i = 0; i < this.categories.length; i++) {
+          var tag = this.categories[i].trim();
+          
+          if (tag.indexOf('territorio-') > -1)
+            tag = ''.concat('BR.', tag.substring(11, 14).toUpperCase());
+          // TODO: Eleminar isso no futuro
+          if (tag.indexOf('terrritorio-') > -1)
+            tag = ''.concat('BR.', tag.substring(12, 14).toUpperCase());
+          
+          emit(tag, 1);
+        }
+    },
     function reduce(key, values) {
       return Array.sum(values);
     },{
@@ -58,24 +71,4 @@ module.exports = function interactionsRate(params, model, cb) {
       _.renameProperties(result, {_id: 'time', value: 'count'});
       return cb(null, result);
     });
-}
-
-var tagsMapFuncions = {};
-tagsMapFuncions['brazilian_states'] = function () {
-  if (this.categories)
-    for (var i = 0; i < this.categories.length; i++) {
-      var tag = this.categories[i].trim();
-      if (tag.indexOf('territorio-') > -1) {
-        tag = ''.concat('BR.', tag.substring(11, 14).toUpperCase());
-        emit(tag, 1);
-      }
-    };
-}
-
-tagsMapFuncions['all_tags'] = function () {
-  if (this.categories)
-    for (var i = 0; i < this.categories.length; i++) {
-      var tag = this.categories[i].trim();
-      emit(tag, 1);
-    };
 }
