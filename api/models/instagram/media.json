@@ -22,7 +22,19 @@
   },
   "mixins": {
     "Mongodb": null,
-    "Cache": null
+    "Cache": null,
+    "DisableMethods": {
+      "selfMethods": [
+        "count",
+        "upsert",
+        "findOne",
+        "findOrCreate",
+        "deleteById",
+        "updateAll",
+        "updateAttributes",
+        "createChangeStream"
+      ]
+    }
   },
   "scope": {
     "limit": 25
