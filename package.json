@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "api/server.js",
   "scripts": {
-    "start": "node --harmony api/server.js"
+    "start": "node api/server.js"
   },
   "dependencies": {
     "async": "^0.9.0",
