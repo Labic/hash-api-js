@@ -13,6 +13,13 @@ module.exports = function(Model) {
     });
   }
 
+  Model.dao.mongodb.findOne = function(query, cb) {
+    Model.getDataSource().connector.connect(function(err, db) {
+      var collection = db.collection(Model.settings.mongodb.collection);
+      collection.findOne(query, cb);
+    });
+  }
+
   Model.dao.mongodb.mapReduce = function(map, reduce, options, cb) {
     Model.getDataSource().connector.connect(function(err, db) {
       var collection = db.collection(Model.settings.mongodb.collection);
