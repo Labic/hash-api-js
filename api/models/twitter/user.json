@@ -1,5 +1,7 @@
 {
   "name": "TwitterUser",
+  "plural": "users",
+  "http": { "path": "/twitter/users" },
   "base": "PersistedModel",
   "properties": {
     "location": {
@@ -115,6 +117,24 @@
     },
     "is_translator": {
       "type": "boolean"
+    }
+  },
+  "mixins": {
+    "DisableMethods": {
+      "selfMethods": [
+        "create",
+        "count",
+        "upsert",
+        "find",
+        "findOne",
+        "findOrCreate",
+        "exists",
+        "findById",
+        "deleteById",
+        "updateAll",
+        "updateAttributes",
+        "createChangeStream"
+      ]
     }
   },
   "hidden": [
