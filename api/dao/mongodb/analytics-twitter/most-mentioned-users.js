@@ -1,29 +1,28 @@
-var _ = require('../../../lib/underscoreExtended'); 
+var _ = require('../../../lib/underscoreExtended');
 
-module.exports = function mostMentionedUsers(params, model, cb) { 
+module.exports = function mostMentionedUsers(params, model, cb) {
   var pipeline = [
     { $match: {
-      'status.entities.user_mentions.0': { $exists: true }, 
+      'status.entities.user_mentions.0': { $exists: true },
       'status.timestamp_ms': {
         $gte: params.since.getTime(),
         $lte: params.until.getTime()
       },
-      block: (params.filter.blocked || false) 
+      block: (params.filter.blocked || false)
     } },
     { $unwind: '$status.entities.user_mentions' },
     { $group: {
       _id: '$status.entities.user_mentions.id_str',
       screen_name: { $last: '$status.entities.user_mentions.screen_name' },
+      profile_image_url_https: { $last: '$status.entities.user_mentions.profile_image_url_https' },
       count: { $sum: 1 }
     } },
     { $sort: { count: -1 } },
     { $project: {
       _id: 0,
-      status: {
-        user : {
-          screen_name: '$screen_name'
-        }
-      },
+      id_str: '$_id',
+      screen_name: '$screen_name',
+      profile_image_url_https: '$profile_image_url_https',
       count: '$count'
     } },
     { $limit: params.perPage * params.page },
