@@ -9,7 +9,7 @@ module.exports = function mostRecurringHashtags(params, model, cb) {
     } },
     { $unwind: '$hashtags' },
     { $group: {
-      _id: '$hashtags',
+      _id: {  $toLower: '$hashtags'},
       count: { $sum: 1 }
     } },
     { $project: {
