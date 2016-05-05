@@ -4,5 +4,6 @@ module.exports = {
   mostLikedComments: require('./most-liked-comments'),
   mostLikedPosts: require('./most-liked-posts'),
   mostRecurringImages: require('./most-recurring-images'),
+  mostRecurringHashtags: require('./most-recurring-hashtags'),
   mostSharedPosts: require('./most-shared-posts')
 };
