@@ -1,0 +1,34 @@
+{
+  "name": "FlickrPhoto",
+  "base": "PersistedModel",
+  "http": {"path": "flickr/photos"},
+  "options": {
+    "mongodb": {
+      "collection": "flickr_photos"
+    }
+  },
+  "properties": {
+  },
+  "mixins": {
+    "Mongodb": null,
+    "Cache": null,
+    "DisableMethods": {
+      "selfMethods": [
+        "create",
+        "count",
+        "upsert",
+        "find",
+        "findOrCreate",
+        "exists",
+        "findById",
+        "deleteById",
+        "updateAll",
+        "updateAttributes",
+        "createChangeStream"
+      ]
+    }
+  },
+  "scope": {
+    "limit": 25
+  }
+}

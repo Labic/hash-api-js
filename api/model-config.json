@@ -5,6 +5,7 @@
       "./models/authentication",
       "./models/twitter",
       "./models/facebook",
+      "./models/flickr",
       "./models/instagram",
       "../node_modules/loopback-component-passport/lib/models"
     ],
@@ -109,6 +110,10 @@
     "public": false
   },
   "FacebookComment": {
+    "dataSource": "documentDB",
+    "public": true
+  },
+  "FlickrPhoto": {
     "dataSource": "documentDB",
     "public": true
   },
