@@ -8,6 +8,10 @@
     }
   },
   "properties": {
+    "id": {
+      "type": "string",
+      "id": true
+    }
   },
   "mixins": {
     "Mongodb": null,
@@ -20,7 +24,6 @@
         "find",
         "findOrCreate",
         "exists",
-        "findById",
         "deleteById",
         "updateAll",
         "updateAttributes",

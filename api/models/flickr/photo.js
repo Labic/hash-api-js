@@ -5,6 +5,8 @@ var periodEnum = require('../enums/periodEnum'),
 module.exports = function(FlickrPhoto) {
 
   var args = [
+    // TODO: Implement ElasticSearch Search query
+    // https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
     { arg: 'period', type: 'string' },
     { arg: 'filter', type: '[string]', http: { source: 'query' } },
     { arg: 'page', type: 'number' },
@@ -40,7 +42,7 @@ module.exports = function(FlickrPhoto) {
   }
 
   FlickrPhoto.findByArgs = function(period, filter, page, perPage, cb) {
-    period = _.isEmpty(period) ? '1d' : period;
+    period = _.isEmpty(period) ? 'P1D' : period;
     page = _.isEmpty(page) ? 1 : page;
     perPage = _.isEmpty(perPage) ? 25 : perPage > 100 ? 100 : perPage;
     filter = _.isEmpty(filter) ? {} : filter;
@@ -100,49 +102,40 @@ module.exports = function(FlickrPhoto) {
   }
 
   FlickrPhoto.countByArgs = function(period, filter, page, perPage, cb) {
-    period = _.isEmpty(period) ? '1d' : period;
+    period = _.isEmpty(period) ? 'P1D' : period;
     filter = _.isEmpty(filter) ? {} : filter;
-    ['with_tags', 'contain_tags', 'hashtags', 'mentions', 'users']
+    ['with_tags', 'contain_tags', 'has']
       .forEach(function (property) {
         filter[property] = dealWith('array', property, filter);
       });
 
     var query = {};
 
-    if(_.isEmpty(filter['blocked']))
-      query.block = false;
+    // if(_.isEmpty(filter['blocked']))
+    //   query.block = false;
 
     if(!_.isEmpty(period))
-      query['status.timestamp_ms'] = {
-        $gte: new Date(new Date() - periodEnum[period]).getTime(),
-        $lte: new Date().getTime()
+      query['dates.posted'] = {
+        $gte: (new Date(new Date() - periodEnum[period]).getTime() / 1000).toFixed(),
+        $lte: (new Date().getTime() / 1000).toFixed()
       }
 
     if(!_.isEmpty(filter['has'])) {
-      if(filter['has'].indexOf('media') > -1)
-        query['status.entities.media.0'] = { $exists: true };
-      if(filter['has'].indexOf('url') > -1)
-        query['status.entities.urls.0'] = { $exists: true };
-      if(filter['has'].indexOf('mention') > -1)
-        query['status.entities.user_mentions.0'] = { $exists: true };
-      if(filter['has'].indexOf('geolocation') > -1)
-        query['status.geo'] = { ne: null };
+      if(filter['has'].indexOf('description') > -1)
+        query['description._content'] = { $exists: true };
+      if(filter['has'].indexOf('title') > -1)
+        query['title._content'] = { $exists: true };
+      if(filter['has'].indexOf('people') > -1)
+        query['people.haspeople'] = { $gt: 0 };
+      if(filter['has'].indexOf('tags') > -1)
+        query['tags.tag.0'] = { $exists: true };
     }
 
-    if(!_.isEmpty(filter['retweeted']))
-      query['status.retweeted_status'] = { $exists: (filter['retweeted'] === 'true') };
-
     if(!_.isEmpty(filter['with_tags']))
-      query['categories'] = { $all: filter['with_tags'] };
+      query['tags.tag._content'] = { $all: filter['with_tags'] };
 
     if(!_.isEmpty(filter['contain_tags']))
-      query['categories'] = { $in: filter['contain_tags'] };
-
-    if(!_.isEmpty(filter['hashtags']))
-      query['status.entities.hashtags.text'] = { $in: filter['hashtags'] };
-
-    if(!_.isEmpty(filter['mentions']))
-      query['status.entities.hashtags.text'] = { $in: filter['mentions'] };
+      query['tags.tag._content'] = { $in: filter['contain_tags'] };
 
     console.info('countByArgs query: \n%j', query);
 
