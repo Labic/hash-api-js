@@ -1,14 +1,15 @@
 var _ = require('../../../lib/underscoreExtended');
 
-module.exports = function mostSharedUrls(params, model, cb) { 
+module.exports = function mostSharedUrls(params, model, cb) {
   var pipeline = [
     { $match: {
       'status.entities.urls.0': { $exists: true },
+      'status.entities.urls.0.url': { $ne: "" },
       'status.timestamp_ms': {
         $gte: params.since.getTime(),
         $lte: params.until.getTime()
       },
-      block: (params.filter.blocked || false) 
+      block: (params.filter.blocked || false)
     } },
     { $unwind: '$status.entities.urls' },
     { $group: {
@@ -26,9 +27,9 @@ module.exports = function mostSharedUrls(params, model, cb) {
         }
       },
       count: '$count'
-    } }, 
-    { $limit: params.perPage * params.page }, 
-    { $skip : (params.perPage * params.page) - params.perPage } 
+    } },
+    { $limit: params.perPage * params.page },
+    { $skip : (params.perPage * params.page) - params.perPage }
   ];
 
   if(params.filter.tags) {
