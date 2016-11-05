@@ -1,7 +1,7 @@
-module.exports = function mostRecurringImages(params, model, cb) { 
+module.exports = function mostRecurringImages(params, model, cb) {
   var pipeline = [
     { $match: {
-      'full_picture': { $ne: 'null' }, 
+      'full_picture': { $ne: 'null' },
       created_time_ms: {
         $gte: params.since.getTime(),
         $lte: params.until.getTime()
@@ -14,17 +14,19 @@ module.exports = function mostRecurringImages(params, model, cb) {
       description: { $first: '$description' },
       message: { $first: '$message' },
       name: { $first: '$name' },
+      likes_count: { $sum: '$likes_count' },
       count: { $sum: 1 }
     } },
-    { $project: { 
+    { $project: {
         _id: 0,
         id: '$id',
         full_picture: '$_id',
         description: '$description',
         message: '$message',
+        likes_count: '$likes_count',
         name: '$name',
         count: '$count'
-    } }, 
+    } },
     { $sort: { count: -1 } },
     { $limit: params.perPage * params.page },
     { $skip : (params.perPage * params.page) - params.perPage }
