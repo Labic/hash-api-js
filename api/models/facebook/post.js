@@ -6,24 +6,7 @@ module.exports = function(FacebookPost) {
 
   var args = [
     { arg: 'profile_type', type: 'string' },
-    { arg: 'period', type: '[object]', http: function mapping(ctx) {
-      var period = ctx.req.query.period;
-
-      if(_.isObject(period)) {
-        var mappedFilter = {};
-
-        if (!_.isEmpty(period['since']))
-          mappedFilter.since = new Date(period['since']);
-        if (!_.isEmpty(period['until']))
-          mappedFilter.until = new Date(period['until']);
-
-        period = mappedFilter;
-      } else {
-        period = {};
-      }
-
-      return period;
-    } }, 
+    { arg: 'period', type: 'string' },
     { arg: 'filter', type: 'object', http: function mapping(ctx) {
       var filter = ctx.req.query.filter;
 
@@ -97,6 +80,12 @@ module.exports = function(FacebookPost) {
 
     var query = {};
 
+    if(!_.isEmpty(params.period))
+      query['created_time_ms'] = {
+        $gte: new Date(new Date() - periodEnum[params.period]).getTime(),
+        $lte: new Date().getTime()
+      }
+
     if(params.filter.tags) {
       if(params.filter.tags.with)
         query['categories'] = { $all: params.filter.tags.with };
@@ -121,7 +110,7 @@ module.exports = function(FacebookPost) {
     
     return FacebookPost.dao.mongodb.count(query, function(err, result) {
       if (err) return cb(err, null);
-      
+
       return cb(null, { count: result });
     });
   }
