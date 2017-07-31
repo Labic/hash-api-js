@@ -49,7 +49,7 @@
     "dataSource": "documentDB",
     "public": true
   },
-  "Tweet": {
+  "TwitterTweet": {
     "dataSource": "documentDB",
     "public": true
   },
