@@ -110,14 +110,20 @@
     "Cache": null,
     "DisableMethods": {
       "selfMethods": [
+        "replaceOrCreate",
+        "upsertWithWhere",
+        "findOne",
+        "replaceById",
         "count",
         "upsert",
-        "findOne",
         "findOrCreate",
+        "exists",
         "deleteById",
         "updateAll",
         "updateAttributes",
-        "createChangeStream"
+        "createChangeStream",
+        "delete_comments",
+        "destroyById_comments"
       ]
     }
   },
@@ -130,5 +136,11 @@
   },
   "scope": {
     "limit": 25
-  }
+  },
+  "acls": [{
+    "accessType": "READ",
+    "principalType": "ROLE",
+    "principalId": "$everyone",
+    "permission": "ALLOW"
+  }]
 }

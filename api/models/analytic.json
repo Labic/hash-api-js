@@ -15,6 +15,9 @@
         "findOne",
         "deleteById",
         "updateAll",
+        "replaceById",
+        "replaceOrCreate",
+        "upsertWithWhere",
         "updateAttributes",
         "createChangeStream",
         "count"

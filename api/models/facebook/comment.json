@@ -36,6 +36,23 @@
     }
   },
   "mixins": {
-      "Mongodb": null
+    "Mongodb": null,
+    "Cache": null,
+    "DisableMethods": {
+      "selfMethods": [
+        "replaceOrCreate",
+        "upsertWithWhere",
+        "findOne",
+        "replaceById",
+        "count",
+        "upsert",
+        "findOrCreate",
+        "exists",
+        "deleteById",
+        "updateAll",
+        "updateAttributes",
+        "createChangeStream"
+      ]
+    }
   }
 }
