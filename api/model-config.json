@@ -6,32 +6,11 @@
       "./models/twitter",
       "./models/facebook",
       "./models/flickr",
-      "./models/instagram",
-      "../node_modules/loopback-component-passport/lib/models"
+      "./models/instagram"
     ],
     "mixins": [
       "./mixins"
     ]
-  },
-  "user": {
-    "dataSource": "documentDB",
-    "public": false
-  },
-  "accessToken": {
-    "dataSource": "documentDB",
-    "public": false
-  },
-  "AuthProvider": {
-    "dataSource": "documentDB",
-    "public": false
-  },
-  "userCredential": {
-    "dataSource": "documentDB",
-    "public": false
-  },
-  "userIdentity": {
-    "dataSource": "documentDB",
-    "public": false
   },
   "ACL": {
     "dataSource": "documentDB",
@@ -44,10 +23,6 @@
   "Role": {
     "dataSource": "documentDB",
     "public": false
-  },
-  "Setting": {
-    "dataSource": "documentDB",
-    "public": true
   },
   "TwitterTweet": {
     "dataSource": "documentDB",

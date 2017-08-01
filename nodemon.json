@@ -1,0 +1,29 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    "node_modules"
+  ],
+  "verbose": true,
+  "execMap": {
+    "node": "npm start"
+  },
+  "events": {
+    "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
+  },
+  "watch": [
+    "*.*"
+  ],
+  "env": {
+    "NODE_ENV": "development",
+    "HTTP": false,
+    "HOST": "localhost",
+    "PORT": 3000,
+    "REST_API_ROOT": "/api",
+    "LEGACY_EXPLORER": false,
+    "LIVE_RELOAD": false,
+    "MONGODB_URI": "mongodb://scraper:cT5rxDQ8UFUX4PYz@188.166.40.27:27017/clipper?authSource=clipper&authMechanism=MONGODB-CR",
+    "STATIC_TOKEN": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJMYWJpYyIsImlhdCI6MTUwMTUxNjM3MiwiZXhwIjoxNTQ2MjcxNTcyLCJhdWQiOiJsYWJpYy5uZXQiLCJzdWIiOiJzZXJ2aWNlc0BsYWJpYy5uZXQiLCJHaXZlbk5hbWUiOiJKb2hubnkiLCJTdXJuYW1lIjoiUm9ja2V0IiwiRW1haWwiOiJqcm9ja2V0QGV4YW1wbGUuY29tIiwiUm9sZSI6WyJNYW5hZ2VyIiwiUHJvamVjdCBBZG1pbmlzdHJhdG9yIl19.wJMdYFqswlZYTOG2j30cWbBk5KAArRlaTx_iLEgBMJs"
+  },
+  "ext": "js json"
+}

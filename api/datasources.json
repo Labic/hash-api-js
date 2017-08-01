@@ -1,5 +1,6 @@
 {
-  "documentDB": {
-    "connector": "mongodb"
+  "db": {
+    "name": "db",
+    "connector": "memory"
   }
 }
