@@ -275,7 +275,7 @@ module.exports = function(Analytic) {
         ttl: cacheTTLenum[params.period]
       }
     };
-
+    
     var resultCache = Analytic.cache.get(options.cache.key);
     if (resultCache)
       return cb(null, resultCache);
@@ -283,7 +283,8 @@ module.exports = function(Analytic) {
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
     
-    var model = Analytic.app.models.Tweet;
+    var model = Analytic.app.models.TwitterTweet;
+
     analyticsTwitterRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
 
