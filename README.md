@@ -2,6 +2,13 @@
 
 API de Analytics e metrics para Twitter, Facebook e Instagram.
 
+## A Fazer
+
+- [ ] Implementar Test de API com [Dreed](https://dredd.readthedocs.io/en/latest/how-to-guides.html)
+- [ ] Implementar CI com [Travis](https://travis-ci.org/)
+- [ ] Integrar com autenciação do [Hydra] https://github.com/ory/hydra
+- [ ] Integrar com Kong
+
 # Analytics - Facebook 
 
 ## Perfis Mais Ativos
