@@ -8,7 +8,7 @@ module.exports = function mostSharedImages(params, model, cb) {
         $gte: params.since.getTime(),
         $lte: params.until.getTime()
       },
-      block: (params.filter.blocked || false) 
+      // block: (params.filter.blocked || false) 
     } },
     { $sort: { 'status.timestamp_ms': -1 } },
     { $unwind: '$status.entities.media' },

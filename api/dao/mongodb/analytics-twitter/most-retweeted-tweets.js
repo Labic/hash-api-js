@@ -8,7 +8,7 @@ module.exports = function mostRetweetedTweets(params, model, cb) {
         $gte: params.since.getTime(),
         $lte: params.until.getTime()
       },
-      block: (params.filter.blocked || false)
+      // block: (params.filter.blocked || false)
     } },
     { $group: {
       _id: '$status.retweeted_status.id_str',

@@ -8,7 +8,7 @@ module.exports = function mostMentionedUsers(params, model, cb) {
         $gte: params.since.getTime(),
         $lte: params.until.getTime()
       },
-      block: (params.filter.blocked || false)
+      // block: (params.filter.blocked || false)
     } },
     { $unwind: '$status.entities.user_mentions' },
     { $group: {

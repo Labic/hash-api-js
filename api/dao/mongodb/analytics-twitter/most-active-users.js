@@ -1,14 +1,14 @@
-var _ = require('../../../lib/underscoreExtended');
+const _ = require('../../../lib/underscoreExtended');
 
 module.exports = function mostActiveUsers(params, model, cb) { 
-  var pipeline = [ 
+  let pipeline = [ 
     { $match: {
       'status.user.screen_name': { $exists: true },
       'status.timestamp_ms': {
         $gte: params.since.getTime(),
         $lte: params.until.getTime()
       },
-      block: (params.filter.blocked || false) 
+      // block: (params.filter.blocked || false) 
     } },
     { $group: {
       _id: '$status.user.id_str',
@@ -50,6 +50,6 @@ module.exports = function mostActiveUsers(params, model, cb) {
 
   if(_.isBoolean(params.filter.blocked))
     pipeline[0].$match['block'] = params.filter.blocked;
-
+  
   model.dao.mongodb.aggregate(pipeline, cb);
 };

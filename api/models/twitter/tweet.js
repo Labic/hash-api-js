@@ -1,8 +1,10 @@
-var periodEnum = require('../enums/periodEnum'),
-    cacheTTLenum = require('../enums/cacheTTLenum'),
-    _ = require('underscore');
+const periodEnum = require('../enums/periodEnum'),
+      cacheTTLenum = require('../enums/cacheTTLenum'),
+      _ = require('underscore'),
+      debug = require('debug')('hashapi:twitter.tweet');
 
-module.exports = function(Tweet) {
+module.exports = function(TwitterTweet) {
+  this.debug = debug.enabled;
 
   var args = [
     { arg: 'period', type: 'string' },
@@ -13,13 +15,13 @@ module.exports = function(Tweet) {
 
   // TODO: implement httpArgsMapping
 
-  Tweet.remoteMethod('findByArgs', {
+  TwitterTweet.remoteMethod('findByArgs', {
     accepts: args,
     returns: { type: 'array', root: true },
     http: { path: '/', verb: 'GET' }
   });
 
-  Tweet.remoteMethod('countByArgs', {
+  TwitterTweet.remoteMethod('countByArgs', {
     accepts: args,
     returns: { type: 'object', root: true },
     http: { path: '/count', verb: 'GET' }
@@ -39,15 +41,22 @@ module.exports = function(Tweet) {
     }
   }
 
-  Tweet.findByArgs = function(period, filter, page, perPage, cb) {
+  TwitterTweet.findByArgs = function(period, filter, page, perPage, cb) {
     period = _.isEmpty(period) ? '1d' : period;
+    debug(`findByArgs.args.period: ${period}`);
+    
     page = _.isEmpty(page) ? 1 : page;
+    debug(`findByArgs.args.page: ${page}`);
+    
     perPage = _.isEmpty(perPage) ? 25 : perPage > 100 ? 100 : perPage;
+    debug(`findByArgs.args.perPage: ${perPage}`);
+    
     filter = _.isEmpty(filter) ? {} : filter;
     ['with_tags', 'contain_tags', 'hashtags', 'mentions', 'users']
       .forEach(function (property) {
         filter[property] = dealWith('array', property, filter);
       });
+    debug(`findByArgs.args.filter: ${filter}`);
 
     var query = {
       where: {},
@@ -56,8 +65,8 @@ module.exports = function(Tweet) {
       skip: (perPage * page) - perPage
     };
 
-    if(_.isEmpty(filter['blocked']))
-      query.where.block = false;
+    if(!_.isEmpty(filter['blocked']))
+      query.block = filter['blocked'];
 
     if(!_.isEmpty(period))
       query.where['status.timestamp_ms'] = {
@@ -108,28 +117,31 @@ module.exports = function(Tweet) {
     if(!_.isEmpty(filter['users']))
       query.where['status.user.screen_name'] = { in: filter['users'] };
 
-    console.info('findByArgs query: \n%j', query);
+    debug(`findByArgs.query: ${query}`);
 
-    Tweet.find(query, function(err, tweets) {
+    TwitterTweet.find(query, function(err, tweets) {
       if (err) return cb(err, null);
       
-      // Tweet.cache.put(options.cache.key, result, options.cache.ttl);
+      TwitterTweet.cache.put(options.cache.key, result, options.cache.ttl);
       return cb(null, tweets);
     });
   }
 
-  Tweet.countByArgs = function(period, filter, page, perPage, cb) {
+  TwitterTweet.countByArgs = function(period, filter, page, perPage, cb) {
     period = _.isEmpty(period) ? '1d' : period;
+    debug(`countByArgs.args.period: ${period}`);
+    
     filter = _.isEmpty(filter) ? {} : filter;
     ['with_tags', 'contain_tags', 'hashtags', 'mentions', 'users']
       .forEach(function (property) {
         filter[property] = dealWith('array', property, filter);
       });
+    debug(`countByArgs.args.filter: ${filter}`);
 
     var query = {};
 
-    if(_.isEmpty(filter['blocked']))
-      query.block = false;
+    if(!_.isEmpty(filter['blocked']))
+      query.block = filter['blocked'];
 
     if(!_.isEmpty(period))
       query['status.timestamp_ms'] = {
@@ -163,9 +175,9 @@ module.exports = function(Tweet) {
     if(!_.isEmpty(filter['mentions']))
       query['status.entities.hashtags.text'] = { $in: filter['mentions'] };
 
-    console.info('countByArgs query: \n%j', query);
+    debug(`countByArgs.query: ${query}`);
     
-    return Tweet.dao.mongodb.count(query, function(err, result) {
+    return TwitterTweet.dao.mongodb.count(query, function(err, result) {
       if (err) return cb(err, null);
       
       return cb(null, { count: result });

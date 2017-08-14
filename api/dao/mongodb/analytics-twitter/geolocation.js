@@ -9,7 +9,7 @@ module.exports = function geolocation(params, model, cb) {
         $gte: params.since.getTime(),
         $lte: params.until.getTime()
       },
-      block: (params.filter.blocked || false) 
+      // block: (params.filter.blocked || false) 
     } },
     format['geojson'][0],
     format['geojson'][1]
@@ -43,7 +43,7 @@ module.exports = function geolocation(params, model, cb) {
     if(err) return cb(err, null);
 
     if(result) {
-      result[0].bbox = [7, 7, -31, -31];
+      // result[0].bbox = [7, 7, -31, -31];
       result[0].type = 'Feature';
       result[0].geometry.type = 'MultiPoint';
       for (var i = 0; i < result[0].geometry.coordinates.length; i++) {

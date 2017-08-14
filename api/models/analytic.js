@@ -7,7 +7,8 @@ var periodEnum = require('./enums/periodEnum'),
         analyticsInstagram: require('../dao/mongodb/analytics-instagram'),
         analyticsTwitter: require('../dao/mongodb/analytics-twitter')
       }
-    };
+    },
+    debug = require('debug')('hashapi:analytic');
 
 module.exports = function(Analytic) {
 

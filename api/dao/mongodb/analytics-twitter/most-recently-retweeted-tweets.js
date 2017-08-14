@@ -4,7 +4,7 @@ module.exports = function mostRecentlyRetweetedTweets(params, model, cb) {
   var pipeline = [
     { $match: {
       'status.retweeted_status': { $exists: true },
-      block: (params.filter.blocked || false) 
+      // block: (params.filter.blocked || false) 
     } },
     { $limit: params.last },
     { $group: {
