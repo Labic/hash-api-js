@@ -1,19 +1,15 @@
-const periodEnum = require('../enums/periodEnum'),
-      cacheTTLenum = require('../enums/cacheTTLenum'),
-      _ = require('underscore'),
-      debug = require('debug')('hashapi:twitter.tweet');
+let periodEnum = require('../enums/periodEnum'),
+    _ = require('underscore'),
+    debug = require('debug')('hashapi:twitter:tweet');
 
 module.exports = function(TwitterTweet) {
-  this.debug = debug.enabled;
-
+  // TODO: implement httpArgsMapping
   var args = [
     { arg: 'period', type: 'string' },
     { arg: 'filter', type: '[string]', http: { source: 'query' } },
     { arg: 'page', type: 'number' },
     { arg: 'per_page', type: 'number' }
   ];
-
-  // TODO: implement httpArgsMapping
 
   TwitterTweet.remoteMethod('findByArgs', {
     accepts: args,
@@ -56,7 +52,7 @@ module.exports = function(TwitterTweet) {
       .forEach(function (property) {
         filter[property] = dealWith('array', property, filter);
       });
-    debug(`findByArgs.args.filter: ${filter}`);
+    debug(`findByArgs.args.filter: ${JSON.stringify(filter)}`);
 
     var query = {
       where: {},
@@ -117,13 +113,16 @@ module.exports = function(TwitterTweet) {
     if(!_.isEmpty(filter['users']))
       query.where['status.user.screen_name'] = { in: filter['users'] };
 
-    debug(`findByArgs.query: ${query}`);
+    debug(`findByArgs.query: ${JSON.stringify(query)}`);
 
-    TwitterTweet.find(query, function(err, tweets) {
-      if (err) return cb(err, null);
+    TwitterTweet.find(query, function(err, result) {
+      if (err) { 
+        debug(`findByArgs.err: ${JSON.stringify(err)}`);
+        return cb(err, null);
+      }
       
-      TwitterTweet.cache.put(options.cache.key, result, options.cache.ttl);
-      return cb(null, tweets);
+      debug(`findByArgs.data: [object]`);
+      return cb(null, result);
     });
   }
 
@@ -136,7 +135,7 @@ module.exports = function(TwitterTweet) {
       .forEach(function (property) {
         filter[property] = dealWith('array', property, filter);
       });
-    debug(`countByArgs.args.filter: ${filter}`);
+    debug(`countByArgs.args.filter: ${JSON.stringify(filter)}`);
 
     var query = {};
 
@@ -175,11 +174,15 @@ module.exports = function(TwitterTweet) {
     if(!_.isEmpty(filter['mentions']))
       query['status.entities.hashtags.text'] = { $in: filter['mentions'] };
 
-    debug(`countByArgs.query: ${query}`);
+    debug(`countByArgs.args.query: ${JSON.stringify(query)}`);
     
     return TwitterTweet.dao.mongodb.count(query, function(err, result) {
-      if (err) return cb(err, null);
+      if (err) { 
+        debug(`countByArgs.err: ${JSON.stringify(err)}`); 
+        return cb(err, null);
+      }
       
+      debug(`findByArgs.data: object`);
       return cb(null, { count: result });
     });
   }

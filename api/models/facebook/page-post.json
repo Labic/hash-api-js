@@ -6,12 +6,11 @@
   "http": {"path": "facebook/page/posts"},
   "options": {
     "mongodb": {
-      "collection": "facebook_pages"
+      "collection": "FacebookPagePosts"
     }
   },
   "mixins": {
     "Mongodb": null,
-    "Cache": null,
     "DisableMethods": {
       "selfMethods": [
         "count",

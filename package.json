@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "api/server.js",
   "engines": {
-    "node": ">=6.11.2"
+    "node": "6.11.2"
   },
   "scripts": {
     "lint": "eslint .",
@@ -11,6 +11,7 @@
     "posttest": "npm run lint && nsp check"
   },
   "dependencies": {
+    "apicache": "^0.8.7",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "debug": "^3.0.0",
@@ -20,7 +21,6 @@
     "loopback-component-explorer": "^2.4.0",
     "loopback-connector-mongodb": "^3.2.1",
     "loopback-datasource-juggler": "^2.39.0",
-    "memory-cache": "^0.2.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^2.0.0",
     "underscore": "^1.8.3"

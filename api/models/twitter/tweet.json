@@ -20,7 +20,6 @@
   },
   "mixins": {
     "Mongodb": null,
-    "Cache": null,
     "DisableMethods": {
       "selfMethods": [
         "replaceOrCreate",

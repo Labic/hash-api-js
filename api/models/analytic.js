@@ -1,5 +1,4 @@
 var periodEnum = require('./enums/periodEnum'),
-    cacheTTLenum = require('./enums/cacheTTLenum'),
     _ = require('../lib/underscoreExtended'),
     dao = { 
       mongodb: {
@@ -70,17 +69,6 @@ module.exports = function(Analytic) {
       perPage: perPage === undefined ? 25 : perPage > 100 ? 100 : perPage
     }
 
-    var options = {
-      cache: {
-        key: JSON.stringify(params),
-        ttl: cacheTTLenum[params.period]
-      }
-    };
-
-    var resultCache = Analytic.cache.get(options.cache.key);
-    if (resultCache)
-      return cb(null, resultCache);
-
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
     
@@ -104,9 +92,6 @@ module.exports = function(Analytic) {
     
     analyticsFacebookPostRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
       
       return cb(null, result);
     });
@@ -178,17 +163,6 @@ module.exports = function(Analytic) {
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage > 100 ? 100 : perPage
     };
-
-    var options = {
-      cache: {
-        key: JSON.stringify(params),
-        ttl: cacheTTLenum[params.period]
-      }
-    };
-
-    var resultCache = Analytic.cache.get(options.cache.key);
-    if (resultCache)
-      return cb(null, resultCache);
     
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
@@ -196,9 +170,6 @@ module.exports = function(Analytic) {
     var model = Analytic.app.models.InstagramMedia;
     analyticsInstagramRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
       
       return cb(null, result);
     });
@@ -269,17 +240,6 @@ module.exports = function(Analytic) {
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage > 100 ? 100 : perPage
     };
-
-    var options = {
-      cache: {
-        key: JSON.stringify(params),
-        ttl: cacheTTLenum[params.period]
-      }
-    };
-    
-    var resultCache = Analytic.cache.get(options.cache.key);
-    if (resultCache)
-      return cb(null, resultCache);
     
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
@@ -288,9 +248,6 @@ module.exports = function(Analytic) {
 
     analyticsTwitterRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
-
-      if (result.length > 0 || !_.isEmpty(result))
-        Analytic.cache.put(options.cache.key, result, options.cache.ttl);
       
       return cb(null, result);
     });

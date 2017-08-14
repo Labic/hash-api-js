@@ -1,5 +1,4 @@
 var periodEnum = require('../enums/periodEnum'),
-    cacheTTLenum = require('../enums/cacheTTLenum'),
     _ = require('underscore');
 
 module.exports = function(FlickrPhoto) {
@@ -95,8 +94,7 @@ module.exports = function(FlickrPhoto) {
 
     FlickrPhoto.find(query, function(err, docs) {
       if (err) return cb(err, null);
-
-      // FlickrPhoto.cache.put(options.cache.key, docs, options.cache.ttl);
+      
       return cb(null, docs);
     });
   }

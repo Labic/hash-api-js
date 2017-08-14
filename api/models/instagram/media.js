@@ -1,5 +1,4 @@
 var periodEnum = require('../enums/periodEnum'),
-    cacheTTLenum = require('../enums/cacheTTLenum'),
     _ = require('underscore');
 
 module.exports = function(InstagramMedia) {
@@ -81,17 +80,6 @@ module.exports = function(InstagramMedia) {
       err.fields = ['period'];
       return cb(err);
     }
-
-    var options = {
-      cache: {
-        key: JSON.stringify(params),
-        ttl: cacheTTLenum[params.period]
-      }
-    };
-
-    var resultCache = InstagramMedia.cache.get(options.cache.key);
-    if (resultCache)
-      return cb(null, resultCache);
 
     var query = {};
 

@@ -1,6 +1,5 @@
 var periodEnum = require('./enums/periodEnum'),
     granularityEnum = require('./enums/granularityEnum'),
-    cacheTTLenum = require('./enums/cacheTTLenum'),
     _ = require('../lib/underscoreExtended'),
     dao = {
       mongodb: {
@@ -97,17 +96,6 @@ module.exports = function(Metric) {
       perPage: _.isEmpty(perPage) ? 25 : perPage > 100 ? 100 : perPage
     };
 
-    var options = {
-      cache: {
-        key: JSON.stringify(params),
-        ttl: cacheTTLenum[params.period]
-      }
-    };
-
-    var resultCache = Metric.cache.get(options.cache.key);
-    if (resultCache)
-      return cb(null, resultCache);
-
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
 
@@ -135,9 +123,6 @@ module.exports = function(Metric) {
 
     metricsFacebookPostsRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Metric.cache.put(options.cache.key, result, options.cache.ttl);
 
       return cb(null, result);
     });
@@ -220,26 +205,12 @@ module.exports = function(Metric) {
       perPage: _.isEmpty(perPage) ? 25 : perPage > 100 ? 100 : perPage
     };
 
-    // var options = {
-    //   cache: {
-    //     key: JSON.stringify(params),
-    //     ttl: cacheTTLenum[params.period]
-    //   }
-    // };
-    //
-    // var resultCache = Metric.cache.get(options.cache.key);
-    // if (resultCache)
-    //   return cb(null, resultCache);
-
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
 
     var model = Metric.app.models.FlickrPhoto;
     metricsFlickrRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
-
-      // if (result.length > 0)
-      //   Metric.cache.put(options.cache.key, result, options.cache.ttl);
 
       return cb(null, result);
     });
@@ -334,17 +305,6 @@ module.exports = function(Metric) {
       return cb(err);
     }
 
-    var options = {
-      cache: {
-        key: JSON.stringify(params),
-        ttl: cacheTTLenum[params.period]
-      }
-    };
-
-    var resultCache = Metric.cache.get(options.cache.key);
-    if (resultCache)
-      return cb(null, resultCache);
-
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
 
@@ -364,9 +324,6 @@ module.exports = function(Metric) {
 
     metricsInstagramRemoteMethods[method](params, model, function (err, result) {
       if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Metric.cache.put(options.cache.key, result, options.cache.ttl);
 
       return cb(null, result);
     });
@@ -467,26 +424,12 @@ module.exports = function(Metric) {
       return cb(err);
     }
 
-    var options = {
-      cache: {
-        key: JSON.stringify(params),
-        ttl: cacheTTLenum[params.period]
-      }
-    };
-
-    var resultCache = Metric.cache.get(options.cache.key);
-    if (resultCache)
-      return cb(null, resultCache);
-
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
 
     var model = Metric.app.models.Tweet;
     metricsTwitterRemoteMethods[method](params, model, function (err, result) {
       if (err) return cb(err, null);
-
-      if (result.length > 0)
-        Metric.cache.put(options.cache.key, result, options.cache.ttl);
 
       return cb(null, result);
     });

@@ -5,7 +5,7 @@
   "http": {"path": "facebook/posts"},
   "options": {
     "mongodb": {
-      "collection": "facebook_pages"
+      "collection": "FacebookPosts"
     }
   },
   "properties": {
@@ -107,7 +107,6 @@
   },
   "mixins": {
     "Mongodb": null,
-    "Cache": null,
     "DisableMethods": {
       "selfMethods": [
         "replaceOrCreate",

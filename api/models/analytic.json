@@ -3,7 +3,6 @@
   "plural": "analytics",
   "base": "PersistedModel",
   "mixins": {
-    "Cache": null,
     "DisableMethods": {
       "selfMethods": [
         "create",
