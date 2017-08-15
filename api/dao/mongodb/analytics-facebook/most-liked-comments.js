@@ -16,10 +16,10 @@ module.exports = function mostLikedComments(params, model, cb) {
 
   if(params.filter.tags) {
     if(params.filter.tags.with)
-      query['categories'] = { $all: params.filter.tags.with };
+      query['keywords'] = { $all: params.filter.tags.with };
 
     if(params.filter.tags.contains)
-      query['categories'] = { $in: params.filter.tags.contains };
+      query['keywords'] = { $in: params.filter.tags.contains };
   }
 
   if(params.filter.profiles)

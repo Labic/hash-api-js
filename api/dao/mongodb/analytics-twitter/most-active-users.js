@@ -30,10 +30,10 @@ module.exports = function mostActiveUsers(params, model, cb) {
 
   if(params.filter.tags) {
     if(params.filter.tags.with)
-      pipeline[0].$match['categories'] = { $all: params.filter.tags.with };
+      pipeline[0].$match['keywords'] = { $all: params.filter.tags.with };
 
     if(params.filter.tags.contains)
-      pipeline[0].$match['categories'] = { $in: params.filter.tags.contains };
+      pipeline[0].$match['keywords'] = { $in: params.filter.tags.contains };
   }
 
   if(params.filter.hashtags)

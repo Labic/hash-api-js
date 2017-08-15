@@ -6,5 +6,6 @@ module.exports = {
   mostRecurringHashtags: require('./most-recurring-hashtags'),
   mostRecurringImages: require('./most-recurring-images'),
   mostRecurringUrls: require('./most-recurring-urls'),
-  mostRetweetedTweets: require('./most-retweeted-tweets')
+  mostRetweetedTweets: require('./most-retweeted-tweets'),
+  topWordsTweets: require('./top-words-tweets'),
 };
