@@ -6,9 +6,10 @@
     "node": "6.11.2"
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "./node_modules/eslint .",
     "start": "node .",
-    "posttest": "npm run lint && nsp check"
+    "nsp-check": "./node_modules/nsp/bin/nsp check",
+    "posttest": "npm run lint && npm run nsp-check"
   },
   "dependencies": {
     "apicache": "^0.8.7",

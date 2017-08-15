@@ -8,6 +8,7 @@ API de Analytics e metrics para Twitter, Facebook e Instagram.
 - [ ] Implementar CI com [Travis](https://travis-ci.org/)
 - [ ] Integrar com autenciação do [Hydra] https://github.com/ory/hydra
 - [ ] Integrar com Kong
+- [ ] Usar loopback-connector-kue?
 
 # Analytics - Facebook 
 

@@ -1,3 +1,3 @@
 {
-  "extends": "loopback"
+  "extends": "./node_modules/eslint-config-loopback/eslint.json"
 }
