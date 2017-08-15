@@ -13,6 +13,12 @@
     "type": {
       "type": "string"
     },
+    "category": {
+      "type": "string"
+    },
+    "created_time_ms": {
+      "type": "number"
+    },
     "link": {
       "type": "string"
     },

@@ -1,3 +1,6 @@
+const util = require('util'),
+      debug = require('debug')('hashapi:dao:mongodb:analytics:facebook:most-active-profiles');
+
 module.exports = function mostActiveProfiles(params, model, cb) { 
   var pipeline = [
     { $match: { 
@@ -47,6 +50,8 @@ module.exports = function mostActiveProfiles(params, model, cb) {
 
   if (params.filter.types)
     pipeline[0].$match['type'] = { $in: params.filter.types };
+
+  debug('pipeline: ', util.inspect(pipeline, {depth: null}));
 
   model.dao.mongodb.aggregate(pipeline, cb);
 };

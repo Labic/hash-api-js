@@ -1,4 +1,6 @@
-var periodEnum = require('./enums/periodEnum'),
+var util = require('util'),
+    periodEnum = require('./enums/periodEnum'),
+    moment = require('moment'),
     _ = require('../lib/underscoreExtended'),
     dao = { 
       mongodb: {
@@ -7,16 +9,17 @@ var periodEnum = require('./enums/periodEnum'),
         analyticsTwitter: require('../dao/mongodb/analytics-twitter')
       }
     },
-    debug = require('debug')('hashapi:analytic');
+    debug = require('debug')('hashapi:analytics:facebook');
 
 module.exports = function(Analytic) {
 
-  Analytic.remoteMethod('analyticsFacebookPosts', {
+  Analytic.remoteMethod('facebookPosts', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'profile_type', type: 'string' },
-      { arg: 'period', type: 'string' },
+      { arg: 'period', type: 'string', default: 'P7D' },
       { arg: 'filter', type: 'object', http: function mapping(ctx) {
+        debug('filter: ', util.inspect(ctx, {depth: null}));
         var filter = ctx.req.query.filter;
 
         if(filter) {
@@ -42,15 +45,15 @@ module.exports = function(Analytic) {
 
         return filter;
       } },
-      { arg: 'last', type: 'number' },
-      { arg: 'page', type: 'number' },
-      { arg: 'per_page', type: 'number' }
+      { arg: 'last', type: 'number', default: 1000 },
+      { arg: 'page', type: 'number', default: 1 },
+      { arg: 'per_page', type: 'number', default: 25 }
     ],
     returns: { type: 'object', root: true },
     http: { path: '/facebook/:method', verb: 'GET' }
   });
 
-  Analytic.analyticsFacebookPosts = function(method, profileType, period, filter, last, page, perPage, cb) {
+  Analytic.facebookPosts = function(method, profileType, period, filter, last, page, perPage, cb) {
     if (!analyticsFacebookPostRemoteMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.statusCode = 404;
@@ -62,9 +65,8 @@ module.exports = function(Analytic) {
       endpoint: '/analytics/facebook',
       method: method,
       profileType: profileType,
-      period: period === undefined ? 'P7D' : period,
       filter: filter,
-      last: last === undefined ? 1000 : last > 5000 ? 5000 : last,
+      period: period,
       page: page === undefined ? 1 : page,
       perPage: perPage === undefined ? 25 : perPage > 100 ? 100 : perPage
     }
@@ -108,7 +110,7 @@ module.exports = function(Analytic) {
   };
 
 
-  Analytic.remoteMethod('analyticsInstagram', {
+  Analytic.remoteMethod('instagram', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string' },
@@ -146,7 +148,7 @@ module.exports = function(Analytic) {
     http: { path: '/instagram/:method', verb: 'GET' }
   });
 
-  Analytic.analyticsInstagram = function(method, period, filter, last, page, perPage, cb) {
+  Analytic.instagram = function(method, period, filter, last, page, perPage, cb) {
     if (!analyticsInstagramRemoteMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.status = 404;
@@ -184,7 +186,7 @@ module.exports = function(Analytic) {
   };
 
 
-  Analytic.remoteMethod('analyticsTwitter', {
+  Analytic.remoteMethod('twitter', {
     accepts: [
       { arg: 'method', type: 'string', required: true },
       { arg: 'period', type: 'string' },
@@ -223,7 +225,7 @@ module.exports = function(Analytic) {
     http: { path: '/twitter/:method', verb: 'GET' }
   });
 
-  Analytic.analyticsTwitter = function(method, period, filter, last, page, perPage, cb) {
+  Analytic.twitter = function(method, period, filter, last, page, perPage, cb) {
     if (!analyticsTwitterRemoteMethods[method]) {
       var err = new Error('Endpoint not found!');
       err.status = 404;

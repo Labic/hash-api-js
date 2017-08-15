@@ -3,22 +3,23 @@ let periodEnum = require('../enums/periodEnum'),
     debug = require('debug')('hashapi:twitter:tweet');
 
 module.exports = function(TwitterTweet) {
-  // TODO: implement httpArgsMapping
-  var args = [
-    { arg: 'period', type: 'string' },
-    { arg: 'filter', type: '[string]', http: { source: 'query' } },
-    { arg: 'page', type: 'number' },
-    { arg: 'per_page', type: 'number' }
-  ];
-
+  
   TwitterTweet.remoteMethod('findByArgs', {
-    accepts: args,
+    accepts: [
+      { arg: 'period', type: 'string', default: 'P1D' },
+      { arg: 'filter', type: '[string]', http: { source: 'query' } },
+      { arg: 'page', type: 'number', default: 1 },
+      { arg: 'per_page', type: 'number', default: 25 },
+    ],
     returns: { type: 'array', root: true },
     http: { path: '/', verb: 'GET' }
   });
 
   TwitterTweet.remoteMethod('countByArgs', {
-    accepts: args,
+    accepts: [
+      { arg: 'period', type: 'string', default: 'P1D' },
+      { arg: 'filter', type: '[string]', http: { source: 'query' } },
+    ],
     returns: { type: 'object', root: true },
     http: { path: '/count', verb: 'GET' }
   });
@@ -38,21 +39,17 @@ module.exports = function(TwitterTweet) {
   }
 
   TwitterTweet.findByArgs = function(period, filter, page, perPage, cb) {
-    period = _.isEmpty(period) ? '1d' : period;
     debug(`findByArgs.args.period: ${period}`);
-    
-    page = _.isEmpty(page) ? 1 : page;
-    debug(`findByArgs.args.page: ${page}`);
-    
-    perPage = _.isEmpty(perPage) ? 25 : perPage > 100 ? 100 : perPage;
+    debug(`findByArgs.args.page: ${_.isEmpty(page)}`);
     debug(`findByArgs.args.perPage: ${perPage}`);
-    
+    debug(`findByArgs.args.filter: ${JSON.stringify(filter)}`);
+
     filter = _.isEmpty(filter) ? {} : filter;
+    // TODO: implement httpArgsMapping
     ['with_tags', 'contain_tags', 'hashtags', 'mentions', 'users']
       .forEach(function (property) {
         filter[property] = dealWith('array', property, filter);
       });
-    debug(`findByArgs.args.filter: ${JSON.stringify(filter)}`);
 
     var query = {
       where: {},
@@ -126,16 +123,15 @@ module.exports = function(TwitterTweet) {
     });
   }
 
-  TwitterTweet.countByArgs = function(period, filter, page, perPage, cb) {
-    period = _.isEmpty(period) ? '1d' : period;
+  TwitterTweet.countByArgs = function(period, filter, cb) {
     debug(`countByArgs.args.period: ${period}`);
+    debug(`countByArgs.args.filter: ${JSON.stringify(filter)}`);
     
     filter = _.isEmpty(filter) ? {} : filter;
     ['with_tags', 'contain_tags', 'hashtags', 'mentions', 'users']
       .forEach(function (property) {
         filter[property] = dealWith('array', property, filter);
       });
-    debug(`countByArgs.args.filter: ${JSON.stringify(filter)}`);
 
     var query = {};
 

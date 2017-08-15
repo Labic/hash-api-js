@@ -1,5 +1,4 @@
 var periodEnum = require('./enums/periodEnum'),
-    granularityEnum = require('./enums/granularityEnum'),
     _ = require('../lib/underscoreExtended'),
     dao = {
       mongodb: {

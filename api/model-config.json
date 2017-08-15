@@ -76,14 +76,6 @@
     "dataSource": false,
     "public": false
   },
-  "FacebookSources": {
-    "dataSource": false,
-    "public": false
-  },
-  "FacebookHashCollector": {
-    "dataSource": false,
-    "public": false
-  },
   "FacebookComment": {
     "dataSource": "documentDB",
     "public": true

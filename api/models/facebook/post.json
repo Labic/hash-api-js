@@ -5,7 +5,7 @@
   "http": {"path": "facebook/posts"},
   "options": {
     "mongodb": {
-      "collection": "FacebookPosts"
+      "collection": "face_pages"
     }
   },
   "properties": {
@@ -16,9 +16,6 @@
     },
     "from": {
       "type": "FacebookProfile"
-    },
-    "sources": {
-      "type": "FacebookSources"
     },
     "url": {
       "type": "string"
@@ -34,9 +31,6 @@
     },
     "hashtags": {
       "type": ["string"]
-    },
-    "name": {
-      "type": "string"
     },
     "name": {
       "type": "string"

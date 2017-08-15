@@ -6,7 +6,7 @@
   "http": {"path": "facebook/page/posts"},
   "options": {
     "mongodb": {
-      "collection": "FacebookPagePosts"
+      "collection": "face_pages"
     }
   },
   "mixins": {

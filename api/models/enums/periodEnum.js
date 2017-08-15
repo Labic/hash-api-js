@@ -19,5 +19,6 @@ periodEnum['P1D']   = 24 * 60 * 60 * 1000;
 periodEnum['P7D']   = 7 * 24 * 60 * 60 * 1000;
 periodEnum['P15D']  = 15 * 24 * 60 * 60 * 1000;
 periodEnum['P1M']   = 30 * 24 * 60 * 60 * 1000;
+periodEnum['P4M']   = 30 * 24 * 60 * 90 * 1000;
 
 module.exports = periodEnum;
