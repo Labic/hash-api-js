@@ -14,9 +14,11 @@ apicache.options({
 
 let cache = apicache.middleware
 
-if (!apicache.enabled)
-  apicache.clear()
 // TODO: Convert to middleware
 module.exports = (app, options) => {
-  app.use(cache())
+  if (!apicache.enabled) {
+    apicache.clear()
+  } else {
+    app.use(cache())
+  }
 }
