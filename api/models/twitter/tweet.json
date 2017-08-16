@@ -40,11 +40,5 @@
   },
   "scope": {
     "limit": 25
-  },
-  "acls": [{
-    "accessType": "READ",
-    "principalType": "ROLE",
-    "principalId": "$everyone",
-    "permission": "ALLOW"
-  }]
+  }
 }

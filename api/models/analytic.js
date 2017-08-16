@@ -19,7 +19,6 @@ module.exports = function(Analytic) {
       { arg: 'profile_type', type: 'string' },
       { arg: 'period', type: 'string', default: 'P7D' },
       { arg: 'filter', type: 'object', http: function mapping(ctx) {
-        debug('filter: ', util.inspect(ctx, {depth: null}));
         var filter = ctx.req.query.filter;
 
         if(filter) {
@@ -237,6 +236,8 @@ module.exports = function(Analytic) {
       endpoint: '/analytics/twitter',
       method: method,
       period: period === undefined ? 'P7D' : period,
+      // TODO: add argument to function
+      granularity: 'P1D',
       filter: filter,
       last: last === undefined ? 1000 : last > 5000 ? 5000 : last,
       page: page === undefined ? 1 : page,
@@ -263,7 +264,8 @@ module.exports = function(Analytic) {
     'most_recurring_hashtags': dao.mongodb.analyticsTwitter.mostRecurringHashtags,
     'most_recurring_images': dao.mongodb.analyticsTwitter.mostRecurringImages,
     'most_recurring_urls': dao.mongodb.analyticsTwitter.mostRecurringUrls,
-    'most_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRetweetedTweets
+    'most_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRetweetedTweets,
+    'top_words_tweets': dao.mongodb.analyticsTwitter.topWordsTweets,
   };
 
 };
