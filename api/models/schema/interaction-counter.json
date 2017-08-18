@@ -1,0 +1,11 @@
+{
+  "name": "SchemaInteractionCounter",
+  "base": "SchemaStructuredValue",
+  "plural": "interaction_counters",
+  "http": {"path": "interaction_counters"},
+  "options": {
+    "mongodb": {
+      "collection": "interactionCounters"
+    }
+  }
+}

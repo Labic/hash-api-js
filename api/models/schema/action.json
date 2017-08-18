@@ -1,0 +1,44 @@
+{
+  "name": "SchemaAction",
+  "base": "SchemaThing",
+  "options": {
+    "mongodb": {
+      "collection": "action"
+    }
+  },
+  "properties": {
+    "actionStatus": {
+      "type": "object"
+    },
+    "agent": {
+      "type": "object"
+    },
+    "endTime": {
+      "type": "datetime"
+    },
+    "error": {
+      "type": "object"
+    },
+    "instrument": {
+      "type": "object"
+    },
+    "location": {
+      "type": "object"
+    },
+    "object": {
+      "type": "object"
+    },
+    "participant": {
+      "type": "object"
+    },
+    "result": {
+      "type": "object"
+    },
+    "startTime": {
+      "type": "datetime"
+    },
+    "target": {
+      "type": "datetime"
+    }
+  }
+}

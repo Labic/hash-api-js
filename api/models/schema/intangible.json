@@ -1,0 +1,12 @@
+{
+  "name": "SchemaIntangible",
+  "base": "SchemaThing",
+  "properties": {
+    "value": {
+      "type": "object"
+    },
+    "valueReference": {
+      "type": "object"
+    }
+  }
+}

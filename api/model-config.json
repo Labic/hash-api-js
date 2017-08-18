@@ -6,11 +6,40 @@
       "./models/twitter",
       "./models/facebook",
       "./models/flickr",
-      "./models/instagram"
+      "./models/instagram",
+      "./models/schema"
     ],
     "mixins": [
       "./mixins"
     ]
+  },
+  "SchemaAction": {
+    "dataSource": "documentDB",
+    "public": false
+  },
+  "SchemaAssessAction": {
+    "dataSource": "documentDB",
+    "public": false
+  },
+  "SchemaIntangible": {
+    "dataSource": "documentDB",
+    "public": false
+  },
+  "SchemaInteractionCounter": {
+    "dataSource": "documentDB",
+    "public": true
+  },
+  "SchemaReactAction": {
+    "dataSource": "documentDB",
+    "public": true
+  },
+  "SchemaStructuredValue": {
+    "dataSource": "documentDB",
+    "public": false
+  },
+  "SchemaThing": {
+    "dataSource": "documentDB",
+    "public": false
   },
   "ACL": {
     "dataSource": "documentDB",

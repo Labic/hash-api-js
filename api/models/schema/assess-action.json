@@ -1,0 +1,9 @@
+{
+  "name": "SchemaAssessAction",
+  "base": "SchemaAction",
+  "options": {
+    "mongodb": {
+      "collection": "assessAction"
+    }
+  }
+}

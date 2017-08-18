@@ -1,0 +1,44 @@
+{
+  "name": "SchemaThing",
+  "base": "PersistedModel",
+  "options": {
+    "mongodb": {
+      "collection": "thing"
+    }
+  },
+  "properties": {
+    "additionalType": {
+      "type": "string"
+    },
+    "alternateName": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "disambiguatingDescription": {
+      "type": "string"
+    },
+    "identifier": {
+      "type": "object"
+    },
+    "image": {
+      "type": ["object"]
+    },
+    "mainEntityOfPage": {
+      "type": "object"
+    },
+    "name": {
+      "type": "string"
+    },
+    "potentialAction": {
+      "type": ["object"]
+    },
+    "sameAs": {
+      "type": ["string"]
+    },
+    "url": {
+      "type": "string"
+    }
+  }
+}

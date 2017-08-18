@@ -1,0 +1,11 @@
+{
+  "name": "SchemaReactAction",
+  "base": "SchemaAssessAction",
+  "plural": "react_actions",
+  "http": {"path": "react_actions"},
+  "options": {
+    "mongodb": {
+      "collection": "reactActions"
+    }
+  }
+}
