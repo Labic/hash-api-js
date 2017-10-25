@@ -16,15 +16,16 @@
   ],
   "env": {
     "CACHE_ENABLED": false,
-    "NODE_ENV": "development",
     "DEBUG":"hashapi*",
-    "HTTP": false,
     "HOST": "localhost",
-    "PORT": 3000,
-    "REST_API_ROOT": "/v2",
+    "HTTP": false,
     "LEGACY_EXPLORER": false,
     "LIVE_RELOAD": false,
-    "MONGODB_URI": ""
+    "MONGODB_URI": "",
+    "NODE_ENV": "development",
+    "PORT": 3000,
+    "REST_API_ROOT": "/v2",
+    "SENTRY_DNS": "https://user:pass@sentry.io/id"
   },
   "ext": "js json"
 }
