@@ -1,29 +1,37 @@
-var _ = require('../../../lib/underscoreExtended');
+const format = require('util').format
+
+const debug = require('debug')('  mongo:analytics:twitter:mostPopularHashtags')
+const _ = require('../../../lib/underscoreExtended');
 
 module.exports = function mostPopularHashtags(params, model, cb) { 
-  var pipeline = [
+  debug(format('params=%j', params))
+
+  let pipeline = [
     { $match: {
-      'status.entities.hashtags.0': { $exists: true },
-      'status.timestamp_ms': {
-        $gte: params.since.getTime(),
-        $lte: params.until.getTime()
-      },
-      // block: (params.filter.blocked || false) 
-    } },
+        'status.entities.hashtags.0': { $exists: true },
+        'status.timestamp_ms': {
+          $gte: params.since.getTime(),
+          $lte: params.until.getTime()
+        },
+      } },
     { $unwind: '$status.entities.hashtags' },
     { $group: {
-      _id: '$status.entities.hashtags.text',
-      count: { $sum: 1 }
-    } },
+        _id: { $toLower: '$status.entities.hashtags.text' },
+        count: { $sum: 1 },
+      } },
     { $sort: { count: -1 } },
     { $project: {
-      _id: 0,
-      hashtag: '$_id',
-      count: '$count'
-    } }, 
+        _id: 0,
+        hashtag: '$_id',
+        count: '$count',
+      } }, 
     { $limit: params.perPage * params.page }, 
     { $skip : (params.perPage * params.page) - params.perPage } 
   ];
+
+  let options = {
+    allowDiskUse: true
+  }
 
   if(params.filter.tags) {
     if(params.filter.tags.with)
@@ -48,5 +56,8 @@ module.exports = function mostPopularHashtags(params, model, cb) {
   if(_.isBoolean(params.filter.blocked))
     pipeline[0].$match['block'] = params.filter.blocked;
 
-  model.dao.mongodb.aggregate(pipeline, cb);
+  debug('schema="TwitterStatuses:v1"')
+  debug(format('pipeline=%j', pipeline))
+
+  model.dao.mongodb.aggregate(pipeline, options, cb);
 };

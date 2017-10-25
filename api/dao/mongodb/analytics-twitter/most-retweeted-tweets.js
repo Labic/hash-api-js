@@ -1,29 +1,38 @@
-var _ = require('../../../lib/underscoreExtended');
+const format = require('util').format
+
+const debug = require('debug')('mongo:analytics:twitter:mostRetweetedTweets')
+const _ = require('../../../lib/underscoreExtended');
+
 
 module.exports = function mostRetweetedTweets(params, model, cb) { 
-  var pipeline = [
+  debug(format('params=%j', params))
+
+  let pipeline = [
     { $match: {
-      'status.retweeted_status': { $exists: true },
-      'status.timestamp_ms': {
-        $gte: params.since.getTime(),
-        $lte: params.until.getTime()
-      },
-      // block: (params.filter.blocked || false)
-    } },
+        'status.retweeted_status': { $exists: true },
+        'status.timestamp_ms': {
+          $gte: params.since.getTime(),
+          $lte: params.until.getTime()
+        },
+      } },
     { $group: {
-      _id: '$status.retweeted_status.id_str',
-      status: { $last: '$status' },
-      count: { $sum: 1 }
-    } },
+        _id: '$status.retweeted_status.id_str',
+        status: { $last: '$status' },
+        count: { $sum: 1 },
+      } },
     { $sort: { count: -1 } },
     { $project: {
-      _id: 0,
-      status: '$status',
-      count: '$count'
-    } },
+        _id: 0,
+        status: '$status',
+        count: '$count',
+      } },
     { $limit: params.perPage * params.page },
     { $skip : (params.perPage * params.page) - params.perPage }
   ];
+
+  let options = {
+    allowDiskUse: true
+  }
 
   if(params.filter.tags) {
     if(params.filter.tags.with)
@@ -45,5 +54,10 @@ module.exports = function mostRetweetedTweets(params, model, cb) {
   if(_.isBoolean(params.filter.blocked))
     pipeline[0].$match['block'] = params.filter.blocked;
 
-  model.dao.mongodb.aggregate(pipeline, cb);
+  debug('schema="twitter-statuses:v1"')
+  debug(format('pipeline=%j', pipeline))
+
+  model.dao.mongodb.aggregate(pipeline, options, (err, data) => {
+    cb(err, data)
+  });
 };

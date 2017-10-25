@@ -34,7 +34,11 @@ module.exports = function(Model) {
     });
   }
 
-  Model.dao.mongodb.aggregate = function(pipeline, cb) {
+  Model.dao.mongodb.aggregate = function(pipeline, options, cb) {
+    if (!options) {
+      cb = options  
+    }
+
     Model.getDataSource().connector.connect(function(err, db) {
       var collection = db.collection(Model.settings.mongodb.collection);
       collection.aggregate(pipeline, cb);
