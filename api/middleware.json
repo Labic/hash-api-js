@@ -3,6 +3,10 @@
     "loopback#favicon": {}
   },
   "initial": {
+    "./middleware/cache": {
+      "enabled": false,
+      "duration": 3600000
+    },
     "compression": {},
     "cors": {
       "params": {

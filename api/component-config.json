@@ -2,9 +2,6 @@
   "loopback-component-explorer": {
     "mountPath": "/explorer"
   },
-  "./components/cache-component": {
-    "backend": "memory"
-  },
   "./components/status-component": {
     "path": "/"
   }
