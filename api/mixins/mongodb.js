@@ -41,7 +41,7 @@ module.exports = function(Model) {
 
     Model.getDataSource().connector.connect(function(err, db) {
       var collection = db.collection(Model.settings.mongodb.collection);
-      collection.aggregate(pipeline, cb);
+      collection.aggregate(pipeline, options, cb);
     });
   }
 }

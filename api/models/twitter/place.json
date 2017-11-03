@@ -23,14 +23,19 @@
       "required": true
     },
     "country_code": {
-      "type": "object",
+      "type": "string",
       "required": true
     },
     "attributes": {
       "type": "object"
     },
     "id": {
-      "type": "string"
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
     }
   }
 }

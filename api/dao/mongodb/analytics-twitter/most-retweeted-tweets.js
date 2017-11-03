@@ -1,6 +1,6 @@
 const format = require('util').format
+const debug = require('debug')('hashapi:mongo:analytics:twitter:mostRetweetedTweets')
 
-const debug = require('debug')('mongo:analytics:twitter:mostRetweetedTweets')
 const _ = require('../../../lib/underscoreExtended');
 
 
@@ -17,7 +17,7 @@ module.exports = function mostRetweetedTweets(params, model, cb) {
       } },
     { $group: {
         _id: '$status.retweeted_status.id_str',
-        status: { $last: '$status' },
+        status: { $first: '$status' },
         count: { $sum: 1 },
       } },
     { $sort: { count: -1 } },

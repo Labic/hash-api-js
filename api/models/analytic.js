@@ -1,15 +1,17 @@
-var util = require('util'),
-    periodEnum = require('./enums/periodEnum'),
-    moment = require('moment'),
-    _ = require('../lib/underscoreExtended'),
-    dao = { 
-      mongodb: {
-        analyticsFacebook: require('../dao/mongodb/analytics-facebook'),
-        analyticsInstagram: require('../dao/mongodb/analytics-instagram'),
-        analyticsTwitter: require('../dao/mongodb/analytics-twitter')
-      }
-    },
-    debug = require('debug')('hashapi:analytics:facebook');
+const format = require('util').format
+const debug = require('debug')
+
+const periodEnum = require('./enums/periodEnum')
+const _ = require('../lib/underscoreExtended')
+const dao = { 
+  mongodb: {
+    analyticsFacebook: require('../dao/mongodb/analytics-facebook'),
+    analyticsInstagram: require('../dao/mongodb/analytics-instagram'),
+    analyticsTwitter: require('../dao/mongodb/analytics-twitter')
+  }
+}
+debugFB = debug('hashapi:analytics:facebook')
+debugTW = debug('hashapi:analytics:twitter')
 
 module.exports = function(Analytic) {
 
@@ -249,6 +251,8 @@ module.exports = function(Analytic) {
     
     var model = Analytic.app.models.TwitterTweet;
 
+    debugTW(format('params=%j', params))
+    
     analyticsTwitterRemoteMethods[method](params, model, function(err, result) {
       if (err) return cb(err, null);
       
