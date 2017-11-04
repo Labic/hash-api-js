@@ -84,7 +84,7 @@
       "type": "TwitterUser"
     },
     "geo": {
-      "type": "boolean"
+      "type": "TwitterCoordinatesPoint"
     },
     "in_reply_to_user_id_str": {
       "type": "string"
