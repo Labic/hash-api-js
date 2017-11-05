@@ -83,6 +83,9 @@ module.exports = function(TwitterTweet) {
     if(!_.isEmpty(filter['retweeted']))
       query.where['status.retweeted_status'] = { exists: (filter['retweeted'] === 'true') };
 
+    if(!_.isEmpty(filter['is_quote_status']))
+      query.where['status.is_quote_status'] = { exists: (filter['is_quote_status'] === 'true') };
+
     if(!_.isEmpty(filter['with_tags'])) {
       query.where.and = _.isEmpty(query.where.and) ? [] : query.where.and;
       filter['with_tags'].forEach(function (tag) {
