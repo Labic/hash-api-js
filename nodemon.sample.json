@@ -17,6 +17,7 @@
   "env": {
     "CACHE_ENABLED": false,
     "DEBUG":"hashapi*",
+    "ES_URI_0": "localhost:9200",
     "HOST": "localhost",
     "HTTP": false,
     "LEGACY_EXPLORER": false,

@@ -107,6 +107,7 @@ module.exports = function(Analytic) {
     'most_liked_posts': dao.mongodb.analyticsFacebook.mostLikedPosts,
     'most_recurring_hashtags': dao.mongodb.analyticsFacebook.mostRecurringHashtags,
     'most_recurring_images': dao.mongodb.analyticsFacebook.mostRecurringImages,
+    'most_recurring_urls': dao.mongodb.analyticsFacebook.mostRecurringUrls,
     'most_shared_posts': dao.mongodb.analyticsFacebook.mostSharedPosts
   };
 
