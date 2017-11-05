@@ -15,7 +15,7 @@ module.exports = {
     },
     json: {
       strict: false,
-      limit: '500kb'
+      limit: '3072kb'
     },
     urlencoded: {
       extended: true,
