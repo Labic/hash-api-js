@@ -4,7 +4,7 @@
   "base": "PersistedModel",
   "options": {
     "mongodb": {
-      "collection": "twitter.tweet"
+      "collection": "tweets"
     }
   },
   "properties": {
@@ -19,10 +19,6 @@
     }
   },
   "mixins": {
-    "SearchIndex": {
-      "index": "twitter",
-      "type": "tweet"
-    },
     "Mongodb": null,
     "DisableMethods": {
       "selfMethods": [
