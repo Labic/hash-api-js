@@ -203,14 +203,15 @@ module.exports = function(Analytic) {
             }
           };
 
-          mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
-          mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
-          mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
-          mappedFilter.users         = _.convertToArray(filter['users']);
-          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
-          mappedFilter.has           = _.convertToArray(filter['has']);
-          mappedFilter.retweeted     = _.convertToBoolean(filter['retweeted']);
           mappedFilter.blocked       = _.convertToBoolean(filter['blocked']);
+          mappedFilter.has           = _.convertToArray(filter['has']);
+          mappedFilter.hashtags      = _.convertToArray(filter['hashtags']);
+          mappedFilter.mentions      = _.convertToArray(filter['mentions']);
+          mappedFilter.quoted_status = _.convertToBoolean(filter['quoted_status']);
+          mappedFilter.retweeted     = _.convertToBoolean(filter['retweeted']);
+          mappedFilter.tags.contains = _.convertToArray(filter['contain_tags']);
+          mappedFilter.tags.with     = _.convertToArray(filter['with_tags']);
+          mappedFilter.users         = _.convertToArray(filter['users']);
 
           filter = mappedFilter;
         } else {
