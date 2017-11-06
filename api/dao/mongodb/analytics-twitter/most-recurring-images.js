@@ -73,6 +73,9 @@ module.exports = function mostSharedImages(params, model, cb) {
   if(params.filter.retweeted)
     query.where['status.retweeted_status'] = { $exists: params.filter.retweeted };
 
+  if(_.isBoolean(params.filter.quoted_status))
+    pipeline[0].$match['status.quoted_status'] = { $exists: params.filter.quoted_status };
+
   if(_.isBoolean(params.filter.blocked))
     pipeline[0].$match['block'] = params.filter.blocked;
 
