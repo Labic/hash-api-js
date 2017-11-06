@@ -39,6 +39,9 @@ module.exports = function mostRecentlyRetweetedTweets(params, model, cb) {
   if(params.filter.users)
     pipeline[0].$match['status.user.screen_name'] = { $in: params.filter.users };
 
+  if(_.isBoolean(params.filter.quoted_status))
+    pipeline[0].$match['status.quoted_status'] = { $exists: params.filter.quoted_status };
+
   if(_.isBoolean(params.filter.blocked))
     pipeline[0].$match['block'] = params.filter.blocked;
 
