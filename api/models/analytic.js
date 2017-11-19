@@ -1,5 +1,6 @@
+'use strict'
 const format = require('util').format
-const debug = require('debug')
+const debug = require('debug')('hashapi:components:analytics')
 
 const periodEnum = require('./enums/periodEnum')
 const _ = require('../lib/underscoreExtended')
@@ -10,8 +11,7 @@ const dao = {
     analyticsTwitter: require('../dao/mongodb/analytics-twitter')
   }
 }
-debugFB = debug('hashapi:analytics:facebook')
-debugTW = debug('hashapi:analytics:twitter')
+const twitterElasticsearch = require('./twitter/analytics/elasticsearch')
 
 module.exports = function(Analytic) {
 
@@ -229,14 +229,17 @@ module.exports = function(Analytic) {
   });
 
   Analytic.twitter = function(method, period, filter, last, page, perPage, cb) {
-    if (!analyticsTwitterRemoteMethods[method]) {
-      var err = new Error('Endpoint not found!');
+    const datasource = 'mongo';
+    const _method = analyticsTwitterRemoteMethods[datasource][method]
+    
+    if (!_method) {
+      let err = new Error('Endpoint not found!');
       err.status = 404;
 
       return cb(err);
     }
 
-    var params = {
+    let params = {
       endpoint: '/analytics/twitter',
       method: method,
       period: period === undefined ? 'P7D' : period,
@@ -251,27 +254,28 @@ module.exports = function(Analytic) {
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
     
-    var model = Analytic.app.models.TwitterTweet;
-
-    debugTW(format('params=%j', params))
     
-    analyticsTwitterRemoteMethods[method](params, model, function(err, result) {
-      if (err) return cb(err, null);
-      
-      return cb(null, result);
-    });
+    const model = Analytic.app.models.TwitterTweet;
+
+    debug(format('params=%j', params))
+    
+    _method(params, model, cb);
   }
 
-  var analyticsTwitterRemoteMethods = {
-    'geolocation': dao.mongodb.analyticsTwitter.geolocation,
-    'most_active_users': dao.mongodb.analyticsTwitter.mostActiveUsers,
-    'most_mentioned_users': dao.mongodb.analyticsTwitter.mostMentionedUsers,
-    'most_recently_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRecentlyRetweetedTweets,
-    'most_recurring_hashtags': dao.mongodb.analyticsTwitter.mostRecurringHashtags,
-    'most_recurring_images': dao.mongodb.analyticsTwitter.mostRecurringImages,
-    'most_recurring_urls': dao.mongodb.analyticsTwitter.mostRecurringUrls,
-    'most_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRetweetedTweets,
-    'top_words_tweets': dao.mongodb.analyticsTwitter.topWordsTweets,
+  const analyticsTwitterRemoteMethods = {
+    mongo: {
+      'geolocation': dao.mongodb.analyticsTwitter.geolocation,
+      'most_active_users': dao.mongodb.analyticsTwitter.mostActiveUsers,
+      'most_mentioned_users': dao.mongodb.analyticsTwitter.mostMentionedUsers,
+      'most_recently_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRecentlyRetweetedTweets,
+      'most_recurring_hashtags': dao.mongodb.analyticsTwitter.mostRecurringHashtags,
+      'most_recurring_images': dao.mongodb.analyticsTwitter.mostRecurringImages,
+      'most_recurring_urls': dao.mongodb.analyticsTwitter.mostRecurringUrls,
+      'most_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRetweetedTweets,
+    },
+    elasticsearch: {
+      'most_common_terms': twitterElasticsearch.mostCommonTerms,  
+    }
   };
 
 };

@@ -2,7 +2,7 @@
   "loopback-component-explorer": {
     "mountPath": "/explorer"
   },
-  "./components/status-component": {
-    "path": "/"
+  "./components/status": {
+    "mountPath": "/"
   }
 }

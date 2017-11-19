@@ -1,8 +1,8 @@
 module.exports = {
-  db: {
+  memory: {
     connector: 'memory'
   },
-  documentDB: {
+  mongo: {
     connector: 'mongodb',
     url: process.env.MONGODB_URI || 'mongodb://localhost/hash',
     allowExtendedOperators: true

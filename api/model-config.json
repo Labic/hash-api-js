@@ -14,167 +14,167 @@
     ]
   },
   "SchemaAction": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": false
   },
   "SchemaAssessAction": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": false
   },
   "SchemaIntangible": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": false
   },
   "SchemaInteractionCounter": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": true
   },
   "SchemaReactAction": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": true
   },
   "SchemaStructuredValue": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": false
   },
   "SchemaThing": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": false
   },
   "ACL": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": false
   },
   "Role": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": false
   },
   "TwitterTweet": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": true
   },
   "TwitterStatuses": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": false
   },
   "TwitterUser": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "TwitterEntities": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "TwitterMedia": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "TwitterMediaSizes": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "TwitterMediaSize": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "TwitterPlace": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "TwitterCoordinatesPoint": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "TwitterCoordinatesPolygon": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "FacebookPost": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": true
   },
   "FacebookPagePost": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": true
   },
   "FacebookProfile": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "FacebookComment": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": true
   },
   "FlickrPhoto": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": true
   },
   "InstagramMedia": {
-    "dataSource": "documentDB",
+    "dataSource": "mongo",
     "public": true
   },
   "InstagramMediaData": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramUserInPhoto": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramUser": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramPosition": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramLocation": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramImages": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramImage": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramVideos": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramVideo": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramLikes": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramComment": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramComments": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "InstagramCaption": {
-    "dataSource": false,
+    "dataSource": null,
     "public": false
   },
   "Metric": {
-    "dataSource": "documentDB",
+    "dataSource": null,
     "public": true
   },
   "Analytic": {
-    "dataSource": "documentDB",
+    "dataSource": null,
     "public": true
   }
 }
