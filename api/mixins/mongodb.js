@@ -1,4 +1,7 @@
 module.exports = function(Model) {
+  if (!Model.dao) {
+    Model.dao
+  }
   Model.dao = {
     mongodb: {}
   };
@@ -35,9 +38,8 @@ module.exports = function(Model) {
   }
 
   Model.dao.mongodb.aggregate = function(pipeline, options, cb) {
-    if (!options) {
-      cb = options  
-    }
+    cb = (typeof options === 'function') ? options : cb;
+    options = (typeof options === 'function') ? undefined : options;
 
     Model.getDataSource().connector.connect(function(err, db) {
       var collection = db.collection(Model.settings.mongodb.collection);

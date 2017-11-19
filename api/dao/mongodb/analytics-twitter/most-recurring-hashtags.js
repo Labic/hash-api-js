@@ -33,30 +33,30 @@ module.exports = function mostPopularHashtags(params, model, cb) {
     allowDiskUse: true
   }
 
-  if(params.filter.tags) {
-    if(params.filter.tags.with)
+  if (params.filter.tags) {
+    if (params.filter.tags.with)
       pipeline[0].$match['keywords'] = { $all: params.filter.tags.with };
 
-    if(params.filter.tags.contains)
+    if (params.filter.tags.contains)
       pipeline[0].$match['keywords'] = { $in: params.filter.tags.contains };
   }
 
-  if(params.filter.hashtags)
+  if (params.filter.hashtags)
     pipeline[0].$match['status.entities.hashtags.text'] = { $in: params.filter.hashtags };
 
-  if(params.filter.mentions)
+  if (params.filter.mentions)
     pipeline[0].$match['status.entities.user_mentions.screen_name'] = { $in: params.filter.mentions };
 
-  if(params.filter.users)
+  if (params.filter.users)
     pipeline[0].$match['status.user.screen_name'] = { $in: params.filter.users };
 
-  if(params.filter.retweeted)
+  if (_.isBoolean(params.filter.retweeted))
     pipeline[0].$match['status.retweeted_status'] = { $exists: params.filter.retweeted };
 
-  if(_.isBoolean(params.filter.quoted_status))
+  if (_.isBoolean(params.filter.quoted_status))
     pipeline[0].$match['status.quoted_status'] = { $exists: params.filter.quoted_status };
 
-  if(_.isBoolean(params.filter.blocked))
+  if (_.isBoolean(params.filter.blocked))
     pipeline[0].$match['block'] = params.filter.blocked;
 
   debug('schema="TwitterStatuses:v1"')

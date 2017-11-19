@@ -231,7 +231,7 @@ module.exports = function(Analytic) {
   Analytic.twitter = function(method, period, filter, last, page, perPage, cb) {
     const datasource = 'mongo';
     const _method = analyticsTwitterRemoteMethods[datasource][method]
-    
+
     if (!_method) {
       let err = new Error('Endpoint not found!');
       err.status = 404;
@@ -254,18 +254,16 @@ module.exports = function(Analytic) {
     params.since = new Date(new Date() - periodEnum[params.period]);
     params.until = new Date();
     
-    
-    const model = Analytic.app.models.TwitterTweet;
-
     debug(format('params=%j', params))
     
-    _method(params, model, cb);
+    _method(params, Analytic.app.models.TwitterTweet, cb);
   }
 
   const analyticsTwitterRemoteMethods = {
     mongo: {
       'geolocation': dao.mongodb.analyticsTwitter.geolocation,
       'most_active_users': dao.mongodb.analyticsTwitter.mostActiveUsers,
+      'most_common_terms': dao.mongodb.analyticsTwitter.mostCommonTerms,  
       'most_mentioned_users': dao.mongodb.analyticsTwitter.mostMentionedUsers,
       'most_recently_retweeted_tweets': dao.mongodb.analyticsTwitter.mostRecentlyRetweetedTweets,
       'most_recurring_hashtags': dao.mongodb.analyticsTwitter.mostRecurringHashtags,
