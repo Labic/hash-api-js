@@ -29,6 +29,10 @@ module.exports = function mostActiveProfiles(params, model, cb) {
     { $skip : (params.perPage * params.page) - params.perPage }
   ];
 
+  let options = {
+    allowDiskUse: true
+  }
+
   if(params.filter.tags) {
     if(params.filter.tags.with)
       pipeline[0].$match['keywords'] = { $all: params.filter.tags.with };
@@ -53,5 +57,5 @@ module.exports = function mostActiveProfiles(params, model, cb) {
 
   debug('pipeline: ', util.inspect(pipeline, {depth: null}));
 
-  model.dao.mongodb.aggregate(pipeline, cb);
+  model.dao.mongodb.aggregate(pipeline, options, cb);
 };

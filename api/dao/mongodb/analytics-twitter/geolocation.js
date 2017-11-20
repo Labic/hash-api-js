@@ -15,6 +15,10 @@ module.exports = function geolocation(params, model, cb) {
     format['geojson'][1]
   ];
 
+  let options = {
+    allowDiskUse: true
+  }
+
   if(params.filter.tags) {
     if(params.filter.tags.with)
       pipeline[0].$match.keywords = { $all: params.filter.tags.with };
@@ -39,7 +43,7 @@ module.exports = function geolocation(params, model, cb) {
     pipeline[0].$match.block = params.filter.blocked;
 
   // TODO: Implement geojson-flatten for GeoJSON format result
-  model.dao.mongodb.aggregate(pipeline, function (err, result) {
+  model.dao.mongodb.aggregate(pipeline, options, function (err, result) {
     if(err) return cb(err, null);
 
     if(result) {
